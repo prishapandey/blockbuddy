@@ -1,0 +1,6 @@
+{
+  "name": "BlockBuddy",
+  "description": "Direct room-to-room campus peer exchange and equipment rentals across hostels with instant corridor handoffs and zero fees.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
