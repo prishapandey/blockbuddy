@@ -16,7 +16,7 @@ import { SafetyModal } from './components/modals/SafetyModal';
 import { Toast } from './components/Toast';
 
 import { ListingItem, StudentProfile, CorridorPing, RentalBooking } from './types';
-import { INITIAL_ITEMS, INITIAL_STUDENT } from './data/initialData';
+import { INITIAL_STUDENT } from './data/initialData';
 import {
   fetchAllListings,
   addListingItem,
@@ -25,7 +25,6 @@ import {
   getLocalItems,
   getLocalPings,
   getLocalBookings,
-  getCurrentSupabaseConfig,
 } from './lib/supabase';
 
 export default function App() {
