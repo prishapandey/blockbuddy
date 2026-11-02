@@ -4,7 +4,7 @@ import { INITIAL_ITEMS } from '../data/initialData';
 
 // User provided Supabase publishable key
 export const SUPABASE_PUBLISHABLE_KEY =
-  import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_qa9mLQAjInt22LMi87wQng_5P1yOfLa';
+  import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_waGGp1r3T9kK8aBphEb0GA_2J8uQZkg';
 
 // Stored or environment Supabase Project URL
 const getStoredSupabaseUrl = (): string => {
@@ -12,7 +12,7 @@ const getStoredSupabaseUrl = (): string => {
     const saved = localStorage.getItem('blockbuddy_supabase_url');
     if (saved && saved.trim()) return saved.trim();
   }
-  return import.meta.env.VITE_SUPABASE_URL || 'https://qa9mLQAjInt22LMi87wQng.supabase.co';
+  return import.meta.env.VITE_SUPABASE_URL || 'https://qyjgjycqsuhgechvwoha.supabase.co';
 };
 
 let currentUrl = getStoredSupabaseUrl();
