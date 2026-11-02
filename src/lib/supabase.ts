@@ -82,7 +82,9 @@ export const setLocalItems = (items: ListingItem[]) => {
   }
 };
 
-// Fetch listings (Supabase with instant local fallback)
+// Fetch listings. When the database responds successfully, it is the source of truth
+// for user-created listings. Demo items are added for a usable first-time experience,
+// but browser-cache-only listings are never mistaken for database-persisted records.
 export async function fetchAllListings(): Promise<{
   items: ListingItem[];
   source: 'supabase' | 'local';
@@ -92,7 +94,7 @@ export async function fetchAllListings(): Promise<{
   const supabase = getSupabaseClient();
 
   if (!supabase) {
-    return { items: localItems, source: 'local' };
+    return { items: localItems, source: 'local', error: 'Supabase client is not configured.' };
   }
 
   try {
@@ -105,66 +107,54 @@ export async function fetchAllListings(): Promise<{
       return { items: localItems, source: 'local', error: error.message };
     }
 
-    if (data && data.length > 0) {
-      // Map remote items
-      const remoteItems: ListingItem[] = data.map((d: any) => ({
-        id: d.id,
-        title: d.title,
-        description: d.description || '',
-        category: d.category || 'marketplace',
-        priceDisplay: d.price_display || `₹${d.price_value || 0}`,
-        priceValue: Number(d.price_value) || 0,
-        priceUnit: d.price_unit || '',
-        secondaryPrice: d.secondary_price,
-        deposit: d.deposit,
-        locationTag: d.location_tag || 'Campus',
-        hostel: d.hostel || 'H-12',
-        wingOrRoom: d.wing_or_room || '',
-        sellerName: d.seller_name || 'Campus Student',
-        imageUrl: d.image_url || '',
-        status: d.status || 'available',
-        badgeNote: d.badge_note,
-        quickTag: d.quick_tag,
-        createdAt: d.created_at,
-      }));
+    const remoteItems: ListingItem[] = (data || []).map((d: any) => ({
+      id: String(d.id),
+      title: d.title,
+      description: d.description || '',
+      category: d.category || 'marketplace',
+      priceDisplay: d.price_display || `₹${d.price_value || 0}`,
+      priceValue: Number(d.price_value) || 0,
+      priceUnit: d.price_unit || '',
+      secondaryPrice: d.secondary_price || undefined,
+      deposit: d.deposit || undefined,
+      locationTag: d.location_tag || 'Campus',
+      hostel: d.hostel || 'H-12',
+      wingOrRoom: d.wing_or_room || '',
+      sellerName: d.seller_name || 'Campus Student',
+      imageUrl: d.image_url || '',
+      status: d.status || 'available',
+      badgeNote: d.badge_note || undefined,
+      quickTag: d.quick_tag || undefined,
+      createdAt: d.created_at || undefined,
+    }));
 
-      // Merge remote with initial default items if needed
-      const merged = [...remoteItems];
-      localItems.forEach((local) => {
-        if (!merged.some((r) => r.id === local.id)) {
-          merged.push(local);
-        }
-      });
+    // Preserve the built-in sample cards without allowing stale local-only listings
+    // to masquerade as shared listings after a cache reset.
+    const merged = [...remoteItems];
+    INITIAL_ITEMS.forEach((sample) => {
+      if (!merged.some((item) => item.id === sample.id)) merged.push(sample);
+    });
 
-      setLocalItems(merged);
-      return { items: merged, source: 'supabase' };
-    }
+    setLocalItems(merged);
+    return { items: merged, source: 'supabase' };
   } catch (err: any) {
     console.warn('Supabase query error, relying on local storage cache:', err);
+    return { items: localItems, source: 'local', error: err?.message || 'Supabase query failed.' };
   }
-
-  return { items: localItems, source: 'local' };
 }
 
-// Add new listing to Supabase and Local Storage
+// Save to the shared database first-class, then update the local cache as a convenience.
+// A local cache is not durable storage: clearing browser data removes it.
 export async function addListingItem(item: ListingItem): Promise<{
   success: boolean;
   savedToSupabase: boolean;
   error?: string;
 }> {
-  // Update local storage first
-  const current = getLocalItems();
-  const updated = [item, ...current];
-  setLocalItems(updated);
-
   const supabase = getSupabaseClient();
-  if (!supabase) {
-    return { success: true, savedToSupabase: false };
-  }
 
-  try {
-    const { error } = await supabase.from('blockbuddy_items').insert([
-      {
+  if (supabase) {
+    try {
+      const { error } = await supabase.from('blockbuddy_items').insert([{
         id: item.id,
         title: item.title,
         description: item.description,
@@ -172,28 +162,38 @@ export async function addListingItem(item: ListingItem): Promise<{
         price_display: item.priceDisplay,
         price_value: item.priceValue,
         price_unit: item.priceUnit,
-        secondary_price: item.secondaryPrice,
-        deposit: item.deposit,
+        secondary_price: item.secondaryPrice ?? null,
+        deposit: item.deposit ?? null,
         location_tag: item.locationTag,
         hostel: item.hostel,
         wing_or_room: item.wingOrRoom,
         seller_name: item.sellerName,
         image_url: item.imageUrl,
         status: item.status,
-        badge_note: item.badgeNote,
-        quick_tag: item.quickTag,
-      },
-    ]);
+        badge_note: item.badgeNote ?? null,
+        quick_tag: item.quickTag ?? null,
+      }]);
 
-    if (error) {
-      console.warn('Supabase insert note (table might need creation):', error.message);
-      return { success: true, savedToSupabase: false, error: error.message };
+      if (error) {
+        console.warn('Supabase listing insert failed:', error.message);
+        const cached = getLocalItems();
+        setLocalItems([item, ...cached.filter((existing) => existing.id !== item.id)]);
+        return { success: false, savedToSupabase: false, error: error.message };
+      }
+
+      const cached = getLocalItems();
+      setLocalItems([item, ...cached.filter((existing) => existing.id !== item.id)]);
+      return { success: true, savedToSupabase: true };
+    } catch (err: any) {
+      const cached = getLocalItems();
+      setLocalItems([item, ...cached.filter((existing) => existing.id !== item.id)]);
+      return { success: false, savedToSupabase: false, error: err?.message || 'Database request failed.' };
     }
-
-    return { success: true, savedToSupabase: true };
-  } catch (err: any) {
-    return { success: true, savedToSupabase: false, error: err?.message };
   }
+
+  const cached = getLocalItems();
+  setLocalItems([item, ...cached.filter((existing) => existing.id !== item.id)]);
+  return { success: false, savedToSupabase: false, error: 'Supabase client is not configured.' };
 }
 
 // Save corridor ping

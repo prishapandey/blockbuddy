@@ -5,6 +5,7 @@ import { RentGearSection } from './components/RentGearSection';
 import { NeedItNowSection } from './components/NeedItNowSection';
 import { MarketplaceSection } from './components/MarketplaceSection';
 import { CampusTrustSection } from './components/CampusTrustSection';
+import { ProjectFlowSection } from './components/ProjectFlowSection';
 import { Footer } from './components/Footer';
 import { RentModal } from './components/modals/RentModal';
 import { ChatModal } from './components/modals/ChatModal';
@@ -15,7 +16,7 @@ import { SafetyModal } from './components/modals/SafetyModal';
 import { Toast } from './components/Toast';
 
 import { ListingItem, StudentProfile, CorridorPing, RentalBooking } from './types';
-import { INITIAL_ITEMS, INITIAL_STUDENT } from './data/initialData';
+import { INITIAL_STUDENT } from './data/initialData';
 import {
   fetchAllListings,
   addListingItem,
@@ -24,7 +25,6 @@ import {
   getLocalItems,
   getLocalPings,
   getLocalBookings,
-  getCurrentSupabaseConfig,
 } from './lib/supabase';
 
 export default function App() {
@@ -50,9 +50,7 @@ export default function App() {
 
   // Supabase Sync Status
   const [sourceType, setSourceType] = useState<'supabase' | 'local'>('local');
-  const [supabaseConnected, setSupabaseConnected] = useState(
-    () => getCurrentSupabaseConfig().isKeyConnected
-  );
+  const [supabaseConnected, setSupabaseConnected] = useState(false);
 
   // Modals
   const [rentModalItem, setRentModalItem] = useState<ListingItem | null>(null);
@@ -76,13 +74,9 @@ export default function App() {
   const loadData = async () => {
     try {
       const res = await fetchAllListings();
-      if (res.items && res.items.length > 0) {
-        setItems(res.items);
-      }
+      setItems(res.items);
       setSourceType(res.source);
-      if (res.source === 'supabase') {
-        setSupabaseConnected(true);
-      }
+      setSupabaseConnected(res.source === 'supabase');
     } catch (e) {
       console.warn('Listing sync:', e);
     }
@@ -264,12 +258,16 @@ export default function App() {
   };
 
   const handleCreateListing = async (newItem: ListingItem) => {
-    setItems((prev) => [newItem, ...prev]);
+    // Keep the UI responsive, but clearly distinguish a durable database save
+    // from a browser-only fallback so users are never told a listing is synced when it isn't.
+    setItems((prev) => [newItem, ...prev.filter((item) => item.id !== newItem.id)]);
     const res = await addListingItem(newItem);
     if (res.savedToSupabase) {
-      showToast(`Item published and synced to Supabase database!`);
+      showToast('Listing published and saved to the shared database.');
+    } else if (res.error) {
+      showToast('Listing is only saved on this device. Database save failed — check Supabase DB settings.');
     } else {
-      showToast(`Item listed in ${newItem.hostel}! Available immediately.`);
+      showToast('Listing is only saved on this device. Connect Supabase to keep it after clearing browser data.');
     }
   };
 
@@ -326,6 +324,9 @@ export default function App() {
 
         {/* Section 4: Campus Safety & Simple Trade Flow */}
         <CampusTrustSection />
+
+        {/* Project overview: user journey + implementation timeline */}
+        <ProjectFlowSection />
       </main>
 
       {/* Footer */}
