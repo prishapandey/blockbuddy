@@ -124,14 +124,14 @@ CREATE POLICY "Allow public insert blockbuddy_bookings" ON blockbuddy_bookings F
             'Connected to Supabase! (Note: Table "blockbuddy_items" has not been created yet. Copy and run the SQL schema below in your Supabase SQL Editor).'
           );
         } else {
-          setTestStatus(`Supabase responded with message: ${error.message}`);
+          setTestStatus('Supabase responded with message: ' + error.message);
         }
       } else {
-        setTestStatus(`Success! Connected to Supabase table. Retrieved ${data?.length || 0} sample rows.`);
+        setTestStatus('Success! Connected to Supabase table. Retrieved ' + (data?.length || 0) + ' sample rows.');
         onRefreshData();
       }
     } catch (e: any) {
-      setTestStatus(`Connection notice: ${e?.message || 'Check project URL connectivity'}`);
+      setTestStatus('Connection notice: ' + (e?.message || 'Check project URL connectivity'));
     } finally {
       setIsTesting(false);
     }
@@ -204,7 +204,7 @@ CREATE POLICY "Allow public insert blockbuddy_bookings" ON blockbuddy_bookings F
               onClick={testConnection}
               className="w-full btn-pill bg-ink hover:opacity-90 text-white py-3 justify-center disabled:opacity-50"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isTesting ? 'animate-spin' : ''}`} aria-hidden="true" />
+              <RefreshCw className={'w-3.5 h-3.5 ' + (isTesting ? 'animate-spin' : '')} aria-hidden="true" />
               <span>{isTesting ? 'Testing...' : 'Test Supabase Connection'}</span>
             </button>
 
@@ -245,14 +245,16 @@ CREATE POLICY "Allow public insert blockbuddy_bookings" ON blockbuddy_bookings F
                 )}
               </button>
             </div>
-            <p className="text-[10px] text-muted">
-              Paste this SQL into your{' '}
-              <span className="text-ink">Supabase Dashboard > SQL Editor</span> to provision the
-              listings, pings, and bookings tables.
-            </p>
-            <pre className="bg-canvas p-3 rounded-inner text-[10px] text-muted font-mono overflow-x-auto max-h-40">
-              {sqlSchemaSnippet}
-            </pre>
+            <div className="space-y-2">
+              <p className="text-[10px] text-muted">
+                Paste this SQL into your{' '}
+                <span className="text-ink">Supabase Dashboard {'>'} SQL Editor</span> to provision the
+                listings, pings, and bookings tables.
+              </p>
+              <pre className="bg-canvas p-3 rounded-inner text-[10px] text-muted font-mono overflow-x-auto max-h-40">
+                {sqlSchemaSnippet}
+              </pre>
+            </div>
           </div>
 
           <div className="pt-2 border-t border-faint">

@@ -100,7 +100,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
             <label className="text-caption text-muted block">Direct Campus Ping</label>
             <textarea
               value={message}
-              onChange={(e) => setMessage(e.target.value))
+              onChange={(e) => setMessage(e.target.value)}
               rows={3}
               className="w-full bg-surface border border-faint rounded-inner text-body text-ink placeholder-muted px-4 py-3 focus:outline-none focus:border-accent resize-none font-gt-standard"
             />

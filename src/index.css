@@ -129,6 +129,19 @@ body {
 .surface-elevated { background-color: var(--color-pure-white); box-shadow: var(--shadow-sm-2); }
 .surface-accent { background-color: var(--color-slate-ink); color: var(--color-pure-white); }
 
+/* bg- utility classes for Tailwind-like usage */
+.bg-canvas { background-color: var(--color-canvas-mist); }
+.bg-surface { background-color: var(--color-pure-white); }
+.bg-ink { background-color: var(--color-ink-black); }
+.bg-accent { background-color: var(--color-shop-violet); }
+.bg-accent-wash { background-color: var(--color-violet-wash); }
+.bg-faint { background-color: var(--color-faint-border); }
+
+/* hover:bg- utilities */
+.hover\:bg-canvas:hover { background-color: var(--color-canvas-mist); }
+.hover\:bg-faint:hover { background-color: var(--color-faint-border); }
+.hover\:bg-surface:hover { background-color: var(--color-pure-white); }
+
 .text-ink { color: var(--color-ink-black); }
 .text-muted { color: var(--color-muted-gray); }
 .text-accent { color: var(--color-shop-violet); }

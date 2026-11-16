@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   const currentHostelLabel =
-    hostelOptions.find((o) => o.id === activeNavTab === 'home' ? 'H-12 & 14' : 'H-12 & 14')?.label || 'IITB · H-12 & 14';
+    hostelOptions.find((o) => o.id === 'H-12 & 14')?.label || 'IITB · H-12 & 14';
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
