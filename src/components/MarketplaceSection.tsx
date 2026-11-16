@@ -18,81 +18,71 @@ export const MarketplaceSection: React.FC<MarketplaceSectionProps> = ({
   const displayItems = showAllExpanded ? items : items.slice(0, 4);
 
   return (
-    <section className="space-y-6" id="marketplace">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#22252b] pb-4">
+    <section className="section" id="marketplace" aria-labelledby="marketplace-title">
+      <header className="section-header">
         <div>
-          <span className="text-xs font-semibold text-[#4d8eff] tracking-wide uppercase">
-            Second-Hand Campus Gear
-          </span>
-          <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-            Fresh on Marketplace
-          </h2>
-          <p className="text-xs sm:text-sm text-[#94a3b8] mt-1">
-            Pre-loved essentials sold by seniors &amp; wingmates at steep discounts.
-          </p>
+          <span className="section-subtitle">Second-Hand Campus Gear</span>
+          <h2 id="marketplace-title" className="section-title">Fresh on Marketplace</h2>
+          <p className="section-desc">Pre-loved essentials sold by seniors & wingmates at steep discounts.</p>
         </div>
-
         <button
           type="button"
           onClick={() => setShowAllExpanded(!showAllExpanded)}
-          className="text-xs text-[#4d8eff] hover:underline flex items-center gap-1 font-medium cursor-pointer self-start sm:self-auto"
+          className="view-all-link"
         >
           <span>{showAllExpanded ? 'Show featured 4 items' : `View all ${Math.max(items.length, 84)} items`}</span>
           <ArrowRight className="w-3.5 h-3.5" />
         </button>
-      </div>
+      </header>
 
       {/* Product Cards Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" role="list">
         {displayItems.map((item) => (
-          <div
+          <article
             key={item.id}
-            className="bg-[#121316] border border-[#22252b] rounded-lg p-3 space-y-3 hover:border-[#353945] transition-colors flex flex-col justify-between"
+            className="product-card"
+            role="listitem"
           >
-            <div>
-              <div className="aspect-[16/10] bg-[#1a1c22] rounded overflow-hidden relative">
-                <img
-                  alt={item.title}
-                  src={item.imageUrl}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
-                />
-                <span className="absolute top-2 left-2 bg-[#0a0a0c]/80 backdrop-blur text-[10px] text-white px-1.5 py-0.5 rounded border border-[#22252b]/60">
-                  {item.locationTag}
-                </span>
-              </div>
+            <div className="relative">
+              <img
+                alt={item.title}
+                src={item.imageUrl}
+                referrerPolicy="no-referrer"
+                className="product-card-image product-image"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
+              <span className="product-card-badge">{item.locationTag}</span>
+            </div>
 
-              <div className="mt-3">
-                <div className="flex items-start justify-between gap-1">
-                  <h3 className="text-sm font-semibold text-white line-clamp-1">{item.title}</h3>
-                  <span className="text-sm font-bold text-white whitespace-nowrap">
-                    {item.priceDisplay}
-                  </span>
-                </div>
-                <p className="text-xs text-[#94a3b8] mt-0.5 line-clamp-2 min-h-[32px]">
-                  {item.description}
-                </p>
+            <div className="product-card-content">
+              <h3 className="product-card-title">{item.title}</h3>
+              <p className="product-card-desc">{item.description}</p>
+
+              <div className="product-card-footer">
+                <span className="product-card-price">{item.priceDisplay}</span>
               </div>
             </div>
 
-            <button
-              type="button"
-              onClick={() => onChatClick(item)}
-              className="w-full bg-[#1a1c22] hover:bg-[#252830] hover:text-[#4d8eff] text-white text-xs font-medium py-1.5 rounded transition-colors flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.99]"
-            >
-              <MessageSquare className="w-3.5 h-3.5" />
-              <span>Chat with Seller</span>
-            </button>
-          </div>
+            <div className="product-card-action p-4 pt-0">
+              <button
+                type="button"
+                onClick={() => onChatClick(item)}
+                className="btn-pill btn-pill-secondary w-full justify-center"
+              >
+                <MessageSquare className="w-3.5 h-3.5" />
+                <span>Chat with Seller</span>
+              </button>
+            </div>
+          </article>
         ))}
       </div>
 
       {items.length === 0 && (
-        <div className="p-8 text-center bg-[#121316] border border-[#22252b] rounded-lg">
-          <p className="text-sm text-[#94a3b8]">No marketplace items currently available.</p>
+        <div className="card-elevated p-8 text-center">
+          <p className="text-body text-muted">No marketplace items currently available.</p>
         </div>
       )}
     </section>

@@ -47,46 +47,47 @@ export const ChatModal: React.FC<ChatModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0a0a0c]/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-[#121316] border border-[#22252b] w-full max-w-sm rounded-lg p-5 space-y-4 shadow-2xl">
-        <div className="flex items-center justify-between border-b border-[#22252b] pb-3">
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="chat-modal-title">
+      <div className="modal-container max-w-sm">
+        <header className="flex items-center justify-between border-b border-faint p-4 pb-3">
           <div className="flex items-center gap-2">
-            <Zap className="w-4 h-4 text-[#4d8eff]" />
-            <h3 className="text-sm font-semibold text-white">
+            <Zap className="w-4 h-4 text-accent" aria-hidden="true" />
+            <h3 id="chat-modal-title" className="text-body text-ink">
               {item.category === 'urgent' ? 'Immediate Corridor Ping' : 'Seller Inquiry'}
             </h3>
           </div>
           <button
             onClick={onClose}
-            className="text-[#64748b] hover:text-white transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-canvas hover:bg-faint text-muted hover:text-ink transition-colors cursor-pointer flex items-center justify-center"
             type="button"
+            aria-label="Close modal"
           >
             <X className="w-4 h-4" />
           </button>
-        </div>
+        </header>
 
         {/* Item Info Box */}
-        <div className="bg-[#0a0a0c] border border-[#22252b] rounded p-3 space-y-1 text-xs">
+        <div className="card-elevated m-4 p-3 space-y-1 text-caption">
           <div className="flex items-center justify-between">
-            <span className="text-white font-medium truncate max-w-[200px]">{item.title}</span>
-            <span className="text-white font-bold">{item.priceDisplay}</span>
+            <span className="text-ink truncate max-w-[200px]">{item.title}</span>
+            <span className="text-ink font-medium">{item.priceDisplay}</span>
           </div>
-          <div className="text-[#94a3b8] flex items-center justify-between">
+          <div className="text-muted flex items-center justify-between">
             <span>{item.locationTag}</span>
-            <span className="text-[#64748b] text-[11px]">{item.sellerName}</span>
+            <span className="text-[10px]">{item.sellerName}</span>
           </div>
         </div>
 
         {/* Quick Suggestion Chips */}
-        <div className="space-y-1">
-          <span className="text-[11px] text-[#64748b]">Quick message shortcuts:</span>
+        <div className="px-4 space-y-2">
+          <span className="text-[10px] text-muted block">Quick message shortcuts:</span>
           <div className="flex flex-wrap gap-1.5">
             {quickChips.map((chip) => (
               <button
                 key={chip}
                 type="button"
                 onClick={() => setMessage(chip)}
-                className="text-[11px] bg-[#1a1c22] hover:bg-[#252830] text-[#94a3b8] hover:text-white px-2 py-1 rounded border border-[#22252b] transition-colors cursor-pointer"
+                className="text-[10px] bg-canvas hover:bg-faint text-muted hover:text-ink px-3 py-1.5 rounded-full transition-colors cursor-pointer"
               >
                 {chip}
               </button>
@@ -94,26 +95,26 @@ export const ChatModal: React.FC<ChatModalProps> = ({
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-3">
-          <div className="space-y-1.5">
-            <label className="text-xs text-[#94a3b8] block">Direct Campus Ping:</label>
+        <form onSubmit={handleSubmit} className="p-4 space-y-4">
+          <div className="space-y-2">
+            <label className="text-caption text-muted block">Direct Campus Ping</label>
             <textarea
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              rows={2}
-              className="w-full bg-[#0a0a0c] border border-[#22252b] rounded text-xs text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+              onChange={(e) => setMessage(e.target.value))
+              rows={3}
+              className="w-full bg-surface border border-faint rounded-inner text-body text-ink placeholder-muted px-4 py-3 focus:outline-none focus:border-accent resize-none font-gt-standard"
             />
           </div>
 
-          <div className="text-[11px] text-[#64748b] flex items-center justify-between">
+          <div className="text-[10px] text-muted flex items-center justify-between">
             <span>From: {currentStudent.name} ({currentStudent.hostel})</span>
-            <span className="text-[#3ecf8e]">Verified Student</span>
+            <span className="text-accent font-medium">Verified Student</span>
           </div>
 
           <div className="flex gap-2 pt-1">
             <button
               type="submit"
-              className="flex-1 bg-[#4d8eff] hover:bg-[#3b7cee] text-white text-xs font-semibold py-2 rounded transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+              className="flex-1 btn-pill btn-pill-primary justify-center py-2.5"
             >
               <Send className="w-3.5 h-3.5" />
               <span>Send Ping</span>
@@ -121,7 +122,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="bg-[#1a1c22] hover:bg-[#252830] text-[#94a3b8] text-xs font-medium px-4 py-2 rounded transition-colors cursor-pointer"
+              className="btn-pill btn-pill-secondary py-2.5 px-5"
             >
               Cancel
             </button>

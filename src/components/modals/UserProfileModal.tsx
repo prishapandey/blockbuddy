@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { CheckCircle2, Clock, MapPin, Send, ShieldCheck, User, X } from 'lucide-react';
+import { CheckCircle2, Clock, Send, ShieldCheck, User, X } from 'lucide-react';
 import { CorridorPing, RentalBooking, StudentProfile } from '../../types';
 
 interface UserProfileModalProps {
@@ -40,107 +40,98 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0a0a0c]/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#121316] border border-[#22252b] w-full max-w-md rounded-xl p-6 space-y-4 shadow-2xl my-6">
-        <div className="flex items-center justify-between border-b border-[#22252b] pb-3">
-          <div className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-lg bg-[#4d8eff]/20 border border-[#4d8eff]/30 flex items-center justify-center text-[#4d8eff]">
-              <User className="w-4 h-4" />
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
+      <div className="modal-container max-w-md">
+        <header className="flex items-center justify-between border-b border-faint p-5 pb-4">
+          <div className="flex items-center gap-3">
+            <span className="w-10 h-10 rounded-full bg-accent-wash/50 border border-accent/20 flex items-center justify-center text-accent">
+              <User className="w-5 h-5" />
             </span>
             <div>
-              <h3 className="text-sm font-semibold text-white">Student Account</h3>
-              <p className="text-[11px] text-[#94a3b8] flex items-center gap-1">
-                <ShieldCheck className="w-3 h-3 text-[#3ecf8e]" />
+              <h3 id="profile-modal-title" className="text-body text-ink">Student Account</h3>
+              <p className="text-caption text-muted flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3 text-accent" aria-hidden="true" />
                 <span>Verified IITB Student</span>
               </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-[#64748b] hover:text-white transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-canvas hover:bg-faint text-muted hover:text-ink transition-colors cursor-pointer flex items-center justify-center"
             type="button"
+            aria-label="Close modal"
           >
             <X className="w-4 h-4" />
           </button>
-        </div>
+        </header>
 
         {/* Tab Switcher */}
-        <div className="grid grid-cols-3 gap-1 p-1 bg-[#0a0a0c] border border-[#22252b] rounded-lg text-xs">
+        <div className="tab-pills px-5 mb-2 w-full" role="tablist" aria-label="Account sections">
           <button
             type="button"
+            role="tab"
+            aria-selected={activeTab === 'profile'}
             onClick={() => setActiveTab('profile')}
-            className={`py-1.5 rounded transition-colors cursor-pointer ${
-              activeTab === 'profile'
-                ? 'bg-[#121316] text-white font-medium border border-[#22252b]'
-                : 'text-[#94a3b8] hover:text-white'
-            }`}
+            className={`tab-pill flex-1 ${activeTab === 'profile' ? 'tab-pill-active' : ''}`}
           >
-            My Room &amp; Wing
+            My Room & Wing
           </button>
           <button
             type="button"
+            role="tab"
+            aria-selected={activeTab === 'pings'}
             onClick={() => setActiveTab('pings')}
-            className={`py-1.5 rounded transition-colors cursor-pointer flex items-center justify-center gap-1 ${
-              activeTab === 'pings'
-                ? 'bg-[#121316] text-white font-medium border border-[#22252b]'
-                : 'text-[#94a3b8] hover:text-white'
-            }`}
+            className={`tab-pill flex-1 flex items-center justify-center gap-1 ${activeTab === 'pings' ? 'tab-pill-active' : ''}`}
           >
             <span>Pings</span>
             {pings.length > 0 && (
-              <span className="bg-[#4d8eff] text-white text-[9px] px-1 rounded-full">
-                {pings.length}
-              </span>
+              <span className="bg-accent text-white text-[9px] px-1.5 rounded-full">{pings.length}</span>
             )}
           </button>
           <button
             type="button"
+            role="tab"
+            aria-selected={activeTab === 'rentals'}
             onClick={() => setActiveTab('rentals')}
-            className={`py-1.5 rounded transition-colors cursor-pointer flex items-center justify-center gap-1 ${
-              activeTab === 'rentals'
-                ? 'bg-[#121316] text-white font-medium border border-[#22252b]'
-                : 'text-[#94a3b8] hover:text-white'
-            }`}
+            className={`tab-pill flex-1 flex items-center justify-center gap-1 ${activeTab === 'rentals' ? 'tab-pill-active' : ''}`}
           >
             <span>Rentals</span>
             {bookings.length > 0 && (
-              <span className="bg-[#4d8eff] text-white text-[9px] px-1 rounded-full">
-                {bookings.length}
-              </span>
+              <span className="bg-accent text-white text-[9px] px-1.5 rounded-full">{bookings.length}</span>
             )}
           </button>
         </div>
 
         {/* Profile Tab */}
         {activeTab === 'profile' && (
-          <form onSubmit={handleSave} className="space-y-3 text-xs">
-            <div className="space-y-1">
-              <label className="text-[#94a3b8] block font-medium">Student Name:</label>
+          <form onSubmit={handleSave} className="px-5 pb-5 space-y-4 text-caption">
+            <div className="space-y-2">
+              <label className="text-caption text-muted block">Student Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                className="input-pill"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-[#94a3b8] block font-medium">Campus Email (Verified):</label>
+            <div className="space-y-2">
+              <label className="text-caption text-muted block">Campus Email (Verified)</label>
               <input
                 type="email"
                 disabled
                 value={currentStudent.email}
-                className="w-full bg-[#0a0a0c]/60 border border-[#22252b] rounded-md text-[#94a3b8] p-2.5 cursor-not-allowed"
+                className="input-pill bg-canvas/60 text-muted cursor-not-allowed"
               />
             </div>
 
             <div className="grid grid-cols-3 gap-2">
-              <div className="space-y-1">
-                <label className="text-[#94a3b8] block font-medium">Hostel:</label>
+              <div className="space-y-2">
+                <label className="text-caption text-muted block">Hostel</label>
                 <select
                   value={hostel}
                   onChange={(e) => setHostel(e.target.value)}
-                  className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                  className="input-pill appearance-none bg-surface cursor-pointer"
                 >
                   <option value="H-12">H-12</option>
                   <option value="H-13">H-13</option>
@@ -149,37 +140,37 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   <option value="H-16">H-16</option>
                 </select>
               </div>
-              <div className="space-y-1">
-                <label className="text-[#94a3b8] block font-medium">Wing:</label>
+              <div className="space-y-2">
+                <label className="text-caption text-muted block">Wing</label>
                 <input
                   type="text"
                   value={wing}
                   onChange={(e) => setWing(e.target.value)}
-                  className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                  className="input-pill"
                 />
               </div>
-              <div className="space-y-1">
-                <label className="text-[#94a3b8] block font-medium">Room #:</label>
+              <div className="space-y-2">
+                <label className="text-caption text-muted block">Room #</label>
                 <input
                   type="text"
                   value={room}
                   onChange={(e) => setRoom(e.target.value)}
-                  className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                  className="input-pill"
                 />
               </div>
             </div>
 
-            <div className="pt-2 flex gap-2">
+            <div className="flex gap-3 pt-2 border-t border-faint">
               <button
                 type="submit"
-                className="flex-1 bg-[#4d8eff] hover:bg-[#3b7cee] text-white text-xs font-semibold py-2.5 rounded-md transition-colors cursor-pointer"
+                className="flex-1 btn-pill btn-pill-primary justify-center py-3"
               >
                 Save Room Details
               </button>
               <button
                 type="button"
                 onClick={onClose}
-                className="bg-[#1a1c22] hover:bg-[#252830] text-[#94a3b8] text-xs font-medium px-4 py-2.5 rounded-md transition-colors cursor-pointer"
+                className="btn-pill btn-pill-secondary py-3 px-6"
               >
                 Cancel
               </button>
@@ -189,31 +180,32 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
         {/* Pings Tab */}
         {activeTab === 'pings' && (
-          <div className="space-y-2 max-h-60 overflow-y-auto text-xs">
+          <div className="px-5 pb-5 space-y-2 max-h-60 overflow-y-auto text-caption">
             {pings.length === 0 ? (
-              <div className="text-center py-8 text-[#64748b]">
-                <Send className="w-6 h-6 mx-auto mb-2 opacity-40" />
-                <p>No recent corridor pings sent.</p>
-                <p className="text-[11px] mt-1">Tap "Ping for Pickup" on any item to initiate.</p>
+              <div className="text-center py-10 text-muted">
+                <Send className="w-8 h-8 mx-auto mb-3 opacity-40" aria-hidden="true" />
+                <p className="text-body">No recent corridor pings sent.</p>
+                <p className="text-[10px] mt-1">Tap "Ping for Pickup" on any item to initiate.</p>
               </div>
             ) : (
               pings.map((p) => (
-                <div
+                <article
                   key={p.id}
-                  className="bg-[#0a0a0c] border border-[#22252b] rounded-lg p-3 space-y-1.5"
+                  className="card-elevated p-3 space-y-2"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-white">{p.itemTitle}</span>
-                    <span className="text-[10px] text-[#3ecf8e] flex items-center gap-1">
-                      <CheckCircle2 className="w-3 h-3" /> Sent to Wing
+                    <span className="text-ink truncate">{p.itemTitle}</span>
+                    <span className="text-[10px] text-accent flex items-center gap-1">
+                      <CheckCircle2 className="w-3 h-3" aria-hidden="true" />
+                      Sent to Wing
                     </span>
                   </div>
-                  <p className="text-[#94a3b8] text-[11px]">"{p.message}"</p>
-                  <div className="flex items-center justify-between text-[10px] text-[#64748b] pt-1 border-t border-[#22252b]/60">
+                  <p className="text-muted text-[10px]">"{p.message}"</p>
+                  <div className="flex items-center justify-between text-[10px] text-muted pt-2 border-t border-faint">
                     <span>To: {p.sellerName}</span>
                     <span>{new Date(p.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
                   </div>
-                </div>
+                </article>
               ))
             )}
           </div>
@@ -221,30 +213,30 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
         {/* Rentals Tab */}
         {activeTab === 'rentals' && (
-          <div className="space-y-2 max-h-60 overflow-y-auto text-xs">
+          <div className="px-5 pb-5 space-y-2 max-h-60 overflow-y-auto text-caption">
             {bookings.length === 0 ? (
-              <div className="text-center py-8 text-[#64748b]">
-                <Clock className="w-6 h-6 mx-auto mb-2 opacity-40" />
-                <p>No active rental reservations.</p>
-                <p className="text-[11px] mt-1">Rent kettles, calculators or fans for exams.</p>
+              <div className="text-center py-10 text-muted">
+                <Clock className="w-8 h-8 mx-auto mb-3 opacity-40" aria-hidden="true" />
+                <p className="text-body">No active rental reservations.</p>
+                <p className="text-[10px] mt-1">Rent kettles, calculators or fans for exams.</p>
               </div>
             ) : (
               bookings.map((b) => (
-                <div
+                <article
                   key={b.id}
-                  className="bg-[#0a0a0c] border border-[#22252b] rounded-lg p-3 space-y-1.5"
+                  className="card-elevated p-3 space-y-2"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="font-semibold text-white">{b.itemTitle}</span>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#4d8eff]/15 text-[#4d8eff] font-medium">
+                    <span className="text-ink truncate">{b.itemTitle}</span>
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-accent-wash/50 text-accent">
                       Active Rental
                     </span>
                   </div>
-                  <div className="flex items-center justify-between text-[#94a3b8] text-[11px]">
+                  <div className="flex items-center justify-between text-muted text-[10px]">
                     <span>Rate: ₹{b.totalAmount}</span>
                     <span>Pickup: {b.pickupTime}</span>
                   </div>
-                </div>
+                </article>
               ))
             )}
           </div>

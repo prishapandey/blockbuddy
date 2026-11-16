@@ -18,50 +18,50 @@ const milestones = [
 ];
 
 export const ProjectFlowSection: React.FC = () => (
-  <section id="project-flow" className="space-y-7 border-t border-[#22252b] pt-10">
-    <div className="max-w-2xl">
-      <span className="text-xs font-semibold text-[#4d8eff] tracking-wide uppercase">How it works</span>
-      <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-2">BlockBuddy project flow</h2>
-      <p className="text-sm text-[#94a3b8] mt-2">From discovering an item to a safe hostel handoff — and the development path behind the project.</p>
+  <section id="project-flow" className="section border-t border-faint pt-0" aria-labelledby="project-flow-title">
+    <div className="max-w-2xl mx-auto text-center mb-12">
+      <span className="section-subtitle">How it works</span>
+      <h2 id="project-flow-title" className="section-title">BlockBuddy project flow</h2>
+      <p className="section-desc">From discovering an item to a safe hostel handoff — and the development path behind the project.</p>
     </div>
 
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-16">
       {journey.map((step, index) => {
         const Icon = step.icon;
         return (
           <React.Fragment key={step.title}>
-            <div className="rounded-xl border border-[#22252b] bg-[#121316] p-4 min-h-[150px]">
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[10px] uppercase tracking-wider text-[#64748b]">Step {index + 1}</span>
-                <Icon className="w-4 h-4 text-[#4d8eff]" />
+            <article className="flow-card">
+              <div className="flex items-center justify-between mb-4">
+                <span className="flow-step">Step {index + 1}</span>
+                <Icon className="flow-icon" aria-hidden="true" />
               </div>
-              <h3 className="text-sm font-semibold text-white">{step.title}</h3>
-              <p className="text-xs text-[#94a3b8] leading-relaxed mt-2">{step.detail}</p>
-            </div>
+              <h3 className="flow-title">{step.title}</h3>
+              <p className="flow-desc">{step.detail}</p>
+            </article>
             {index < journey.length - 1 && (
-              <div className="md:hidden flex justify-center -my-1 text-[#4d8eff]"><ArrowDown className="w-4 h-4" /></div>
+              <div className="md:hidden flex justify-center my-2 text-accent"><ArrowDown className="w-4 h-4" /></div>
             )}
           </React.Fragment>
         );
       })}
     </div>
 
-    <div className="flex items-center gap-2 text-xs font-semibold text-white">
-      <Clock3 className="w-4 h-4 text-[#4d8eff]" />
+    <div className="flex items-center gap-2 text-caption text-ink justify-center mb-8">
+      <Clock3 className="w-4 h-4 text-accent" aria-hidden="true" />
       <span>Project development timeline</span>
-      <span className="text-[#64748b] font-normal">— phases, not calendar dates</span>
+      <span className="text-muted">— phases, not calendar dates</span>
     </div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
       {milestones.map((milestone, index) => (
-        <div key={milestone.step} className="relative rounded-xl border border-[#22252b] bg-[#0f1013] p-4">
-          <div className="flex items-center gap-2 mb-3">
-            <span className="w-7 h-7 rounded-full bg-[#4d8eff]/15 text-[#4d8eff] flex items-center justify-center text-[10px] font-bold">{milestone.step}</span>
-            <span className="text-[10px] uppercase tracking-wider text-[#64748b]">{milestone.time}</span>
-            {index < milestones.length - 1 && <ArrowRight className="hidden lg:block w-3 h-3 text-[#353945] ml-auto" />}
+        <article key={milestone.step} className="milestone-card relative">
+          <div className="flex items-center gap-3 mb-4">
+            <span className="milestone-step">{milestone.step}</span>
+            <span className="milestone-time">{milestone.time}</span>
+            {index < milestones.length - 1 && <ArrowRight className="hidden lg:block w-3 h-3 text-cool-stone ml-auto" aria-hidden="true" />}
           </div>
-          <h3 className="text-sm font-semibold text-white">{milestone.title}</h3>
-          <p className="text-xs text-[#94a3b8] leading-relaxed mt-2">{milestone.detail}</p>
-        </div>
+          <h3 className="milestone-title">{milestone.title}</h3>
+          <p className="milestone-desc">{milestone.detail}</p>
+        </article>
       ))}
     </div>
   </section>

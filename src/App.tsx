@@ -272,7 +272,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col antialiased selection:bg-[#4d8eff] selection:text-white bg-[#0a0a0c] text-[#94a3b8]">
+    <div className="min-h-screen flex flex-col antialiased selection:bg-accent selection:text-white bg-canvas text-ink">
       {/* Top Navbar */}
       <Navbar
         onOpenSellModal={() => setIsSellModalOpen(true)}
@@ -287,7 +287,7 @@ export default function App() {
       />
 
       {/* Main Content Area */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-6 py-10 space-y-16">
+      <main className="flex-1 max-w-[1200px] w-full mx-auto px-6 py-10 space-y-16">
         {/* Hero Section */}
         <Hero
           searchQuery={searchQuery}

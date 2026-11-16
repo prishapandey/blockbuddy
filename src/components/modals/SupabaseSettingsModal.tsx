@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Check, Copy, Database, ExternalLink, RefreshCw, X } from 'lucide-react';
+import { Check, Copy, Database, RefreshCw, X } from 'lucide-react';
 import {
   getCurrentSupabaseConfig,
   updateSupabaseUrl,
@@ -138,128 +138,132 @@ CREATE POLICY "Allow public insert blockbuddy_bookings" ON blockbuddy_bookings F
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0a0a0c]/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#121316] border border-[#22252b] w-full max-w-lg rounded-xl p-6 space-y-4 shadow-2xl my-6">
-        <div className="flex items-center justify-between border-b border-[#22252b] pb-3">
-          <div className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-lg bg-[#3ecf8e]/15 border border-[#3ecf8e]/30 flex items-center justify-center text-[#3ecf8e]">
-              <Database className="w-4 h-4" />
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="supabase-modal-title">
+      <div className="modal-container max-w-lg">
+        <header className="flex items-center justify-between border-b border-faint p-5 pb-4">
+          <div className="flex items-center gap-3">
+            <span className="w-10 h-10 rounded-full bg-accent-wash/50 border border-accent/20 flex items-center justify-center text-accent">
+              <Database className="w-5 h-5" />
             </span>
             <div>
-              <h3 className="text-sm font-semibold text-white">Supabase Integration</h3>
-              <p className="text-[11px] text-[#94a3b8]">Live database &amp; instant local storage fallback</p>
+              <h3 id="supabase-modal-title" className="text-body text-ink">Supabase Integration</h3>
+              <p className="text-caption text-muted">Live database & instant local storage fallback</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-[#64748b] hover:text-white transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-canvas hover:bg-faint text-muted hover:text-ink transition-colors cursor-pointer flex items-center justify-center"
             type="button"
+            aria-label="Close modal"
           >
             <X className="w-4 h-4" />
           </button>
-        </div>
+        </header>
 
-        {/* API Key Status */}
-        <div className="bg-[#0a0a0c] border border-[#22252b] rounded-lg p-3 space-y-2 text-xs">
-          <div className="flex items-center justify-between">
-            <span className="text-[#94a3b8] font-medium">Publishable API Key:</span>
-            <span className="px-2 py-0.5 rounded bg-[#3ecf8e]/15 text-[#3ecf8e] text-[10px] font-mono flex items-center gap-1">
-              <Check className="w-3 h-3" /> Active
-            </span>
-          </div>
-          <div className="font-mono text-[11px] text-white bg-[#121316] p-2 rounded border border-[#22252b] break-all select-all">
-            {currentConfig.publishableKey}
-          </div>
-        </div>
-
-        {/* Project URL */}
-        <div className="space-y-1.5 text-xs">
-          <label className="text-[#94a3b8] font-medium block">Supabase Project URL:</label>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={urlInput}
-              onChange={(e) => setUrlInput(e.target.value)}
-              placeholder="https://your-project.supabase.co"
-              className="flex-1 bg-[#0a0a0c] border border-[#22252b] rounded text-white p-2 text-xs focus:outline-none focus:border-[#4d8eff]"
-            />
-            <button
-              type="button"
-              onClick={handleSaveUrl}
-              className="bg-[#1a1c22] hover:bg-[#252830] text-white px-3 py-2 rounded text-xs transition-colors cursor-pointer"
-            >
-              Save URL
-            </button>
-          </div>
-        </div>
-
-        {/* Test Connection Button & Status */}
-        <div className="space-y-2 text-xs">
-          <button
-            type="button"
-            disabled={isTesting}
-            onClick={testConnection}
-            className="w-full bg-[#3ecf8e] hover:bg-[#34b27b] text-[#0a0a0c] font-semibold py-2 rounded transition-colors flex items-center justify-center gap-1.5 cursor-pointer disabled:opacity-50"
-          >
-            <RefreshCw className={`w-3.5 h-3.5 ${isTesting ? 'animate-spin' : ''}`} />
-            <span>{isTesting ? 'Testing...' : 'Test Supabase Connection'}</span>
-          </button>
-
-          {testStatus && (
-            <div className="p-2.5 rounded bg-[#0a0a0c] border border-[#22252b] text-[11px] text-[#94a3b8] leading-relaxed">
-              {testStatus}
+        <div className="p-5 space-y-5 text-caption">
+          {/* API Key Status */}
+          <div className="card-elevated p-3 space-y-2">
+            <div className="flex items-center justify-between">
+              <span className="text-muted">Publishable API Key:</span>
+              <span className="px-2 py-0.5 rounded-full bg-accent-wash/50 text-accent text-[10px] font-medium flex items-center gap-1">
+                <Check className="w-3 h-3" aria-hidden="true" />
+                Active
+              </span>
             </div>
-          )}
-
-          <div className="flex items-center justify-between text-[11px] text-[#64748b] pt-1">
-            <span>
-              Active Data Engine:{' '}
-              <span className="text-white font-medium capitalize">{sourceType}</span>
-            </span>
-            <span className="text-[#3ecf8e]">Safe Zero-Downtime Cache</span>
+            <div className="font-mono text-[10px] text-ink bg-surface p-2 rounded-inner border border-faint break-all select-all">
+              {currentConfig.publishableKey}
+            </div>
           </div>
-        </div>
 
-        {/* SQL Schema Copy Section */}
-        <div className="space-y-2 pt-2 border-t border-[#22252b] text-xs">
-          <div className="flex items-center justify-between">
-            <span className="text-white font-medium">Supabase Table Schema:</span>
+          {/* Project URL */}
+          <div className="space-y-2">
+            <label className="text-caption text-muted block">Supabase Project URL</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={urlInput}
+                onChange={(e) => setUrlInput(e.target.value)}
+                placeholder="https://your-project.supabase.co"
+                className="input-pill flex-1"
+              />
+              <button
+                type="button"
+                onClick={handleSaveUrl}
+                className="btn-pill btn-pill-secondary whitespace-nowrap"
+              >
+                Save URL
+              </button>
+            </div>
+          </div>
+
+          {/* Test Connection Button & Status */}
+          <div className="space-y-2">
             <button
               type="button"
-              onClick={handleCopySql}
-              className="text-[#4d8eff] hover:underline flex items-center gap-1 text-[11px] cursor-pointer"
+              disabled={isTesting}
+              onClick={testConnection}
+              className="w-full btn-pill bg-ink hover:opacity-90 text-white py-3 justify-center disabled:opacity-50"
             >
-              {copiedSql ? (
-                <>
-                  <Check className="w-3 h-3 text-[#3ecf8e]" />
-                  <span className="text-[#3ecf8e]">Copied to Clipboard!</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="w-3 h-3" />
-                  <span>Copy SQL Query</span>
-                </>
-              )}
+              <RefreshCw className={`w-3.5 h-3.5 ${isTesting ? 'animate-spin' : ''}`} aria-hidden="true" />
+              <span>{isTesting ? 'Testing...' : 'Test Supabase Connection'}</span>
+            </button>
+
+            {testStatus && (
+              <div className="card-elevated p-3 text-[10px] text-muted leading-relaxed">
+                {testStatus}
+              </div>
+            )}
+
+            <div className="flex items-center justify-between text-[10px] text-muted pt-2 border-t border-faint">
+              <span>
+                Active Data Engine:{' '}
+                <span className="text-ink capitalize">{sourceType}</span>
+              </span>
+              <span className="text-accent font-medium">Safe Zero-Downtime Cache</span>
+            </div>
+          </div>
+
+          {/* SQL Schema Copy Section */}
+          <div className="space-y-2 pt-2 border-t border-faint">
+            <div className="flex items-center justify-between">
+              <span className="text-ink font-medium">Supabase Table Schema:</span>
+              <button
+                type="button"
+                onClick={handleCopySql}
+                className="text-accent hover:underline flex items-center gap-1 text-[10px] cursor-pointer"
+              >
+                {copiedSql ? (
+                  <>
+                    <Check className="w-3 h-3 text-accent" aria-hidden="true" />
+                    <span className="text-accent">Copied to Clipboard!</span>
+                  </>
+                ) : (
+                  <>
+                    <Copy className="w-3 h-3" aria-hidden="true" />
+                    <span>Copy SQL Query</span>
+                  </>
+                )}
+              </button>
+            </div>
+            <p className="text-[10px] text-muted">
+              Paste this SQL into your{' '}
+              <span className="text-ink">Supabase Dashboard > SQL Editor</span> to provision the
+              listings, pings, and bookings tables.
+            </p>
+            <pre className="bg-canvas p-3 rounded-inner text-[10px] text-muted font-mono overflow-x-auto max-h-40">
+              {sqlSchemaSnippet}
+            </pre>
+          </div>
+
+          <div className="pt-2 border-t border-faint">
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-full btn-pill btn-pill-secondary py-3 justify-center"
+            >
+              Close
             </button>
           </div>
-          <p className="text-[11px] text-[#94a3b8]">
-            Paste this SQL into your{' '}
-            <span className="text-white">Supabase Dashboard &gt; SQL Editor</span> to provision the
-            listings, pings, and bookings tables.
-          </p>
-          <pre className="bg-[#0a0a0c] p-2.5 rounded border border-[#22252b] text-[10px] text-[#94a3b8] font-mono overflow-x-auto max-h-32">
-            {sqlSchemaSnippet}
-          </pre>
-        </div>
-
-        <div className="pt-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-full bg-[#1a1c22] hover:bg-[#252830] text-white text-xs font-medium py-2 rounded transition-colors cursor-pointer"
-          >
-            Close
-          </button>
         </div>
       </div>
     </div>

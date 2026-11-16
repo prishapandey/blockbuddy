@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChevronDown, MapPin, Search } from 'lucide-react';
+import { ArrowRight, ChevronDown, MapPin, Search } from 'lucide-react';
 
 interface HeroProps {
   searchQuery: string;
@@ -40,67 +40,118 @@ export const Hero: React.FC<HeroProps> = ({
     { label: 'Midnight Snacks', target: 'Midnight Snacks', section: 'need-it-now' },
   ];
 
+  // Floating hero product cards
+  const heroProducts = [
+    {
+      id: 'hero-1',
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD12UeXydACFaEn82qPO_LLwle0B7ilTqdbbwgvbBEOJy7y46TaZ_69Qf8kajaTHnSEfjvXQTWrzFHRO1DpX91vws_mmAE56GFzqU_fJXxi0ajXc0oOBhyOCEflMK8epxgRvGcA08OWI7AFNF7AcDLu2h2E3wLT-ITIgqsMxL20ssq85RojxR7gSnNRhGW1a0AyLDgTlEBx5R07TqFcFzf0hefhwLZFs1SH_qnkhHmdJ4ek3vquwazI2w',
+      brand: 'Casio fx-991EX',
+      rating: '4.9',
+      reviews: '(234)',
+    },
+    {
+      id: 'hero-2',
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDllvskdLkt9jCBso5ZEn27Zu2YH5gwBoMU_ttrC5pOewNorongGSLu4KKZSCVkE8AoP4kOuumKb4DLLLwYFWjbMlPl-ktE4QF2NtLewa9ipDw9c9oGOrqtyaemX8Q3hGNgNImMAKb9jfFdcwiiTVfC3aDhoQ0DjFlk7FS6BRM_cZ3SDFYlYsh8kxbHkeRAMvq4pDD_MCLwQ7cxNbDHeA2ij1K0kua60JHsQGU1oHBbyOP_UdnKOD6gAg',
+      brand: 'Prestige Kettle',
+      rating: '4.8',
+      reviews: '(189)',
+    },
+    {
+      id: 'hero-3',
+      image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCqV-Ikqb--YqUb6xdnlIPD6u9wHIGOvZc2rhsAim5m2GaTK9cqpyoV7qbzfzLrFfgoD0EVDziugV7KgZFWXWMydDcoZ-fXeOf-noN1hYdmp6U4xaRZooEvZ_MddYjkiO_O5z7FhETyOliBIeqVuTx3tp5ScSFcHrM9V_10wTKpmAN0-ygoJw5j4p7mXAndHoKa8Jh1_PS_Oc4TxAQF-3GV0yTI7sF23q9-v-JxUs1EQOJO8mrnsFfWxw',
+      brand: 'Philips Iron',
+      rating: '4.7',
+      reviews: '(156)',
+    },
+  ];
+
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // scroll to results if on page
       const el = document.getElementById('rent-gear');
       el?.scrollIntoView({ behavior: 'smooth' });
     }
   };
 
   return (
-    <section className="pt-6 pb-2 text-center max-w-3xl mx-auto space-y-5">
-      <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight leading-tight">
-        Your campus. Buy, sell, or rent in minutes.
-      </h1>
-      <p className="text-[#94a3b8] text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-        Direct room-to-room exchange across Hostels 12, 13, 14, 15 &amp; 16. Zero couriers, verified students, 0% fees.
-      </p>
+    <section className="pt-10 pb-4 text-center max-w-3xl mx-auto space-y-8 px-6">
+      {/* Floating Hero Product Cards */}
+      <div className="hero-floating-cards" role="img" aria-label="Featured campus products">
+        {heroProducts.map((product) => (
+          <article key={product.id} className="hero-floating-card">
+            <img
+              src={product.image}
+              alt={product.brand}
+              className="hero-floating-card-image product-image"
+              loading="lazy"
+            />
+            <div className="hero-floating-card-content">
+              <h3 className="hero-floating-card-brand">{product.brand}</h3>
+              <div className="hero-floating-card-rating">
+                <svg className="w-3 h-3 text-accent fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                <span>{product.rating}</span>
+                <span className="text-muted">{product.reviews}</span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
 
-      {/* Main Search Box */}
+      {/* Wordmark */}
+      <div className="wordmark justify-center">
+        <span className="wordmark-dot" aria-hidden="true" />
+        <span>BlockBuddy<span className="wordmark-accent">.</span></span>
+      </div>
+
+      {/* Hero Copy */}
+      <div className="space-y-3">
+        <h1 className="text-[28px] sm:text-[36px] md:text-[44px] text-ink tracking-tight-xl leading-[1.1] font-medium">
+          Your campus. Buy, sell, or rent in minutes.
+        </h1>
+        <p className="text-body text-muted leading-relaxed max-w-2xl mx-auto">
+          Direct room-to-room exchange across Hostels 12, 13, 14, 15 & 16. Zero couriers, verified students, 0% fees.
+        </p>
+      </div>
+
+      {/* Main Search Box — pill with circular violet submit */}
       <div className="pt-2">
         <form
           onSubmit={handleSearchSubmit}
-          className="bg-[#121316] border border-[#22252b] rounded-lg p-2 flex flex-col sm:flex-row items-center gap-2 shadow-lg relative"
+          className="search-pill shadow-card relative mx-auto max-w-2xl"
         >
           {/* Hostel Location Selector */}
           <div className="relative w-full sm:w-auto">
             <button
               type="button"
               onClick={() => setShowHostelDropdown(!showHostelDropdown)}
-              className="flex items-center justify-between gap-2 px-3 py-1.5 text-xs text-[#94a3b8] w-full sm:w-auto border-b sm:border-b-0 sm:border-r border-[#22252b] hover:text-white transition-colors cursor-pointer"
+              className="flex items-center justify-between gap-2 px-4 py-3 text-caption text-muted w-full sm:w-auto border-b sm:border-b-0 sm:border-r border-faint hover:text-ink transition-colors cursor-pointer bg-transparent rounded-full"
+              aria-haspopup="listbox"
+              aria-expanded={showHostelDropdown}
             >
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-[#4d8eff] shrink-0" />
-                <span className="text-white font-medium whitespace-nowrap">
-                  {currentHostelLabel}
-                </span>
+                <MapPin className="w-4 h-4 text-accent shrink-0" />
+                <span className="text-ink whitespace-nowrap">{currentHostelLabel}</span>
               </div>
-              <ChevronDown className="w-3.5 h-3.5 text-[#64748b]" />
+              <ChevronDown className="w-3.5 h-3.5 text-muted transition-transform" style={{ transform: showHostelDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} />
             </button>
 
             {/* Dropdown Menu */}
             {showHostelDropdown && (
-              <div className="absolute top-full left-0 mt-1 w-48 bg-[#121316] border border-[#22252b] rounded-md shadow-xl py-1 z-30 text-left">
+              <div className="hostel-dropdown" role="listbox">
                 {hostelOptions.map((opt) => (
                   <button
                     key={opt.id}
                     type="button"
+                    role="option"
+                    aria-selected={selectedHostelFilter === opt.id}
                     onClick={() => {
                       onHostelFilterChange(opt.id);
                       setShowHostelDropdown(false);
                     }}
-                    className={`w-full px-3 py-1.5 text-xs text-left transition-colors flex items-center justify-between ${
-                      selectedHostelFilter === opt.id
-                        ? 'bg-[#1a1c22] text-[#4d8eff] font-medium'
-                        : 'text-[#94a3b8] hover:bg-[#1a1c22] hover:text-white'
-                    }`}
+                    className={`hostel-option ${selectedHostelFilter === opt.id ? 'hostel-option-active' : ''}`}
                   >
                     <span>{opt.label}</span>
-                    {selectedHostelFilter === opt.id && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#4d8eff]"></span>
-                    )}
+                    {selectedHostelFilter === opt.id && <span className="hostel-option-dot" />}
                   </button>
                 ))}
               </div>
@@ -108,30 +159,31 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Search Query Input */}
-          <div className="flex-1 flex items-center w-full px-2">
-            <Search className="w-4 h-4 text-[#64748b] mr-2 shrink-0" />
+          <div className="flex-1 flex items-center w-full px-3">
+            <Search className="w-4 h-4 text-muted mr-3 shrink-0" />
             <input
               id="hero-search"
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               placeholder="Search calculators, kettles, drafters, snacks..."
-              className="w-full bg-transparent border-0 text-sm text-white placeholder-[#64748b] p-1 focus:ring-0 focus:outline-none"
+              className="input-pill flex-1 min-w-0"
             />
           </div>
 
-          {/* Search Button */}
+          {/* Circular violet submit */}
           <button
             type="submit"
-            className="w-full sm:w-auto bg-[#4d8eff] hover:bg-[#3b7cee] text-white text-xs font-semibold px-5 py-2.5 rounded-md transition-colors whitespace-nowrap shadow-sm active:scale-95 cursor-pointer"
+            className="search-submit ml-1"
+            aria-label="Search"
           >
-            Search
+            <ArrowRight className="w-5 h-5" />
           </button>
         </form>
 
-        {/* Quick filter categories */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mt-4 text-xs">
-          <span className="text-[#64748b]">Quick find:</span>
+        {/* Quick filter category pills */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mt-6 text-caption">
+          <span className="text-muted">Quick find:</span>
           {quickFilters.map((q) => {
             const isActive = activeQuickTag === q.target;
             return (
@@ -143,11 +195,7 @@ export const Hero: React.FC<HeroProps> = ({
                   const el = document.getElementById(q.section);
                   el?.scrollIntoView({ behavior: 'smooth' });
                 }}
-                className={`border rounded px-2.5 py-1 transition-colors cursor-pointer ${
-                  isActive
-                    ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-[#4d8eff] font-medium'
-                    : 'bg-[#121316] hover:bg-[#1a1c22] border-[#22252b] text-[#94a3b8] hover:text-white'
-                }`}
+                className={`quick-chip ${isActive ? 'quick-chip-active' : ''}`}
               >
                 {q.label}
               </button>

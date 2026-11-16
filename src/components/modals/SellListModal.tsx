@@ -51,11 +51,11 @@ export const SellListModal: React.FC<SellListModalProps> = ({
     },
     {
       label: 'Stationery / Pen',
-      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAd7WibILZIrCx2IfZnH5hgQqCfsJecrZ808-fIDZRRA2X6icvBPX5QfqxPDQwF3nLu1DsX6K8sFSIEjfvB7zYXyxxtslJCCkD5TgDfcgBFx3NieRJiSIX-uHBe5NufHD1vtEc84JK0ziG7Stf_FqgYR1k8TKLbIC3ycUuZP4ahZWTQiFurlwMvhihJ-Rt-Bd2o2RaFCH_h7FnX8weZse3-o9zq0jEHH2Wm7bcQZArdqFreePClfZ13_w',
+      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAd7WibILZIrCx2IfZnH5hgQqCfsJecrZ808-fIDZRRA2X6icvBPX5QfqxPDQwF3nLu1DsX6K8sFSIEjfvB7zYXyxxtslJCCkD5TgDfcgBFx3NieRJiSIX-uHBE5NufHD1vtEc84JK0ziG7Stf_FqgYR1k8TKLbIC3ycUuZP4ahZWTQiFurlwMvhihJ-Rt-Bd2o2RaFCH_h7FnX8weZse3-o9zq0jEHH2Wm7bcQZArdqFreePClfZ13_w',
     },
     {
       label: 'Notebook Register',
-      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDZJW7_MFT7N8QbpxpRxSDxodhtpzRXSJnHF8IwlJGGNpAoR9c_ohkDBOoRItNTkR-IiYUc4D6OXroTI1ysKftyGexPCX0ZHh2wO43VkxbJrx-oxCht1CBna_ZXjHV91QzQ38K85L_ELpGrAySgPyy4_rnqB0JKJ-qLeWLNZCR9MngXqcyKzfL-UI1Ta-cc3Pa7h5kSR29hVvRsxXydlmXsFHTuurRzFjEZd-wQtSTphgGpnknfeXSnJg',
+      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDZJW7_MFT7N8QbpxpRxSDxodhtpzRXSJnHF8IwlJGGNpAoR9c_ohkDBOoRItNTkR-IiYUc4D6OXroTI1ysKftyGexPCX0ZHh2wO43VkxbJrx-oxCht1CBna_ZXjHV91QzQ38K85L_ELpGrAySgPyy4rqnB0JKJ-qLeWLNZCR9MngXqcyKzfL-UI1Ta-cc3Pa7h5kSR29hVvRsxXydlmXsFHTuurRzFjEZd-wQtSTphgGpnknfeXSnJg',
     },
     {
       label: 'Noodles / Snacks',
@@ -95,46 +95,44 @@ export const SellListModal: React.FC<SellListModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0a0a0c]/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#121316] border border-[#22252b] w-full max-w-lg rounded-xl p-6 space-y-4 shadow-2xl my-6">
-        <div className="flex items-center justify-between border-b border-[#22252b] pb-3">
-          <div className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-lg bg-[#4d8eff] flex items-center justify-center text-white font-bold text-xs">
-              <Plus className="w-4 h-4" />
+    <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="sell-modal-title">
+      <div className="modal-container max-w-lg">
+        <header className="flex items-center justify-between border-b border-faint p-5 pb-4">
+          <div className="flex items-center gap-3">
+            <span className="w-10 h-10 rounded-full bg-accent flex items-center justify-center text-white shadow-accent">
+              <Plus className="w-5 h-5" />
             </span>
             <div>
-              <h3 className="text-sm font-semibold text-white">List Campus Item</h3>
-              <p className="text-[11px] text-[#94a3b8]">Direct peer-to-peer exchange with zero fees</p>
+              <h3 id="sell-modal-title" className="text-body text-ink">List Campus Item</h3>
+              <p className="text-caption text-muted">Direct peer-to-peer exchange with zero fees</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-[#64748b] hover:text-white transition-colors cursor-pointer"
+            className="w-8 h-8 rounded-full bg-canvas hover:bg-faint text-muted hover:text-ink transition-colors cursor-pointer flex items-center justify-center"
             type="button"
+            aria-label="Close modal"
           >
             <X className="w-4 h-4" />
           </button>
-        </div>
+        </header>
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-xs">
+        <form onSubmit={handleSubmit} className="p-5 space-y-5 text-caption">
           {/* Category Tabs */}
-          <div>
-            <label className="text-[#94a3b8] mb-1.5 block font-medium">Listing Type:</label>
-            <div className="grid grid-cols-3 gap-2">
+          <fieldset className="space-y-3">
+            <legend className="text-caption text-muted">Listing Type</legend>
+            <div className="tab-pills w-full">
               <button
                 type="button"
                 onClick={() => {
                   setCategory('rental');
                   setRentalUnit('/ day');
                 }}
-                className={`p-2.5 rounded-lg border text-center transition-colors cursor-pointer ${
-                  category === 'rental'
-                    ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-white font-semibold'
-                    : 'bg-[#0a0a0c] border-[#22252b] text-[#94a3b8] hover:text-white'
-                }`}
+                className={`tab-pill flex-1 flex flex-col items-center gap-1 ${category === 'rental' ? 'tab-pill-active' : ''}`}
+                aria-selected={category === 'rental'}
               >
                 <span>Rent Gear</span>
-                <span className="block text-[10px] text-[#4d8eff] font-normal">Hourly/Daily</span>
+                <span className={`text-[10px] ${category === 'rental' ? 'text-white/80' : 'text-accent'}`}>Hourly/Daily</span>
               </button>
               <button
                 type="button"
@@ -142,14 +140,11 @@ export const SellListModal: React.FC<SellListModalProps> = ({
                   setCategory('urgent');
                   setRentalUnit('');
                 }}
-                className={`p-2.5 rounded-lg border text-center transition-colors cursor-pointer ${
-                  category === 'urgent'
-                    ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-white font-semibold'
-                    : 'bg-[#0a0a0c] border-[#22252b] text-[#94a3b8] hover:text-white'
-                }`}
+                className={`tab-pill flex-1 flex flex-col items-center gap-1 ${category === 'urgent' ? 'tab-pill-active' : ''}`}
+                aria-selected={category === 'urgent'}
               >
                 <span>Need It Now</span>
-                <span className="block text-[10px] text-amber-400 font-normal">15m Corridor</span>
+                <span className={`text-[10px] ${category === 'urgent' ? 'text-white/80' : 'text-muted'}`}>15m Corridor</span>
               </button>
               <button
                 type="button"
@@ -157,51 +152,48 @@ export const SellListModal: React.FC<SellListModalProps> = ({
                   setCategory('marketplace');
                   setRentalUnit('');
                 }}
-                className={`p-2.5 rounded-lg border text-center transition-colors cursor-pointer ${
-                  category === 'marketplace'
-                    ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-white font-semibold'
-                    : 'bg-[#0a0a0c] border-[#22252b] text-[#94a3b8] hover:text-white'
-                }`}
+                className={`tab-pill flex-1 flex flex-col items-center gap-1 ${category === 'marketplace' ? 'tab-pill-active' : ''}`}
+                aria-selected={category === 'marketplace'}
               >
                 <span>Marketplace</span>
-                <span className="block text-[10px] text-[#94a3b8] font-normal">Thrift &amp; Gear</span>
+                <span className={`text-[10px] ${category === 'marketplace' ? 'text-white/80' : 'text-muted'}`}>Thrift & Gear</span>
               </button>
             </div>
-          </div>
+          </fieldset>
 
           {/* Title */}
-          <div className="space-y-1">
-            <label className="text-[#94a3b8] block font-medium">Item Title:</label>
+          <div className="space-y-2">
+            <label className="text-caption text-muted block">Item Title</label>
             <input
               type="text"
               required
               placeholder="e.g. Philips 1000W Iron, Casio fx-991EX, Maggi Pack..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+              className="input-pill"
             />
           </div>
 
           {/* Price & Unit */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="text-[#94a3b8] block font-medium">Price (₹):</label>
+            <div className="space-y-2">
+              <label className="text-caption text-muted block">Price (₹)</label>
               <input
                 type="number"
                 required
                 min="0"
                 value={priceValue}
                 onChange={(e) => setPriceValue(e.target.value)}
-                className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                className="input-pill"
               />
             </div>
             {category === 'rental' ? (
-              <div className="space-y-1">
-                <label className="text-[#94a3b8] block font-medium">Rate Period:</label>
+              <div className="space-y-2">
+                <label className="text-caption text-muted block">Rate Period</label>
                 <select
                   value={rentalUnit}
                   onChange={(e) => setRentalUnit(e.target.value)}
-                  className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                  className="input-pill appearance-none bg-surface cursor-pointer"
                 >
                   <option value="/ hour">/ hour</option>
                   <option value="/ day">/ day</option>
@@ -210,14 +202,14 @@ export const SellListModal: React.FC<SellListModalProps> = ({
                 </select>
               </div>
             ) : (
-              <div className="space-y-1">
-                <label className="text-[#94a3b8] block font-medium">Condition Note:</label>
+              <div className="space-y-2">
+                <label className="text-caption text-muted block">Condition Note</label>
                 <input
                   type="text"
                   placeholder="e.g. Sealed pack, Mint condition..."
                   value={badgeNote}
                   onChange={(e) => setBadgeNote(e.target.value)}
-                  className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                  className="input-pill"
                 />
               </div>
             )}
@@ -225,26 +217,26 @@ export const SellListModal: React.FC<SellListModalProps> = ({
 
           {/* Deposit for Rental */}
           {category === 'rental' && (
-            <div className="space-y-1">
-              <label className="text-[#94a3b8] block font-medium">Security Deposit / Note:</label>
+            <div className="space-y-2">
+              <label className="text-caption text-muted block">Security Deposit / Note</label>
               <input
                 type="text"
                 placeholder="Deposit: ₹150 (refundable) or Ready in Wing B"
                 value={deposit}
                 onChange={(e) => setDeposit(e.target.value)}
-                className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                className="input-pill"
               />
             </div>
           )}
 
           {/* Location / Hostel */}
           <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="text-[#94a3b8] block font-medium">Hostel Block:</label>
+            <div className="space-y-2">
+              <label className="text-caption text-muted block">Hostel Block</label>
               <select
                 value={hostel}
                 onChange={(e) => setHostel(e.target.value)}
-                className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                className="input-pill appearance-none bg-surface cursor-pointer"
               >
                 <option value="H-12">Hostel 12</option>
                 <option value="H-13">Hostel 13</option>
@@ -253,40 +245,37 @@ export const SellListModal: React.FC<SellListModalProps> = ({
                 <option value="H-16">Hostel 16</option>
               </select>
             </div>
-            <div className="space-y-1">
-              <label className="text-[#94a3b8] block font-medium">Wing / Room:</label>
+            <div className="space-y-2">
+              <label className="text-caption text-muted block">Wing / Room</label>
               <input
                 type="text"
                 placeholder="e.g. Wing B, Room 204"
                 value={wingOrRoom}
                 onChange={(e) => setWingOrRoom(e.target.value)}
-                className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                className="input-pill"
               />
             </div>
           </div>
 
           {/* Image Presets & URL */}
-          <div className="space-y-1.5">
-            <label className="text-[#94a3b8] block font-medium flex items-center justify-between">
+          <fieldset className="space-y-3">
+            <legend className="text-caption text-muted flex items-center justify-between">
               <span className="flex items-center gap-1.5">
-                <Camera className="w-3.5 h-3.5 text-[#4d8eff]" />
-                <span>Product Photo:</span>
+                <Camera className="w-3.5 h-3.5 text-accent" aria-hidden="true" />
+                <span>Product Photo</span>
               </span>
-              <span className="text-[10px] text-[#64748b]">Select preset or paste URL</span>
-            </label>
-            <div className="flex gap-2 overflow-x-auto py-1">
+              <span className="text-[10px] text-muted">Select preset or paste URL</span>
+            </legend>
+            <div className="flex gap-2 overflow-x-auto py-1" role="group" aria-label="Image presets">
               {presetImages.map((p) => (
                 <button
                   key={p.label}
                   type="button"
                   onClick={() => setImageUrl(p.url)}
-                  className={`flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 rounded border text-[11px] transition-colors cursor-pointer ${
-                    imageUrl === p.url
-                      ? 'border-[#4d8eff] bg-[#4d8eff]/10 text-white'
-                      : 'border-[#22252b] bg-[#0a0a0c] text-[#94a3b8] hover:text-white'
-                  }`}
+                  className={`image-preset ${imageUrl === p.url ? 'image-preset-active' : ''}`}
+                  aria-pressed={imageUrl === p.url}
                 >
-                  <img src={p.url} alt={p.label} className="w-4 h-4 object-cover rounded" />
+                  <img src={p.url} alt={p.label} className="image-preset-img" />
                   <span>{p.label}</span>
                 </button>
               ))}
@@ -296,27 +285,27 @@ export const SellListModal: React.FC<SellListModalProps> = ({
               placeholder="Or enter custom image URL"
               value={imageUrl}
               onChange={(e) => setImageUrl(e.target.value)}
-              className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2 text-xs focus:outline-none focus:border-[#4d8eff]"
+              className="input-pill"
             />
-          </div>
+          </fieldset>
 
           {/* Description */}
-          <div className="space-y-1">
-            <label className="text-[#94a3b8] block font-medium">Short Description:</label>
+          <div className="space-y-2">
+            <label className="text-caption text-muted block">Short Description</label>
             <textarea
-              rows={2}
+              rows={3}
               placeholder="Fresh condition, clean descaled, working batteries..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+              className="w-full bg-surface border border-faint rounded-inner text-body text-ink placeholder-muted px-4 py-3 focus:outline-none focus:border-accent resize-none font-gt-standard"
             />
           </div>
 
           {/* Action buttons */}
-          <div className="flex gap-2 pt-2 border-t border-[#22252b]">
+          <div className="flex gap-3 pt-2 border-t border-faint">
             <button
               type="submit"
-              className="flex-1 bg-[#4d8eff] hover:bg-[#3b7cee] text-white text-xs font-semibold py-2.5 rounded-md transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
+              className="flex-1 btn-pill btn-pill-primary justify-center py-3"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>Publish Listing</span>
@@ -324,7 +313,7 @@ export const SellListModal: React.FC<SellListModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="bg-[#1a1c22] hover:bg-[#252830] text-[#94a3b8] text-xs font-medium px-4 py-2.5 rounded-md transition-colors cursor-pointer"
+              className="btn-pill btn-pill-secondary py-3 px-6"
             >
               Cancel
             </button>

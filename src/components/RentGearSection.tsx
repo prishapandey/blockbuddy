@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar } from 'lucide-react';
+import { Calendar, ArrowRight } from 'lucide-react';
 import { ListingItem } from '../types';
 
 interface RentGearSectionProps {
@@ -14,109 +14,105 @@ export const RentGearSection: React.FC<RentGearSectionProps> = ({
   onSwitchToBuy,
 }) => {
   return (
-    <section className="space-y-6" id="rent-gear">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 border-b border-[#22252b] pb-4">
+    <section className="section" id="rent-gear" aria-labelledby="rent-gear-title">
+      <header className="section-header">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-semibold text-[#4d8eff] tracking-wide uppercase">
-              Short-Term Utility
-            </span>
-            <span className="text-xs bg-[#4d8eff]/10 text-[#4d8eff] px-2 py-0.5 rounded border border-[#4d8eff]/20 font-medium">
-              Hourly &amp; Daily
-            </span>
-          </div>
-          <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-            Rent Campus Equipment
-          </h2>
-          <p className="text-xs sm:text-sm text-[#94a3b8] mt-1">
-            Don't buy items you only need for one semester, one exam, or an interview.
-          </p>
+          <span className="section-subtitle">Short-Term Utility</span>
+          <h2 id="rent-gear-title" className="section-title">Rent Campus Equipment</h2>
+          <p className="section-desc">Don't buy items you only need for one semester, one exam, or an interview.</p>
         </div>
-
         <div className="flex items-center gap-2">
           {/* Buy vs Rent Toggle */}
-          <div className="bg-[#121316] border border-[#22252b] rounded-md p-0.5 flex text-xs">
+          <div className="tab-pills">
             <button
               type="button"
-              className="px-3 py-1 rounded bg-[#22252b] text-white font-medium cursor-default"
+              className="tab-pill tab-pill-active"
+              aria-selected="true"
             >
               Rent Gear
             </button>
             <button
               type="button"
               onClick={onSwitchToBuy}
-              className="px-3 py-1 rounded text-[#94a3b8] hover:text-white transition-colors cursor-pointer"
+              className="tab-pill"
+              aria-selected="false"
             >
               Buy / Thrift
             </button>
           </div>
         </div>
-      </div>
+      </header>
 
       {/* 4 Rentable Items Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" role="list">
         {items.map((item) => (
-          <div
+          <article
             key={item.id}
-            className="bg-[#121316] border border-[#22252b] rounded-lg overflow-hidden flex flex-col justify-between group hover:border-[#4d8eff]/50 transition-colors"
+            className="product-card"
+            role="listitem"
           >
-            <div>
-              <div className="aspect-[16/10] bg-[#1a1c22] overflow-hidden relative">
-                <img
-                  alt={item.title}
-                  src={item.imageUrl}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  onError={(e) => {
-                    // Fallback visual
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
-                />
-                <span className="absolute top-2 left-2 bg-[#0a0a0c]/80 backdrop-blur text-[11px] text-white font-medium px-2 py-0.5 rounded border border-[#22252b]">
-                  {item.locationTag}
-                </span>
-              </div>
+            <div className="relative">
+              <img
+                alt={item.title}
+                src={item.imageUrl}
+                referrerPolicy="no-referrer"
+                className="product-card-image product-image"
+                loading="lazy"
+                onError={(e) => {
+                  (e.target as HTMLElement).style.display = 'none';
+                }}
+              />
+              <span className="product-card-badge">{item.locationTag}</span>
+            </div>
 
-              <div className="p-4 space-y-2">
-                <h3 className="text-sm font-semibold text-white line-clamp-1">{item.title}</h3>
-                <p className="text-xs text-[#94a3b8] line-clamp-2 min-h-[32px]">
-                  {item.description}
-                </p>
+            <div className="product-card-content">
+              <h3 className="product-card-title">{item.title}</h3>
+              <p className="product-card-desc">{item.description}</p>
 
-                <div className="pt-2 border-t border-[#22252b]/60 flex items-baseline justify-between">
-                  <div>
-                    <span className="text-base font-bold text-[#4d8eff]">{item.priceDisplay}</span>
-                    <span className="text-xs text-[#94a3b8]"> {item.priceUnit}</span>
-                    {item.secondaryPrice && (
-                      <span className="text-xs text-[#64748b] block">{item.secondaryPrice}</span>
-                    )}
-                  </div>
-                  {item.deposit && (
-                    <span className="text-[10px] text-[#64748b]">{item.deposit}</span>
+              <div className="product-card-footer">
+                <div>
+                  <span className="product-card-price">{item.priceDisplay}</span>
+                  <span className="product-card-price-unit"> {item.priceUnit}</span>
+                  {item.secondaryPrice && (
+                    <span className="product-card-secondary">{item.secondaryPrice}</span>
                   )}
                 </div>
+                {item.deposit && (
+                  <span className="product-card-deposit">{item.deposit}</span>
+                )}
               </div>
             </div>
 
-            <div className="p-4 pt-0">
+            <div className="product-card-action p-4 pt-0">
               <button
                 type="button"
                 onClick={() => onRentClick(item)}
-                className="w-full bg-[#1e2128] hover:bg-[#4d8eff] hover:text-white text-white text-xs font-medium py-2 rounded-md transition-colors flex items-center justify-center gap-1.5 cursor-pointer active:scale-[0.99]"
+                className="btn-pill btn-pill-primary w-full justify-center"
               >
                 <Calendar className="w-3.5 h-3.5" />
                 <span>Rent Now</span>
               </button>
             </div>
-          </div>
+          </article>
         ))}
       </div>
 
       {items.length === 0 && (
-        <div className="p-8 text-center bg-[#121316] border border-[#22252b] rounded-lg">
-          <p className="text-sm text-[#94a3b8]">No rental items matching your current filter.</p>
+        <div className="card-elevated p-8 text-center">
+          <p className="text-body text-muted">No rental items matching your current filter.</p>
         </div>
       )}
+
+      <div className="text-center mt-8">
+        <button
+          type="button"
+          onClick={onSwitchToBuy}
+          className="view-all-link"
+        >
+          <span>View all marketplace items</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </button>
+      </div>
     </section>
   );
 };
