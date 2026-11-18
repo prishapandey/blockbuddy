@@ -22,7 +22,7 @@ export const Hero: React.FC<HeroProps> = ({
 
   const hostelOptions = [
     { id: 'all', label: 'All Campus Hostels' },
-    { id: 'H-12 & 14', label: 'IITB · H-12 & 14' },
+    { id: 'H-12 & 14', label: 'H-12 & H-14' },
     { id: 'H-12', label: 'Hostel 12' },
     { id: 'H-13', label: 'Hostel 13' },
     { id: 'H-14', label: 'Hostel 14' },
@@ -31,7 +31,7 @@ export const Hero: React.FC<HeroProps> = ({
   ];
 
   const currentHostelLabel =
-    hostelOptions.find((o) => o.id === selectedHostelFilter)?.label || 'IITB · H-12 & 14';
+    hostelOptions.find((o) => o.id === selectedHostelFilter)?.label || 'All Campus Hostels';
 
   const quickFilters = [
     { label: 'Scientific Calculators', target: 'Scientific Calculators', section: 'rent-gear' },
@@ -46,22 +46,16 @@ export const Hero: React.FC<HeroProps> = ({
       id: 'hero-1',
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD12UeXydACFaEn82qPO_LLwle0B7ilTqdbbwgvbBEOJy7y46TaZ_69Qf8kajaTHnSEfjvXQTWrzFHRO1DpX91vws_mmAE56GFzqU_fJXxi0ajXc0oOBhyOCEflMK8epxgRvGcA08OWI7AFNF7AcDLu2h2E3wLT-ITIgqsMxL20ssq85RojxR7gSnNRhGW1a0AyLDgTlEBx5R07TqFcFzf0hefhwLZFs1SH_qnkhHmdJ4ek3vquwazI2w',
       brand: 'Casio fx-991EX',
-      rating: '4.9',
-      reviews: '(234)',
     },
     {
       id: 'hero-2',
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDllvskdLkt9jCBso5ZEn27Zu2YH5gwBoMU_ttrC5pOewNorongGSLu4KKZSCVkE8AoP4kOuumKb4DLLLwYFWjbMlPl-ktE4QF2NtLewa9ipDw9c9oGOrqtyaemX8Q3hGNgNImMAKb9jfFdcwiiTVfC3aDhoQ0DjFlk7FS6BRM_cZ3SDFYlYsh8kxbHkeRAMvq4pDD_MCLwQ7cxNbDHeA2ij1K0kua60JHsQGU1oHBbyOP_UdnKOD6gAg',
       brand: 'Prestige Kettle',
-      rating: '4.8',
-      reviews: '(189)',
     },
     {
       id: 'hero-3',
       image: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCqV-Ikqb--YqUb6xdnlIPD6u9wHIGOvZc2rhsAim5m2GaTK9cqpyoV7qbzfzLrFfgoD0EVDziugV7KgZFWXWMydDcoZ-fXeOf-noN1hYdmp6U4xaRZooEvZ_MddYjkiO_O5z7FhETyOliBIeqVuTx3tp5ScSFcHrM9V_10wTKpmAN0-ygoJw5j4p7mXAndHoKa8Jh1_PS_Oc4TxAQF-3GV0yTI7sF23q9-v-JxUs1EQOJO8mrnsFfWxw',
       brand: 'Philips Iron',
-      rating: '4.7',
-      reviews: '(156)',
     },
   ];
 
@@ -88,9 +82,7 @@ export const Hero: React.FC<HeroProps> = ({
             <div className="hero-floating-card-content">
               <h3 className="hero-floating-card-brand">{product.brand}</h3>
               <div className="hero-floating-card-rating">
-                <svg className="w-3 h-3 text-accent fill-current" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                <span>{product.rating}</span>
-                <span className="text-muted">{product.reviews}</span>
+                <span className="text-muted">Campus essentials</span>
               </div>
             </div>
           </article>
@@ -109,7 +101,7 @@ export const Hero: React.FC<HeroProps> = ({
           Your campus. Buy, sell, or rent in minutes.
         </h1>
         <p className="text-body text-muted leading-relaxed max-w-2xl mx-auto">
-          Direct room-to-room exchange across Hostels 12, 13, 14, 15 & 16. Zero couriers, verified students, 0% fees.
+          A student-to-student marketplace for everyday hostel essentials. Find nearby listings, arrange a handoff, and keep exchanges on campus.
         </p>
       </div>
 
