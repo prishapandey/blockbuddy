@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { CheckCircle2, Clock, Send, ShieldCheck, User, X } from 'lucide-react';
 import { CorridorPing, RentalBooking, StudentProfile } from '../../types';
 
@@ -26,6 +26,14 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   const [wing, setWing] = useState(currentStudent.wing);
   const [room, setRoom] = useState(currentStudent.room);
 
+  useEffect(() => {
+    if (!isOpen) return;
+    setName(currentStudent.name);
+    setHostel(currentStudent.hostel);
+    setWing(currentStudent.wing);
+    setRoom(currentStudent.room);
+  }, [isOpen, currentStudent]);
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
     onUpdateProfile({
@@ -52,7 +60,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               <h3 id="profile-modal-title" className="text-body text-ink">Student Account</h3>
               <p className="text-caption text-muted flex items-center gap-1">
                 <ShieldCheck className="w-3 h-3 text-accent" aria-hidden="true" />
-                <span>Verified IITB Student</span>
+                <span>Student Profile</span>
               </p>
             </div>
           </div>
@@ -117,7 +125,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
             </div>
 
             <div className="space-y-2">
-              <label className="text-caption text-muted block">Campus Email (Verified)</label>
+              <label className="text-caption text-muted block">Campus Email</label>
               <input
                 type="email"
                 disabled
