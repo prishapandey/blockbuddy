@@ -117,7 +117,7 @@ export default function App() {
 
       // Hostel Filter
       if (selectedHostelFilter === 'H-12 & 14') {
-        return item.hostel === 'H-12' || item.hostel === 'H-14' || item.hostel === 'H-13' || item.hostel === 'H-15';
+        return item.hostel === 'H-12' || item.hostel === 'H-14';
       }
       if (selectedHostelFilter !== 'all' && selectedHostelFilter) {
         return item.hostel === selectedHostelFilter;
@@ -152,7 +152,7 @@ export default function App() {
 
       // Global hostel filter
       if (selectedHostelFilter === 'H-12 & 14') {
-        return item.hostel === 'H-12' || item.hostel === 'H-14' || item.hostel === 'H-15' || item.hostel === 'H-16';
+        return item.hostel === 'H-12' || item.hostel === 'H-14';
       }
       if (selectedHostelFilter !== 'all' && selectedHostelFilter) {
         return item.hostel === selectedHostelFilter;
@@ -177,9 +177,10 @@ export default function App() {
         if (!match) return false;
       }
 
-      if (selectedHostelFilter !== 'all' && selectedHostelFilter !== 'H-12 & 14') {
-        return item.hostel === selectedHostelFilter;
+      if (selectedHostelFilter === 'H-12 & 14') {
+        return item.hostel === 'H-12' || item.hostel === 'H-14';
       }
+      if (selectedHostelFilter !== 'all') return item.hostel === selectedHostelFilter;
 
       return true;
     });
