@@ -1,8 +1,8 @@
 import { ListingItem, StudentProfile } from '../types';
 
 export const INITIAL_STUDENT: StudentProfile = {
-  name: 'Aarav Sharma',
-  email: 'aarav.sharma@iitb.ac.in',
+  name: 'Your Name',
+  email: '',
   hostel: 'H-12',
   room: 'Room 204',
   wing: 'Wing B',
