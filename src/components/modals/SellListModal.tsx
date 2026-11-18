@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Camera, Plus, Sparkles, X } from 'lucide-react';
 import { ItemCategory, ListingItem, StudentProfile } from '../../types';
 
@@ -30,6 +30,12 @@ export const SellListModal: React.FC<SellListModalProps> = ({
     'https://lh3.googleusercontent.com/aida-public/AB6AXuDllvskdLkt9jCBso5ZEn27Zu2YH5gwBoMU_ttrC5pOewNorongGSLu4KKZSCVkE8AoP4kOuumKb4DLLLwYFWjbMlPl-ktE4QF2NtLewa9ipDw9c9oGOrqtyaemX8Q3hGNgNImMAKb9jfFdcwiiTVfC3aDhoQ0DjFlk7FS6BRM_cZ3SDFYlYsh8kxbHkeRAMvq4pDD_MCLwQ7cxNbDHeA2ij1K0kua60JHsQGU1oHBbyOP_UdnKOD6gAg'
   );
   const [badgeNote, setBadgeNote] = useState<string>('Clean & Working');
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setHostel(currentStudent.hostel || 'H-12');
+    setWingOrRoom(`${currentStudent.wing}, ${currentStudent.room}`);
+  }, [isOpen, currentStudent]);
 
   const presetImages = [
     {
