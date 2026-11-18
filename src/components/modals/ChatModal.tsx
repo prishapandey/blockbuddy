@@ -109,7 +109,7 @@ export const ChatModal: React.FC<ChatModalProps> = ({
 
           <div className="text-[10px] text-muted flex items-center justify-between">
             <span>From: {currentStudent.name} ({currentStudent.hostel})</span>
-            <span className="text-accent font-medium">Verified Student</span>
+            <span className="text-accent font-medium">Campus profile</span>
           </div>
 
           <div className="flex gap-2 pt-1">
