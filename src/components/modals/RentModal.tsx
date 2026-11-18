@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Calendar, Clock, DollarSign, MapPin, X } from 'lucide-react';
 import { ListingItem, StudentProfile } from '../../types';
 
@@ -24,20 +24,26 @@ export const RentModal: React.FC<RentModalProps> = ({
   onSubmit,
   currentStudent,
 }) => {
-  if (!isOpen || !item) return null;
-
-  const [durationType, setDurationType] = useState<'exam' | 'hour' | 'day' | 'week'>(
-    item.priceUnit.includes('exam')
-      ? 'exam'
-      : item.priceUnit.includes('hour')
-      ? 'hour'
-      : 'day'
-  );
+  const [durationType, setDurationType] = useState<'exam' | 'hour' | 'day' | 'week'>('day');
   const [durationCount, setDurationCount] = useState<number>(1);
   const [pickupTime, setPickupTime] = useState<string>('In 15 minutes');
-  const [message, setMessage] = useState<string>(
-    `Hi ${item.sellerName.split(' ')[0]}, I need this for rent. When can I pick it up from your wing?`
-  );
+  const [message, setMessage] = useState<string>('');
+
+  useEffect(() => {
+    if (!item) return;
+    setDurationType(
+      item.priceUnit.includes('exam')
+        ? 'exam'
+        : item.priceUnit.includes('hour')
+        ? 'hour'
+        : 'day'
+    );
+    setDurationCount(1);
+    setPickupTime('In 15 minutes');
+    setMessage(`Hi ${item.sellerName.split(' ')[0]}, I need this for rent. When can I pick it up from your wing?`);
+  }, [item?.id]);
+
+  if (!isOpen || !item) return null;
 
   const calculateTotal = () => {
     let rate = item.priceValue;
