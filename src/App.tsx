@@ -43,7 +43,7 @@ export default function App() {
 
   // Filters & State
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedHostelFilter, setSelectedHostelFilter] = useState('H-12 & 14');
+  const [selectedHostelFilter, setSelectedHostelFilter] = useState('all');
   const [activeQuickTag, setActiveQuickTag] = useState('');
   const [urgentHostelFilter, setUrgentHostelFilter] = useState('all');
   const [activeNavTab, setActiveNavTab] = useState('home');
@@ -194,6 +194,9 @@ export default function App() {
     message: string;
     totalAmount: number;
   }) => {
+    const depositMatch = data.item.deposit?.match(/₹\s*([\d,]+)/i);
+    const depositAmount = depositMatch ? Number(depositMatch[1].replace(/,/g, '')) : 0;
+
     const booking: RentalBooking = {
       id: `booking-${Date.now()}`,
       itemId: data.item.id,
@@ -204,7 +207,7 @@ export default function App() {
       durationType: data.durationType,
       durationCount: data.durationCount,
       totalAmount: data.totalAmount,
-      depositAmount: 150,
+      depositAmount,
       pickupTime: data.pickupTime,
       status: 'confirmed',
       createdAt: new Date().toISOString(),
@@ -226,10 +229,15 @@ export default function App() {
     setPings((prev) => [ping, ...prev]);
     setRentModalItem(null);
 
-    await saveRentalBooking(booking);
-    await saveCorridorPing(ping);
-
-    showToast(`Rent request sent to ${data.item.sellerName.split(' ')[0]}! (${data.pickupTime})`);
+    const [bookingSave, pingSave] = await Promise.all([
+      saveRentalBooking(booking),
+      saveCorridorPing(ping),
+    ]);
+    showToast(
+      bookingSave.savedToSupabase && pingSave.savedToSupabase
+        ? 'Request saved to the database. Seller inbox notifications are not enabled yet.'
+        : 'Request saved on this device. Seller inbox notifications are not enabled yet.'
+    );
   };
 
   const handleChatSubmit = async (data: { item: ListingItem; message: string }) => {
@@ -248,12 +256,11 @@ export default function App() {
     setPings((prev) => [ping, ...prev]);
     setChatModalItem(null);
 
-    await saveCorridorPing(ping);
-
+    const saved = await saveCorridorPing(ping);
     showToast(
-      data.item.category === 'urgent'
-        ? 'Ping sent! Seller notified via corridor messenger.'
-        : `Message sent to ${data.item.sellerName.split(' ')[0]}!`
+      saved.savedToSupabase
+        ? 'Ping saved to the database. Seller inbox notifications are not enabled yet.'
+        : 'Ping saved on this device. Seller inbox notifications are not enabled yet.'
     );
   };
 
@@ -283,6 +290,8 @@ export default function App() {
         activeNavTab={activeNavTab}
         onNavTabChange={setActiveNavTab}
         currentStudent={currentStudent}
+        selectedHostelFilter={selectedHostelFilter}
+        onHostelFilterChange={setSelectedHostelFilter}
         supabaseConnected={supabaseConnected}
       />
 
