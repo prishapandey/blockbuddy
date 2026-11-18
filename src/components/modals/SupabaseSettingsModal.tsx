@@ -105,7 +105,11 @@ CREATE POLICY "Allow public insert blockbuddy_bookings" ON public.blockbuddy_boo
 
   const handleSaveUrl = () => {
     if (urlInput.trim()) {
-      updateSupabaseUrl(urlInput.trim());
+      const updated = updateSupabaseUrl(urlInput.trim());
+      if (!updated) {
+        setTestStatus('Enter a valid HTTPS Supabase project URL.');
+        return;
+      }
       testConnection();
     }
   };
