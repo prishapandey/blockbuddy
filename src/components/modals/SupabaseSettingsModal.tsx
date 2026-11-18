@@ -19,7 +19,6 @@ export const SupabaseSettingsModal: React.FC<SupabaseSettingsModalProps> = ({
   onRefreshData,
   sourceType,
 }) => {
-  if (!isOpen) return null;
 
   const currentConfig = getCurrentSupabaseConfig();
   const [urlInput, setUrlInput] = useState(currentConfig.url);
@@ -136,6 +135,8 @@ CREATE POLICY "Allow public insert blockbuddy_bookings" ON blockbuddy_bookings F
       setIsTesting(false);
     }
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="supabase-modal-title">
