@@ -19,7 +19,6 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   pings,
   bookings,
 }) => {
-  if (!isOpen) return null;
 
   const [activeTab, setActiveTab] = useState<'profile' | 'pings' | 'rentals'>('profile');
   const [name, setName] = useState(currentStudent.name);
@@ -38,6 +37,8 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
     });
     onClose();
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="profile-modal-title">
