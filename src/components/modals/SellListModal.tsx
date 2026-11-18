@@ -15,7 +15,6 @@ export const SellListModal: React.FC<SellListModalProps> = ({
   onSubmit,
   currentStudent,
 }) => {
-  if (!isOpen) return null;
 
   const [category, setCategory] = useState<ItemCategory>('rental');
   const [title, setTitle] = useState('');
@@ -93,6 +92,8 @@ export const SellListModal: React.FC<SellListModalProps> = ({
     onSubmit(newItem);
     onClose();
   };
+
+  if (!isOpen) return null;
 
   return (
     <div className="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="sell-modal-title">
