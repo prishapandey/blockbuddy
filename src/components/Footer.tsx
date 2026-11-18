@@ -19,7 +19,7 @@ export const Footer: React.FC<FooterProps> = ({
               <span className="text-white">BlockBuddy<span className="text-accent-wash">.</span></span>
             </div>
             <p className="text-white/60 text-body-sm leading-relaxed max-w-xs">
-              Campus peer exchange & equipment rentals for IITB students. Zero fees, direct handoffs, verified community.
+              A student-to-student campus marketplace prototype for buying, selling, and renting everyday essentials.
             </p>
           </div>
 
