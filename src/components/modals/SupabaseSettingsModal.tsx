@@ -26,29 +26,33 @@ export const SupabaseSettingsModal: React.FC<SupabaseSettingsModalProps> = ({
   const [testStatus, setTestStatus] = useState<string | null>(null);
   const [isTesting, setIsTesting] = useState(false);
 
-  const sqlSchemaSnippet = `-- BlockBuddy Supabase Database Schema
-CREATE TABLE IF NOT EXISTS blockbuddy_items (
+  const sqlSchemaSnippet = `-- BlockBuddy persistent database schema
+-- Run this once in Supabase Dashboard -> SQL Editor.
+-- Public insert/read policies are suitable only for a classroom demo. Add auth-based
+-- policies before using this with real student personal information.
+
+CREATE TABLE IF NOT EXISTS public.blockbuddy_items (
   id TEXT PRIMARY KEY,
   title TEXT NOT NULL,
-  description TEXT,
-  category TEXT NOT NULL, -- 'rental', 'urgent', 'marketplace'
-  price_display TEXT,
-  price_value NUMERIC DEFAULT 0,
-  price_unit TEXT,
+  description TEXT NOT NULL DEFAULT '',
+  category TEXT NOT NULL CHECK (category IN ('rental', 'urgent', 'marketplace')),
+  price_display TEXT NOT NULL DEFAULT '',
+  price_value NUMERIC NOT NULL DEFAULT 0,
+  price_unit TEXT NOT NULL DEFAULT '',
   secondary_price TEXT,
   deposit TEXT,
-  location_tag TEXT,
-  hostel TEXT,
-  wing_or_room TEXT,
-  seller_name TEXT,
-  image_url TEXT,
-  status TEXT DEFAULT 'available',
+  location_tag TEXT NOT NULL DEFAULT 'Campus',
+  hostel TEXT NOT NULL DEFAULT 'H-12',
+  wing_or_room TEXT NOT NULL DEFAULT '',
+  seller_name TEXT NOT NULL DEFAULT 'Campus Student',
+  image_url TEXT NOT NULL DEFAULT '',
+  status TEXT NOT NULL DEFAULT 'available',
   badge_note TEXT,
   quick_tag TEXT,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS blockbuddy_pings (
+CREATE TABLE IF NOT EXISTS public.blockbuddy_pings (
   id TEXT PRIMARY KEY,
   item_id TEXT,
   item_title TEXT,
@@ -56,11 +60,11 @@ CREATE TABLE IF NOT EXISTS blockbuddy_pings (
   sender_name TEXT,
   sender_hostel TEXT,
   message TEXT,
-  status TEXT DEFAULT 'sent',
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  status TEXT NOT NULL DEFAULT 'sent',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS blockbuddy_bookings (
+CREATE TABLE IF NOT EXISTS public.blockbuddy_bookings (
   id TEXT PRIMARY KEY,
   item_id TEXT,
   item_title TEXT,
@@ -72,20 +76,25 @@ CREATE TABLE IF NOT EXISTS blockbuddy_bookings (
   total_amount NUMERIC,
   deposit_amount NUMERIC,
   pickup_time TEXT,
-  status TEXT DEFAULT 'confirmed',
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  status TEXT NOT NULL DEFAULT 'confirmed',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
--- Enable public read & insert for campus peer exchange
-ALTER TABLE blockbuddy_items ENABLE ROW LEVEL SECURITY;
-ALTER TABLE blockbuddy_pings ENABLE ROW LEVEL SECURITY;
-ALTER TABLE blockbuddy_bookings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.blockbuddy_items ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.blockbuddy_pings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.blockbuddy_bookings ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Allow public read blockbuddy_items" ON blockbuddy_items FOR SELECT USING (true);
-CREATE POLICY "Allow public insert blockbuddy_items" ON blockbuddy_items FOR INSERT WITH CHECK (true);
-CREATE POLICY "Allow public read blockbuddy_pings" ON blockbuddy_pings FOR SELECT USING (true);
-CREATE POLICY "Allow public insert blockbuddy_pings" ON blockbuddy_pings FOR INSERT WITH CHECK (true);
-CREATE POLICY "Allow public insert blockbuddy_bookings" ON blockbuddy_bookings FOR INSERT WITH CHECK (true);
+DROP POLICY IF EXISTS "Allow public read blockbuddy_items" ON public.blockbuddy_items;
+DROP POLICY IF EXISTS "Allow public insert blockbuddy_items" ON public.blockbuddy_items;
+DROP POLICY IF EXISTS "Allow public read blockbuddy_pings" ON public.blockbuddy_pings;
+DROP POLICY IF EXISTS "Allow public insert blockbuddy_pings" ON public.blockbuddy_pings;
+DROP POLICY IF EXISTS "Allow public insert blockbuddy_bookings" ON public.blockbuddy_bookings;
+
+CREATE POLICY "Allow public read blockbuddy_items" ON public.blockbuddy_items FOR SELECT USING (true);
+CREATE POLICY "Allow public insert blockbuddy_items" ON public.blockbuddy_items FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow public read blockbuddy_pings" ON public.blockbuddy_pings FOR SELECT USING (true);
+CREATE POLICY "Allow public insert blockbuddy_pings" ON public.blockbuddy_pings FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow public insert blockbuddy_bookings" ON public.blockbuddy_bookings FOR INSERT WITH CHECK (true);
 `;
 
   const handleCopySql = () => {
@@ -168,7 +177,7 @@ CREATE POLICY "Allow public insert blockbuddy_bookings" ON blockbuddy_bookings F
               <span className="text-muted">Publishable API Key:</span>
               <span className="px-2 py-0.5 rounded-full bg-accent-wash/50 text-accent text-[10px] font-medium flex items-center gap-1">
                 <Check className="w-3 h-3" aria-hidden="true" />
-                Active
+                Configured
               </span>
             </div>
             <div className="font-mono text-[10px] text-ink bg-surface p-2 rounded-inner border border-faint break-all select-all">
@@ -248,9 +257,7 @@ CREATE POLICY "Allow public insert blockbuddy_bookings" ON blockbuddy_bookings F
             </div>
             <div className="space-y-2">
               <p className="text-[10px] text-muted">
-                Paste this SQL into your{' '}
-                <span className="text-ink">Supabase Dashboard {'>'} SQL Editor</span> to provision the
-                listings, pings, and bookings tables.
+                This idempotent demo schema provisions listings, pings, and bookings. Public listing access is enabled; add authentication and ownership policies before storing real student data.
               </p>
               <pre className="bg-canvas p-3 rounded-inner text-[10px] text-muted font-mono overflow-x-auto max-h-40">
                 {sqlSchemaSnippet}
