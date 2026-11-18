@@ -22,6 +22,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
 
   const [activeTab, setActiveTab] = useState<'profile' | 'pings' | 'rentals'>('profile');
   const [name, setName] = useState(currentStudent.name);
+  const [email, setEmail] = useState(currentStudent.email);
   const [hostel, setHostel] = useState(currentStudent.hostel);
   const [wing, setWing] = useState(currentStudent.wing);
   const [room, setRoom] = useState(currentStudent.room);
@@ -29,6 +30,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
   useEffect(() => {
     if (!isOpen) return;
     setName(currentStudent.name);
+    setEmail(currentStudent.email);
     setHostel(currentStudent.hostel);
     setWing(currentStudent.wing);
     setRoom(currentStudent.room);
@@ -39,6 +41,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
     onUpdateProfile({
       ...currentStudent,
       name,
+      email,
       hostel,
       wing,
       room,
@@ -128,9 +131,10 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               <label className="text-caption text-muted block">Campus Email</label>
               <input
                 type="email"
-                disabled
-                value={currentStudent.email}
-                className="input-pill bg-canvas/60 text-muted cursor-not-allowed"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@college.edu"
+                className="input-pill"
               />
             </div>
 
