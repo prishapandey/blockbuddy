@@ -34,12 +34,23 @@ try {
 export const getSupabaseClient = (): SupabaseClient | null => supabaseInstance;
 
 export const updateSupabaseUrl = (newUrl: string) => {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('blockbuddy_supabase_url', newUrl);
-  }
-  currentUrl = newUrl;
   try {
-    supabaseInstance = createClient(newUrl, SUPABASE_PUBLISHABLE_KEY);
+    const parsed = new URL(newUrl.trim());
+    if (parsed.protocol !== 'https:') return false;
+
+    const normalizedUrl = parsed.origin;
+    const client = createClient(normalizedUrl, SUPABASE_PUBLISHABLE_KEY, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+      },
+    });
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('blockbuddy_supabase_url', normalizedUrl);
+    }
+    currentUrl = normalizedUrl;
+    supabaseInstance = client;
     return true;
   } catch (e) {
     console.error('Failed to initialize client with new URL:', e);
