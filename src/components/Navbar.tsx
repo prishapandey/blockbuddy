@@ -11,6 +11,8 @@ interface NavbarProps {
   activeNavTab: string;
   onNavTabChange: (tab: string) => void;
   currentStudent: StudentProfile;
+  selectedHostelFilter: string;
+  onHostelFilterChange: (hostel: string) => void;
   supabaseConnected: boolean;
 }
 
@@ -23,6 +25,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   activeNavTab,
   onNavTabChange,
   currentStudent,
+  selectedHostelFilter,
+  onHostelFilterChange,
   supabaseConnected,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -30,7 +34,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const hostelOptions = [
     { id: 'all', label: 'All Campus Hostels' },
-    { id: 'H-12 & 14', label: 'IITB · H-12 & 14' },
+    { id: 'H-12 & 14', label: 'H-12–H-15 cluster' },
     { id: 'H-12', label: 'Hostel 12' },
     { id: 'H-13', label: 'Hostel 13' },
     { id: 'H-14', label: 'Hostel 14' },
@@ -39,7 +43,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   ];
 
   const currentHostelLabel =
-    hostelOptions.find((o) => o.id === 'H-12 & 14')?.label || 'IITB · H-12 & 14';
+    hostelOptions.find((o) => o.id === selectedHostelFilter)?.label || 'All Campus Hostels';
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,8 +68,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           <rect x="2" y="2" width="20" height="20" rx="4" />
           <path d="M12 6v12M8 10h8" />
         </svg>
-        <span>Download BlockBuddy app</span>
-        <span className="text-[11px] text-white/60">Available on iOS & Android</span>
+        <span>BlockBuddy</span>
+        <span className="text-[11px] text-white/60">Campus peer-to-peer marketplace demo</span>
         <svg className="app-banner-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
@@ -162,7 +166,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
                     <circle cx="12" cy="10" r="3" />
                   </svg>
-                  <span className="text-ink whitespace-nowrap">IITB · H-12 & 14</span>
+                  <span className="text-ink whitespace-nowrap">{currentHostelLabel}</span>
                 </div>
                 <svg className="w-3.5 h-3.5 text-muted transition-transform" style={{ transform: showHostelDropdown ? 'rotate(180deg)' : 'rotate(0deg)' }} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <polyline points="6 9 12 15 18 9" />
@@ -177,14 +181,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                       key={opt.id}
                       type="button"
                       role="option"
-                      aria-selected={activeNavTab === 'home' && opt.id === 'H-12 & 14'}
+                      aria-selected={selectedHostelFilter === opt.id}
                       onClick={() => {
+                        onHostelFilterChange(opt.id);
                         setShowHostelDropdown(false);
                       }}
-                      className={`hostel-option ${opt.id === 'H-12 & 14' ? 'hostel-option-active' : ''}`}
+                      className={`hostel-option ${selectedHostelFilter === opt.id ? 'hostel-option-active' : ''}`}
                     >
                       <span>{opt.label}</span>
-                      {opt.id === 'H-12 & 14' && <span className="hostel-option-dot" />}
+                      {selectedHostelFilter === opt.id && <span className="hostel-option-dot" />}
                     </button>
                   ))}
                 </div>
