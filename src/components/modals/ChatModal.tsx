@@ -20,18 +20,19 @@ export const ChatModal: React.FC<ChatModalProps> = ({
   onSubmit,
   currentStudent,
 }) => {
-  if (!isOpen || !item) return null;
-
-  const defaultMsg =
-    item.category === 'urgent'
+  const defaultMsg = item
+    ? item.category === 'urgent'
       ? `Hey! Is ${item.title} still available? Can pick it up in 5 minutes from ${item.locationTag}.`
-      : `Hi! Interested in "${item.title}". Can I drop by to inspect it?`;
+      : `Hi! Interested in "${item.title}". Can I drop by to inspect it?`
+    : '';
 
-  const [message, setMessage] = useState<string>(defaultMsg);
+  const [message, setMessage] = useState<string>('');
 
   useEffect(() => {
-    setMessage(defaultMsg);
-  }, [item]);
+    if (item) setMessage(defaultMsg);
+  }, [item?.id]);
+
+  if (!isOpen || !item) return null;
 
   const quickChips = [
     'Can pick up in 5 minutes',
