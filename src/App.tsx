@@ -6,6 +6,7 @@ import { NeedItNowSection } from './components/NeedItNowSection';
 import { MarketplaceSection } from './components/MarketplaceSection';
 import { CampusTrustSection } from './components/CampusTrustSection';
 import { ProjectFlowSection } from './components/ProjectFlowSection';
+import { BlockchainSection } from './components/BlockchainSection';
 import { Footer } from './components/Footer';
 import { RentModal } from './components/modals/RentModal';
 import { ChatModal } from './components/modals/ChatModal';
@@ -324,6 +325,9 @@ export default function App() {
 
         {/* Section 4: Campus Safety & Simple Trade Flow */}
         <CampusTrustSection />
+
+        {/* Section 5: Blockchain Activity — transaction tracking, smart contracts, wallet analytics */}
+        <BlockchainSection />
 
         {/* Project overview: user journey + implementation timeline */}
         <ProjectFlowSection />

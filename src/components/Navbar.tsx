@@ -98,6 +98,23 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             Need It Now
           </button>
+          <button
+            onClick={() => {
+              onNavTabChange('blockchain');
+              const el = document.getElementById('blockchain');
+              el?.scrollIntoView({ behavior: 'smooth' });
+            }}
+            className={`px-3 py-1.5 rounded-md transition-colors flex items-center gap-1.5 ${
+              activeNavTab === 'blockchain'
+                ? 'text-white bg-[#121316]'
+                : 'text-[#94a3b8] hover:text-white hover:bg-[#121316]'
+            }`}
+          >
+            <span>On-Chain</span>
+            <span className="text-[10px] font-semibold bg-[#a78bfa]/20 text-[#a78bfa] px-1.5 py-0.5 rounded">
+              NEW
+            </span>
+          </button>
         </nav>
 
         {/* Right Action Items */}
