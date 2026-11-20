@@ -124,8 +124,15 @@ export const NeedItNowPage: React.FC = () => {
       </div>
 
       {filtered.length === 0 && (
-        <div className="p-12 text-center bg-[#121316] border border-[#22252b] rounded-xl">
-          <p className="text-[#94a3b8]">No urgent items for this filter right now.</p>
+        <div className="p-12 text-center bg-[#121316] border border-[#22252b] rounded-xl space-y-3">
+          <p className="text-[#94a3b8]">No urgent items match your current search and filters.</p>
+          <button
+            type="button"
+            onClick={() => { setSearch(''); setHostel('All'); setTag('All'); }}
+            className="text-xs bg-[#1a1c22] hover:bg-[#252830] text-amber-400 border border-amber-500/30 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+          >
+            Clear all filters
+          </button>
         </div>
       )}
 

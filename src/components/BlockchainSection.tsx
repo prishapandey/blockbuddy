@@ -122,6 +122,10 @@ export const BlockchainSection: React.FC = () => {
   const [txFilter, setTxFilter] = useState<'all' | BlockchainTransaction['status']>('all');
   const [expandedTx, setExpandedTx] = useState<string | null>(null);
   const [ticking, setTicking] = useState(0); // triggers "live" re-renders
+  const [simFeedback, setSimFeedback] = useState<string | null>(null);
+
+  const [transactions, setTransactions] = useState<BlockchainTransaction[]>(() => generateTransactions(20));
+  const [events, setEvents] = useState<SmartContractEvent[]>(() => generateContractEvents(8));
 
   // "live" counter — adds a new simulated tx every 8 s
   useEffect(() => {
@@ -129,10 +133,49 @@ export const BlockchainSection: React.FC = () => {
     return () => clearInterval(id);
   }, []);
 
-  const transactions = useMemo(() => generateTransactions(20), []);
-  const events = useMemo(() => generateContractEvents(8), []);
-  const wallet = useMemo(() => generateWalletStats(), []);
+  const wallet = useMemo(() => generateWalletStats(), [ticking]);
   const activityRaw = useMemo(() => generateActivityFeed(24), [ticking]);
+
+  // Simulate an on-chain transaction interactively
+  const handleSimulateAction = (actionType: 'escrow_lock' | 'escrow_release') => {
+    const randomHex = Array.from({ length: 4 }, () =>
+      Math.floor(Math.random() * 0xffff).toString(16).padStart(4, '0')
+    ).join('');
+    const blockNum = 18_501_000 + ticking + 1;
+    const isLock = actionType === 'escrow_lock';
+
+    const newTx: BlockchainTransaction = {
+      hash: `0x${randomHex}92a87bc12d`,
+      blockNumber: blockNum,
+      fromAddress: '0x3F8a...9B1c (Student)',
+      toAddress: isLock ? '0x7F2e...b491 (RentalEscrow)' : '0x9D4a...f055 (DepositVault)',
+      type: isLock ? 'escrow_deposit' : 'escrow_release',
+      amountInr: isLock ? 150 : 150,
+      gasFeeInr: 0.12,
+      status: 'confirmed',
+      confirmations: 1,
+      timestamp: new Date().toISOString(),
+    };
+
+    const newEvent: SmartContractEvent = {
+      id: `evt-${Date.now()}`,
+      contractName: 'RentalEscrow',
+      contractAddress: '0x7F2e0a29C77F5B6e21E42aB34b07172dB285b491',
+      eventName: isLock ? 'DepositLocked' : 'DepositReleased',
+      blockNumber: blockNum,
+      timestamp: new Date().toISOString(),
+      summary: isLock
+        ? 'Security deposit of ₹150 locked in escrow for Calculator rental.'
+        : 'Escrow settlement completed. Security deposit of ₹150 released back to renter.',
+      severity: 'success',
+    };
+
+    setTransactions((prev) => [newTx, ...prev]);
+    setEvents((prev) => [newEvent, ...prev]);
+    setTicking((n) => n + 1);
+    setSimFeedback(isLock ? '⚡ Escrow deposit locked on-chain!' : '✅ Escrow deposit released!');
+    setTimeout(() => setSimFeedback(null), 3000);
+  };
 
   const filteredTxs = useMemo(
     () => (txFilter === 'all' ? transactions : transactions.filter((t) => t.status === txFilter)),
@@ -165,7 +208,30 @@ export const BlockchainSection: React.FC = () => {
             Real-time transaction tracking, smart contract monitoring, and wallet analytics for every campus trade.
           </p>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
+          {simFeedback && (
+            <span className="text-xs font-semibold text-[#3ecf8e] bg-[#3ecf8e]/10 border border-[#3ecf8e]/30 px-2.5 py-1 rounded-md animate-fade-in">
+              {simFeedback}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={() => handleSimulateAction('escrow_lock')}
+            className="flex items-center gap-1.5 text-xs bg-[#1a1c22] hover:bg-[#252830] text-[#4d8eff] border border-[#4d8eff]/30 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+            title="Simulate locking a new security deposit in RentalEscrow"
+          >
+            <Zap className="w-3.5 h-3.5 text-[#4d8eff]" />
+            Simulate Deposit Lock
+          </button>
+          <button
+            type="button"
+            onClick={() => handleSimulateAction('escrow_release')}
+            className="flex items-center gap-1.5 text-xs bg-[#1a1c22] hover:bg-[#252830] text-[#3ecf8e] border border-[#3ecf8e]/30 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+            title="Simulate releasing escrow deposit upon successful return"
+          >
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#3ecf8e]" />
+            Simulate Release
+          </button>
           <span className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20">
             <span className="w-1.5 h-1.5 rounded-full bg-[#3ecf8e] animate-pulse" />
             Live · Block #{(18_501_000 + ticking).toLocaleString()}

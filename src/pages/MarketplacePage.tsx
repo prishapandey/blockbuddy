@@ -125,8 +125,15 @@ export const MarketplacePage: React.FC = () => {
       </div>
 
       {filtered.length === 0 && (
-        <div className="p-12 text-center bg-[#121316] border border-[#22252b] rounded-xl">
-          <p className="text-[#94a3b8]">No listings match your filters.</p>
+        <div className="p-12 text-center bg-[#121316] border border-[#22252b] rounded-xl space-y-3">
+          <p className="text-[#94a3b8]">No marketplace listings match your current search and filters.</p>
+          <button
+            type="button"
+            onClick={() => { setSearch(''); setHostel('All'); setCat('All'); setSort('default'); }}
+            className="text-xs bg-[#1a1c22] hover:bg-[#252830] text-[#4d8eff] border border-[#4d8eff]/30 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+          >
+            Clear all filters
+          </button>
         </div>
       )}
 

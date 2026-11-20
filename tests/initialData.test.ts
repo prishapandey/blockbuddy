@@ -12,12 +12,13 @@ describe('INITIAL_STUDENT', () => {
     expect(INITIAL_STUDENT.name.trim().length).toBeGreaterThan(0);
   });
 
-  it('email ends with @iitb.ac.in', () => {
-    expect(INITIAL_STUDENT.email).toMatch(/@iitb\.ac\.in$/);
+  it('email ends with verified campus domain (@srmist.edu.in or @iitb.ac.in)', () => {
+    expect(INITIAL_STUDENT.email).toMatch(/@(srmist\.edu\.in|iitb\.ac\.in)$/);
   });
 
-  it('hostel is a known hostel code', () => {
-    expect(['H-12', 'H-13', 'H-14', 'H-15', 'H-16']).toContain(INITIAL_STUDENT.hostel);
+  it('hostel is a known hostel or block code', () => {
+    const validHostels = ['A Block', 'B Block', 'C Block', 'D Block', 'E Block', 'F Block', 'H-12', 'H-13', 'H-14', 'H-15', 'H-16'];
+    expect(validHostels).toContain(INITIAL_STUDENT.hostel);
   });
 });
 
@@ -63,8 +64,8 @@ describe('INITIAL_ITEMS', () => {
     });
   });
 
-  it('every item has a known hostel code', () => {
-    const valid = new Set(['H-12', 'H-13', 'H-14', 'H-15', 'H-16']);
+  it('every item has a known hostel or block code', () => {
+    const valid = new Set(['A Block', 'B Block', 'C Block', 'D Block', 'E Block', 'F Block', 'H-12', 'H-13', 'H-14', 'H-15', 'H-16']);
     INITIAL_ITEMS.forEach((item) => {
       expect(valid.has(item.hostel)).toBe(true);
     });

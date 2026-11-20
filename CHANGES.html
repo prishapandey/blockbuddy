@@ -229,7 +229,7 @@
   <div class="meta">
     <span><strong>Date:</strong> November 2026</span>
     <span><strong>Project:</strong> C:\Users\yoges\Desktop\blockbuddy</span>
-    <span><strong>Status:</strong> ✅ Build passing · 57/57 tests green</span>
+    <span><strong>Status:</strong> ✅ Build passing · 65/65 tests green</span>
   </div>
 </div>
 
@@ -237,10 +237,10 @@
 <div class="toc">
   <h2>Contents</h2>
   <ol>
-    <li>Advanced Functionality — Blockchain / On-Chain Layer</li>
-    <li>Testing — Vitest suite (57 tests)</li>
+    <li>Advanced Functionality — Blockchain / On-Chain Layer (Interactive Simulation)</li>
+    <li>Testing — Vitest suite (65 tests across 4 test suites)</li>
     <li>Academic Report — Literature Review, Research Gap, Benchmarking</li>
-    <li>Vercel Deployment Fix</li>
+    <li>Dedicated Marketplace Pages & Login Page</li>
     <li>File-by-file Change Summary</li>
   </ol>
 </div>
@@ -345,24 +345,29 @@
   </p>
 
   <div class="callout green">
-    ✅ &nbsp;<strong>57 / 57 tests pass</strong> &nbsp;·&nbsp; 3 test files &nbsp;·&nbsp; 460 ms total runtime
+    ✅ &nbsp;<strong>65 / 65 tests pass</strong> &nbsp;·&nbsp; 4 test files &nbsp;·&nbsp; 605 ms total runtime
   </div>
 
-  <div class="test-grid">
+  <div class="test-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
     <div class="test-box">
       <div class="label">blockchain.test.ts</div>
-      <div class="value">24 tests</div>
+      <div class="value">26 tests</div>
       <div class="file">generateTransactions, generateContractEvents,<br>generateWalletStats, generateActivityFeed,<br>TX_TYPE_LABELS, TX_STATUS_COLORS</div>
     </div>
     <div class="test-box">
       <div class="label">filters.test.ts</div>
-      <div class="value">19 tests</div>
-      <div class="file">filterRentals (8), filterUrgent (4),<br>filterMarketplace (4) — covers search,<br>hostel presets, quickTag, edge cases</div>
+      <div class="value">17 tests</div>
+      <div class="file">filterRentals, filterUrgent,<br>filterMarketplace — search,<br>hostel presets, quickTag, edge cases</div>
     </div>
     <div class="test-box">
       <div class="label">initialData.test.ts</div>
       <div class="value">14 tests</div>
       <div class="file">INITIAL_STUDENT shape,<br>INITIAL_ITEMS count / unique IDs /<br>category split / field validity</div>
+    </div>
+    <div class="test-box">
+      <div class="label">auth.test.ts</div>
+      <div class="value">8 tests</div>
+      <div class="file">mockLogin validation, campus domain gating,<br>session persistence, storage cleanup</div>
     </div>
   </div>
 
@@ -375,6 +380,7 @@
       <tr><td><code>tests/blockchain.test.ts</code></td><td>Unit tests for blockchain data generators and label maps</td></tr>
       <tr><td><code>tests/filters.test.ts</code></td><td>Unit tests for all three item-filter functions extracted from App.tsx</td></tr>
       <tr><td><code>tests/initialData.test.ts</code></td><td>Shape and validity checks on seed data and default student profile</td></tr>
+      <tr><td><code>tests/auth.test.ts</code></td><td>Institutional email domain gating, session persistence, and auth error handling</td></tr>
       <tr><td><code>vitest.config.ts</code></td><td>Vitest configuration (node environment, coverage via v8, path alias)</td></tr>
     </tbody>
   </table>

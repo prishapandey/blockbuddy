@@ -32,22 +32,24 @@ export function clearSession(): void {
   localStorage.removeItem(SESSION_KEY);
 }
 
-/** Validates an SRM email and "logs in" with a default profile. */
+/** Validates a verified campus email and "logs in" with a default profile. */
 export function mockLogin(email: string, name: string): { ok: boolean; error?: string; session?: AuthSession } {
   const trimmed = email.trim().toLowerCase();
-  if (!trimmed.endsWith('@srmist.edu.in')) {
-    return { ok: false, error: 'Only @srmist.edu.in email addresses are accepted.' };
+  const isValidCampus = trimmed.endsWith('@srmist.edu.in') || trimmed.endsWith('@iitb.ac.in');
+  if (!isValidCampus) {
+    return { ok: false, error: 'Only verified campus emails (@srmist.edu.in or @iitb.ac.in) are accepted.' };
   }
   if (!name.trim()) {
     return { ok: false, error: 'Please enter your name.' };
   }
 
+  const isIITB = trimmed.endsWith('@iitb.ac.in');
   const student: StudentProfile = {
     name: name.trim(),
     email: trimmed,
-    hostel: 'A Block',
-    room: 'Room 101',
-    wing: 'Floor 1',
+    hostel: isIITB ? 'H-12' : 'A Block',
+    room: isIITB ? 'Room 204' : 'Room 101',
+    wing: isIITB ? 'Wing B' : 'Floor 1',
     department: 'Computer Science & Engineering',
   };
 

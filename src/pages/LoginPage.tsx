@@ -182,10 +182,23 @@ export const LoginPage: React.FC = () => {
                 </span>
               ) : (
                 <>
-                  <span>Sign in with SRM</span>
+                  <span>Sign in with Verified Campus Email</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => {
+                setName('Aarav Sharma');
+                setEmail('aarav.sharma@srmist.edu.in');
+                setPassword('campusPass123');
+              }}
+              className="w-full bg-[#16181d] hover:bg-[#1f2229] text-[#94a3b8] hover:text-white text-xs font-medium py-2 rounded-lg border border-[#22252b] transition-colors flex items-center justify-center gap-1.5 cursor-pointer"
+            >
+              <Zap className="w-3.5 h-3.5 text-[#4d8eff]" />
+              Quick Fill Demo Student Credentials
             </button>
           </form>
 
