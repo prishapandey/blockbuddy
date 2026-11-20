@@ -23,7 +23,7 @@ export const SellListModal: React.FC<SellListModalProps> = ({
   const [priceValue, setPriceValue] = useState<string>('30');
   const [rentalUnit, setRentalUnit] = useState<string>('/ day');
   const [deposit, setDeposit] = useState<string>('Deposit: ₹150 (refundable)');
-  const [hostel, setHostel] = useState<string>(currentStudent.hostel || 'H-12');
+  const [hostel, setHostel] = useState<string>(currentStudent.hostel || 'A Block');
   const [wingOrRoom, setWingOrRoom] = useState<string>(
     `${currentStudent.wing}, ${currentStudent.room}`
   );
@@ -246,11 +246,12 @@ export const SellListModal: React.FC<SellListModalProps> = ({
                 onChange={(e) => setHostel(e.target.value)}
                 className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
               >
-                <option value="H-12">Hostel 12</option>
-                <option value="H-13">Hostel 13</option>
-                <option value="H-14">Hostel 14</option>
-                <option value="H-15">Hostel 15</option>
-                <option value="H-16">Hostel 16</option>
+                <option value="A Block">A Block</option>
+                <option value="B Block">B Block</option>
+                <option value="C Block">C Block</option>
+                <option value="D Block">D Block</option>
+                <option value="E Block">E Block</option>
+                <option value="F Block">F Block</option>
               </select>
             </div>
             <div className="space-y-1">

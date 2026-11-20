@@ -22,16 +22,17 @@ export const Hero: React.FC<HeroProps> = ({
 
   const hostelOptions = [
     { id: 'all', label: 'All Campus Hostels' },
-    { id: 'H-12 & 14', label: 'IITB · H-12 & 14' },
-    { id: 'H-12', label: 'Hostel 12' },
-    { id: 'H-13', label: 'Hostel 13' },
-    { id: 'H-14', label: 'Hostel 14' },
-    { id: 'H-15', label: 'Hostel 15' },
-    { id: 'H-16', label: 'Hostel 16' },
+    { id: 'AB', label: 'SRM · A & B Block' },
+    { id: 'A Block', label: 'A Block' },
+    { id: 'B Block', label: 'B Block' },
+    { id: 'C Block', label: 'C Block' },
+    { id: 'D Block', label: 'D Block' },
+    { id: 'E Block', label: 'E Block' },
+    { id: 'F Block', label: 'F Block' },
   ];
 
   const currentHostelLabel =
-    hostelOptions.find((o) => o.id === selectedHostelFilter)?.label || 'IITB · H-12 & 14';
+    hostelOptions.find((o) => o.id === selectedHostelFilter)?.label || 'SRM · A & B Block';
 
   const quickFilters = [
     { label: 'Scientific Calculators', target: 'Scientific Calculators', section: 'rent-gear' },
@@ -55,7 +56,7 @@ export const Hero: React.FC<HeroProps> = ({
         Your campus. Buy, sell, or rent in minutes.
       </h1>
       <p className="text-[#94a3b8] text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-        Direct room-to-room exchange across Hostels 12, 13, 14, 15 &amp; 16. Zero couriers, verified students, 0% fees.
+        Direct room-to-room exchange across A, B, C, D, E &amp; F Blocks. Zero couriers, verified students, 0% fees.
       </p>
 
       {/* Main Search Box */}

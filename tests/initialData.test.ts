@@ -22,20 +22,20 @@ describe('INITIAL_STUDENT', () => {
 });
 
 describe('INITIAL_ITEMS', () => {
-  it('has exactly 12 items (4 rental + 4 urgent + 4 marketplace)', () => {
-    expect(INITIAL_ITEMS).toHaveLength(12);
+  it('has exactly 40 items (12 rental + 12 urgent + 16 marketplace)', () => {
+    expect(INITIAL_ITEMS).toHaveLength(40);
   });
 
-  it('has 4 rental items', () => {
-    expect(INITIAL_ITEMS.filter((i) => i.category === 'rental')).toHaveLength(4);
+  it('has 12 rental items', () => {
+    expect(INITIAL_ITEMS.filter((i) => i.category === 'rental')).toHaveLength(12);
   });
 
-  it('has 4 urgent items', () => {
-    expect(INITIAL_ITEMS.filter((i) => i.category === 'urgent')).toHaveLength(4);
+  it('has 12 urgent items', () => {
+    expect(INITIAL_ITEMS.filter((i) => i.category === 'urgent')).toHaveLength(12);
   });
 
-  it('has 4 marketplace items', () => {
-    expect(INITIAL_ITEMS.filter((i) => i.category === 'marketplace')).toHaveLength(4);
+  it('has 16 marketplace items', () => {
+    expect(INITIAL_ITEMS.filter((i) => i.category === 'marketplace')).toHaveLength(16);
   });
 
   it('every item has a unique id', () => {

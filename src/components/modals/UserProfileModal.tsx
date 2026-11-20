@@ -51,7 +51,7 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
               <h3 className="text-sm font-semibold text-white">Student Account</h3>
               <p className="text-[11px] text-[#94a3b8] flex items-center gap-1">
                 <ShieldCheck className="w-3 h-3 text-[#3ecf8e]" />
-                <span>Verified IITB Student</span>
+                <span>Verified SRM Student</span>
               </p>
             </div>
           </div>
@@ -142,11 +142,12 @@ export const UserProfileModal: React.FC<UserProfileModalProps> = ({
                   onChange={(e) => setHostel(e.target.value)}
                   className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
                 >
-                  <option value="H-12">H-12</option>
-                  <option value="H-13">H-13</option>
-                  <option value="H-14">H-14</option>
-                  <option value="H-15">H-15</option>
-                  <option value="H-16">H-16</option>
+                  <option value="A Block">A Block</option>
+                  <option value="B Block">B Block</option>
+                  <option value="C Block">C Block</option>
+                  <option value="D Block">D Block</option>
+                  <option value="E Block">E Block</option>
+                  <option value="F Block">F Block</option>
                 </select>
               </div>
               <div className="space-y-1">

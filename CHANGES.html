@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>BlockBuddy — Changes Report</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    line-height: 1.65;
+    color: #1a1a2e;
+    background: #fff;
+    padding: 48px 56px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* ---- Cover ---- */
+  .cover {
+    border-bottom: 3px solid #4f46e5;
+    padding-bottom: 28px;
+    margin-bottom: 36px;
+  }
+  .cover-badge {
+    display: inline-block;
+    background: #4f46e5;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  .cover h1 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f0f1a;
+    line-height: 1.2;
+  }
+  .cover .subtitle {
+    color: #6b7280;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+  .cover .meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 18px;
+    font-size: 12px;
+    color: #6b7280;
+  }
+  .cover .meta span strong { color: #374151; }
+
+  /* ---- TOC ---- */
+  .toc {
+    background: #f8f7ff;
+    border: 1px solid #e0e7ff;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin-bottom: 36px;
+  }
+  .toc h2 { font-size: 13px; font-weight: 700; color: #4f46e5; margin-bottom: 10px; letter-spacing: .5px; text-transform: uppercase; }
+  .toc ol { padding-left: 18px; }
+  .toc li { margin: 4px 0; color: #374151; }
+
+  /* ---- Sections ---- */
+  section { margin-bottom: 40px; }
+  h2.section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: #0f0f1a;
+    border-left: 4px solid #4f46e5;
+    padding-left: 12px;
+    margin-bottom: 16px;
+  }
+  h3.sub-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin: 18px 0 8px;
+  }
+  p { margin-bottom: 10px; color: #374151; }
+
+  /* ---- File change cards ---- */
+  .file-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .file-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 9px 14px;
+  }
+  .file-pill {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .pill-new    { background: #d1fae5; color: #065f46; }
+  .pill-edit   { background: #dbeafe; color: #1e40af; }
+  .pill-config { background: #fef3c7; color: #92400e; }
+  .file-path {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    color: #374151;
+    word-break: break-all;
+  }
+  .file-body { padding: 12px 14px; }
+  .file-body ul { padding-left: 18px; }
+  .file-body li { margin: 4px 0; color: #374151; }
+  .file-body li::marker { color: #4f46e5; }
+
+  /* ---- Test results ---- */
+  .test-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 10px;
+    margin-top: 10px;
+  }
+  .test-box {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 14px;
+  }
+  .test-box .label { font-size: 11px; color: #6b7280; margin-bottom: 4px; }
+  .test-box .value { font-size: 18px; font-weight: 700; color: #059669; }
+  .test-box .file  { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: #6b7280; margin-top: 4px; }
+
+  /* ---- Diff block ---- */
+  .diff-block {
+    background: #0f172a;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin: 10px 0;
+    overflow-x: auto;
+  }
+  .diff-block code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1.6;
+    white-space: pre;
+    color: #e2e8f0;
+    display: block;
+  }
+  .diff-add  { color: #86efac; }
+  .diff-rem  { color: #fca5a5; }
+  .diff-meta { color: #94a3b8; }
+
+  /* ---- Table ---- */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    margin: 10px 0;
+  }
+  th {
+    background: #f1f0ff;
+    color: #4f46e5;
+    font-weight: 600;
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 2px solid #c7d2fe;
+  }
+  td {
+    padding: 7px 12px;
+    border-bottom: 1px solid #f3f4f6;
+    color: #374151;
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:nth-child(even) td { background: #fafaf9; }
+
+  /* ---- Callout ---- */
+  .callout {
+    border-left: 4px solid #f59e0b;
+    background: #fffbeb;
+    padding: 10px 14px;
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    color: #78350f;
+    margin: 12px 0;
+  }
+  .callout.info  { border-color: #4f46e5; background: #eef2ff; color: #3730a3; }
+  .callout.green { border-color: #059669; background: #ecfdf5; color: #064e3b; }
+
+  /* ---- Footer ---- */
+  footer {
+    border-top: 1px solid #e5e7eb;
+    padding-top: 16px;
+    margin-top: 48px;
+    font-size: 11px;
+    color: #9ca3af;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  /* ---- Print ---- */
+  @media print {
+    body { padding: 32px 40px; font-size: 11.5px; }
+    .cover h1 { font-size: 24px; }
+    section { page-break-inside: avoid; }
+    .file-card { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-badge">Change Report</div>
+  <h1>BlockBuddy — All Changes Made</h1>
+  <p class="subtitle">Campus peer-to-peer marketplace · IIT Bombay hostels</p>
+  <div class="meta">
+    <span><strong>Date:</strong> November 2026</span>
+    <span><strong>Project:</strong> C:\Users\yoges\Desktop\blockbuddy</span>
+    <span><strong>Status:</strong> ✅ Build passing · 57/57 tests green</span>
+  </div>
+</div>
+
+<!-- TOC -->
+<div class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li>Advanced Functionality — Blockchain / On-Chain Layer</li>
+    <li>Testing — Vitest suite (57 tests)</li>
+    <li>Academic Report — Literature Review, Research Gap, Benchmarking</li>
+    <li>Vercel Deployment Fix</li>
+    <li>File-by-file Change Summary</li>
+  </ol>
+</div>
+
+<!-- ============================================================ -->
+<section>
+  <h2 class="section-title">1 · Advanced Functionality — Blockchain Layer</h2>
+  <p>
+    Four blockchain features were added under a new <strong>On-Chain</strong> section that appears in the main
+    page between the Campus Trust panel and the Project Flow section. A nav link labelled
+    <em>On-Chain</em> (purple NEW badge) was added to the top navbar so the section is reachable
+    without scrolling.
+  </p>
+
+  <h3 class="sub-title">New file: <code>src/lib/blockchain.ts</code></h3>
+  <div class="file-card">
+    <div class="file-header">
+      <span class="file-pill pill-new">NEW</span>
+      <span class="file-path">src/lib/blockchain.ts</span>
+    </div>
+    <div class="file-body">
+      <p>Pure TypeScript data layer. No external blockchain library required — uses a seeded LCG
+         (linear-congruential generator) so all data is deterministic and reproducible across reloads.</p>
+      <ul>
+        <li><strong>generateTransactions(n)</strong> — produces <em>n</em> realistic on-chain
+            transactions (hash, block number, from/to addresses, type, INR amount, gas, status,
+            confirmation count). Sorted newest-first. Statuses: confirmed / pending / failed.</li>
+        <li><strong>generateContractEvents(n)</strong> — returns events from three smart contracts
+            (RentalEscrow, MarketplaceTrade, DepositVault) with severity levels
+            (info / warning / success).</li>
+        <li><strong>generateWalletStats(address)</strong> — per-address wallet analytics:
+            totalSent, totalReceived, activeLocks, txCount, trustScore (0–100), activeSince.</li>
+        <li><strong>generateActivityFeed(minutes)</strong> — per-minute volume and tx-count
+            feed for the live activity chart.</li>
+        <li><strong>TX_TYPE_LABELS / TX_STATUS_COLORS</strong> — label and colour maps for UI use.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub-title">New file: <code>src/components/BlockchainSection.tsx</code></h3>
+  <div class="file-card">
+    <div class="file-header">
+      <span class="file-pill pill-new">NEW</span>
+      <span class="file-path">src/components/BlockchainSection.tsx</span>
+    </div>
+    <div class="file-body">
+      <p>Full React section component with four sub-tabs:</p>
+      <ul>
+        <li><strong>Transactions tab</strong> — filter pills (all / confirmed / pending / failed),
+            expandable rows showing block number, confirmations, gas fee, from/to addresses. Live
+            block counter increments every 8 s.</li>
+        <li><strong>Smart Contracts tab</strong> — cards for RentalEscrow, MarketplaceTrade,
+            DepositVault showing address, description, and event count. Event log below with
+            colour-coded severity icons.</li>
+        <li><strong>Wallet Analytics tab</strong> — INR totals, trust score progress bar,
+            transaction-type breakdown with mini progress bars.</li>
+        <li><strong>Live Activity tab</strong> — SVG bar chart of volume per minute (last 24
+            data points), live feed list, refreshes every 8 s via <code>setInterval</code>.</li>
+      </ul>
+      <p>Also includes four KPI stat cards (Total Volume, Confirmed Txs, Pending, Gas Used) each
+         with an SVG sparkline. No chart library dependency — sparkline is hand-drawn SVG polyline.</p>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Edited: <code>src/App.tsx</code></h3>
+  <div class="file-card">
+    <div class="file-header">
+      <span class="file-pill pill-edit">EDIT</span>
+      <span class="file-path">src/App.tsx</span>
+    </div>
+    <div class="file-body">
+      <ul>
+        <li>Added import for <code>BlockchainSection</code>.</li>
+        <li>Mounted <code>&lt;BlockchainSection /&gt;</code> between
+            <code>&lt;CampusTrustSection /&gt;</code> and <code>&lt;ProjectFlowSection /&gt;</code>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 class="sub-title">Edited: <code>src/components/Navbar.tsx</code></h3>
+  <div class="file-card">
+    <div class="file-header">
+      <span class="file-pill pill-edit">EDIT</span>
+      <span class="file-path">src/components/Navbar.tsx</span>
+    </div>
+    <div class="file-body">
+      <ul>
+        <li>Added an <strong>On-Chain</strong> nav button after "Need It Now" with a purple
+            <em>NEW</em> badge that scrolls to <code>#blockchain</code>.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2 class="section-title">2 · Testing</h2>
+  <p>
+    Vitest was installed as a dev dependency. A <code>vitest.config.ts</code> was created.
+    Three test scripts were added to <code>package.json</code>.
+    Three test files were written covering all business logic.
+  </p>
+
+  <div class="callout green">
+    ✅ &nbsp;<strong>57 / 57 tests pass</strong> &nbsp;·&nbsp; 3 test files &nbsp;·&nbsp; 460 ms total runtime
+  </div>
+
+  <div class="test-grid">
+    <div class="test-box">
+      <div class="label">blockchain.test.ts</div>
+      <div class="value">24 tests</div>
+      <div class="file">generateTransactions, generateContractEvents,<br>generateWalletStats, generateActivityFeed,<br>TX_TYPE_LABELS, TX_STATUS_COLORS</div>
+    </div>
+    <div class="test-box">
+      <div class="label">filters.test.ts</div>
+      <div class="value">19 tests</div>
+      <div class="file">filterRentals (8), filterUrgent (4),<br>filterMarketplace (4) — covers search,<br>hostel presets, quickTag, edge cases</div>
+    </div>
+    <div class="test-box">
+      <div class="label">initialData.test.ts</div>
+      <div class="value">14 tests</div>
+      <div class="file">INITIAL_STUDENT shape,<br>INITIAL_ITEMS count / unique IDs /<br>category split / field validity</div>
+    </div>
+  </div>
+
+  <h3 class="sub-title">New files</h3>
+  <table>
+    <thead>
+      <tr><th>File</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>tests/blockchain.test.ts</code></td><td>Unit tests for blockchain data generators and label maps</td></tr>
+      <tr><td><code>tests/filters.test.ts</code></td><td>Unit tests for all three item-filter functions extracted from App.tsx</td></tr>
+      <tr><td><code>tests/initialData.test.ts</code></td><td>Shape and validity checks on seed data and default student profile</td></tr>
+      <tr><td><code>vitest.config.ts</code></td><td>Vitest configuration (node environment, coverage via v8, path alias)</td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="sub-title">Scripts added to <code>package.json</code></h3>
+  <div class="diff-block"><code><span class="diff-add">+   "test": "vitest run",</span>
+<span class="diff-add">+   "test:watch": "vitest",</span>
+<span class="diff-add">+   "test:coverage": "vitest run --coverage"</span></code></div>
+
+  <h3 class="sub-title">Dev dependencies added</h3>
+  <table>
+    <thead><tr><th>Package</th><th>Version</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>vitest</code></td><td>^5.1.1</td><td>Test runner</td></tr>
+      <tr><td><code>@vitest/coverage-v8</code></td><td>^5.1.1</td><td>Native V8 coverage provider</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2 class="section-title">3 · Academic Report</h2>
+  <p>
+    A comprehensive project report was written to <code>REPORT.md</code> covering all three
+    academic sections requested.
+  </p>
+
+  <div class="file-card">
+    <div class="file-header">
+      <span class="file-pill pill-new">NEW</span>
+      <span class="file-path">REPORT.md</span>
+    </div>
+    <div class="file-body">
+      <ul>
+        <li>
+          <strong>§ Literature Review (item 7)</strong> — covers P2P marketplace theory
+          (Belk 2014, Einav et al. 2016), campus trust models (Pavlou &amp; Fygenson 2006,
+          Greenberg et al. 2013), blockchain escrow research (Nakamoto 2008, Buterin 2014,
+          Xu et al. 2019), and UX for financial transactions (Nielsen 2000, Fogg 2003).
+          Comparison table of 6 prior systems (OLX, Airbnb, eBay, OpenBazaar, Peerby, UniSwap).
+        </li>
+        <li>
+          <strong>§ Research Gap (item 5)</strong> — five specific gaps identified:
+          <ol style="margin-top:6px; padding-left:16px;">
+            <li>Demand modelling for exam-period rental spikes (synchronised, episodic demand)</li>
+            <li>Deposit sizing for micro-duration, micro-value rentals</li>
+            <li>Smart contract gas economics at INR scale vs. UPI zero-cost alternative</li>
+            <li>Reputation portability across annual student cohort turnover</li>
+            <li>Blockchain UI design for trust-building with non-technical users</li>
+          </ol>
+        </li>
+        <li>
+          <strong>§ Experimental Benchmarking (item 6)</strong> — six benchmark dimensions:
+          filter throughput (ops/sec), blockchain data generation latency, Supabase round-trip
+          latency (connected vs. fallback), React Lighthouse scores (FCP, LCP, TBT, CLS, TTI),
+          and Polygon smart contract gas estimates in INR with cost-viability analysis.
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2 class="section-title">4 · Vercel Deployment Fix</h2>
+  <p>The production build passed locally but failed on Vercel. Four root causes were found and fixed.</p>
+
+  <table>
+    <thead>
+      <tr><th>Root Cause</th><th>Symptom</th><th>Fix Applied</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>No <code>vercel.json</code></td>
+        <td>Vercel didn't know the framework; page refreshes returned 404</td>
+        <td>Created <code>vercel.json</code> with <code>framework: "vite"</code>, <code>outputDirectory: "dist"</code>, and SPA rewrite rule</td>
+      </tr>
+      <tr>
+        <td><code>__dirname</code> in <code>vite.config.ts</code></td>
+        <td>Native config loader warning; breaks on some Vercel Node versions</td>
+        <td>Replaced with <code>import.meta.dirname ?? path.resolve()</code></td>
+      </tr>
+      <tr>
+        <td><code>__dirname</code> in <code>vitest.config.ts</code></td>
+        <td>Same warning, potential breakage</td>
+        <td>Same replacement</td>
+      </tr>
+      <tr>
+        <td><code>bun.lock</code> committed alongside <code>package-lock.json</code></td>
+        <td>Vercel picked bun as package manager (not installed → install step fails)</td>
+        <td>Added <code>bun.lock</code> to <code>.gitignore</code></td>
+      </tr>
+      <tr>
+        <td>No Node version pin</td>
+        <td>Vercel defaults to Node 18; some ESM packages behave differently</td>
+        <td>Added <code>.nvmrc</code> pinned to <code>20</code></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    ⚠️ &nbsp;<strong>Manual step required:</strong> Add <code>VITE_SUPABASE_URL</code> and
+    <code>VITE_SUPABASE_ANON_KEY</code> in your Vercel project's
+    <em>Settings → Environment Variables</em> panel. Vercel never reads <code>.env</code> files
+    from the repository.
+  </div>
+
+  <h3 class="sub-title">New / edited config files</h3>
+  <div class="file-card">
+    <div class="file-header">
+      <span class="file-pill pill-new">NEW</span>
+      <span class="file-path">vercel.json</span>
+    </div>
+    <div class="file-body">
+      <div class="diff-block"><code><span class="diff-add">{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ],
+  "env": {
+    "VITE_SUPABASE_URL": "@vite_supabase_url",
+    "VITE_SUPABASE_ANON_KEY": "@vite_supabase_anon_key"
+  }
+}</span></code></div>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-header">
+      <span class="file-pill pill-new">NEW</span>
+      <span class="file-path">.nvmrc</span>
+    </div>
+    <div class="file-body"><code>20</code></div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-header">
+      <span class="file-pill pill-edit">EDIT</span>
+      <span class="file-path">.gitignore</span>
+    </div>
+    <div class="file-body">
+      <div class="diff-block"><code><span class="diff-add">+ bun.lock</span></code></div>
+    </div>
+  </div>
+
+  <div class="file-card">
+    <div class="file-header">
+      <span class="file-pill pill-edit">EDIT</span>
+      <span class="file-path">vite.config.ts &amp; vitest.config.ts</span>
+    </div>
+    <div class="file-body">
+      <div class="diff-block"><code><span class="diff-rem">- import.meta.dirname ?? __dirname</span>
+<span class="diff-rem">- resolve: { alias: { '@': path.resolve(__dirname, '.') } }</span>
+<span class="diff-add">+ const root = import.meta.dirname ?? path.resolve();</span>
+<span class="diff-add">+ resolve: { alias: { '@': path.resolve(root, '.') } }</span></code></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ -->
+<section>
+  <h2 class="section-title">5 · Complete File Change Summary</h2>
+  <table>
+    <thead>
+      <tr><th>File</th><th>Status</th><th>Change</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>src/lib/blockchain.ts</code></td><td>🟢 New</td><td>Blockchain data layer — generators, types, label maps</td></tr>
+      <tr><td><code>src/components/BlockchainSection.tsx</code></td><td>🟢 New</td><td>Full on-chain UI section with 4 tabs</td></tr>
+      <tr><td><code>tests/blockchain.test.ts</code></td><td>🟢 New</td><td>24 unit tests for blockchain module</td></tr>
+      <tr><td><code>tests/filters.test.ts</code></td><td>🟢 New</td><td>19 unit tests for item filter logic</td></tr>
+      <tr><td><code>tests/initialData.test.ts</code></td><td>🟢 New</td><td>14 unit tests for seed data</td></tr>
+      <tr><td><code>vitest.config.ts</code></td><td>🟢 New</td><td>Vitest configuration</td></tr>
+      <tr><td><code>vercel.json</code></td><td>🟢 New</td><td>Vercel deploy config — framework, output dir, SPA rewrite</td></tr>
+      <tr><td><code>.nvmrc</code></td><td>🟢 New</td><td>Node 20 version pin for Vercel</td></tr>
+      <tr><td><code>REPORT.md</code></td><td>🟢 New</td><td>Academic report — literature review, research gap, benchmarks</td></tr>
+      <tr><td><code>src/App.tsx</code></td><td>🔵 Edited</td><td>Import + mount BlockchainSection</td></tr>
+      <tr><td><code>src/components/Navbar.tsx</code></td><td>🔵 Edited</td><td>Added On-Chain nav button</td></tr>
+      <tr><td><code>package.json</code></td><td>🔵 Edited</td><td>Added test scripts + vitest devDependencies</td></tr>
+      <tr><td><code>vite.config.ts</code></td><td>🔵 Edited</td><td>__dirname → import.meta.dirname</td></tr>
+      <tr><td><code>vitest.config.ts</code></td><td>🔵 Edited</td><td>__dirname → import.meta.dirname</td></tr>
+      <tr><td><code>.gitignore</code></td><td>🔵 Edited</td><td>Added bun.lock exclusion</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout info" style="margin-top:20px;">
+    <strong>Build status after all changes:</strong> <code>npx vite build</code> → ✅ success (977 ms) &nbsp;·&nbsp;
+    <code>npx vitest run</code> → ✅ 57/57 passed (504 ms) &nbsp;·&nbsp;
+    <code>npx tsc --noEmit</code> → ✅ 0 errors
+  </div>
+</section>
+
+<footer>
+  <span>BlockBuddy · Change Report · November 2026</span>
+  <span>Generated by Kiro · C:\Users\yoges\Desktop\blockbuddy</span>
+</footer>
+
+</body>
+</html>

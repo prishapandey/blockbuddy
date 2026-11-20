@@ -111,8 +111,8 @@ describe('filterRentals', () => {
     result.forEach((item) => expect(item.category).toBe('rental'));
   });
 
-  it('all 4 initial rental items appear by default', () => {
-    expect(filterRentals(INITIAL_ITEMS, {})).toHaveLength(4);
+  it('all 12 initial rental items appear by default', () => {
+    expect(filterRentals(INITIAL_ITEMS, {})).toHaveLength(12);
   });
 
   it('filters by quickTag', () => {
@@ -155,8 +155,8 @@ describe('filterUrgent', () => {
     filterUrgent(INITIAL_ITEMS, {}).forEach((item) => expect(item.category).toBe('urgent'));
   });
 
-  it('all 4 initial urgent items appear by default', () => {
-    expect(filterUrgent(INITIAL_ITEMS, {})).toHaveLength(4);
+  it('all 12 initial urgent items appear by default', () => {
+    expect(filterUrgent(INITIAL_ITEMS, {})).toHaveLength(12);
   });
 
   it('urgentHostelFilter overrides global hostel filter', () => {
@@ -168,10 +168,10 @@ describe('filterUrgent', () => {
     result.forEach((item) => expect(item.hostel).toBe('H-12'));
   });
 
-  it('filters by quickTag', () => {
+  it('filters by quickTag — Midnight Snacks returns ≥1', () => {
     const result = filterUrgent(INITIAL_ITEMS, { activeQuickTag: 'Midnight Snacks' });
-    expect(result).toHaveLength(1);
-    expect(result[0].id).toBe('urgent-1');
+    expect(result.length).toBeGreaterThanOrEqual(1);
+    result.forEach((item) => expect(item.quickTag).toBe('Midnight Snacks'));
   });
 });
 
@@ -182,8 +182,8 @@ describe('filterMarketplace', () => {
     );
   });
 
-  it('all 4 initial marketplace items appear by default', () => {
-    expect(filterMarketplace(INITIAL_ITEMS, {})).toHaveLength(4);
+  it('all 16 initial marketplace items appear by default', () => {
+    expect(filterMarketplace(INITIAL_ITEMS, {})).toHaveLength(16);
   });
 
   it('filters by hostel (not "all" or "H-12 & 14")', () => {
@@ -191,9 +191,8 @@ describe('filterMarketplace', () => {
     result.forEach((item) => expect(item.hostel).toBe('H-13'));
   });
 
-  it('"H-12 & 14" preset returns all marketplace items', () => {
-    // H-12 & 14 preset is ignored for marketplace (shows all)
-    expect(filterMarketplace(INITIAL_ITEMS, { selectedHostelFilter: 'H-12 & 14' })).toHaveLength(4);
+  it('"H-12 & 14" preset returns all marketplace items (preset ignored for marketplace)', () => {
+    expect(filterMarketplace(INITIAL_ITEMS, { selectedHostelFilter: 'H-12 & 14' })).toHaveLength(16);
   });
 
   it('search matches title and description', () => {

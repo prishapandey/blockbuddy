@@ -15,7 +15,7 @@ export const NeedItNowSection: React.FC<NeedItNowSectionProps> = ({
   onSelectHostel,
   onPingClick,
 }) => {
-  const hostelFilters = ['all', 'H-12', 'H-14', 'H-15', 'H-16'];
+  const hostelFilters = ['all', 'A Block', 'B Block', 'C Block', 'D Block', 'E Block', 'F Block'];
 
   return (
     <section className="space-y-6" id="need-it-now">
