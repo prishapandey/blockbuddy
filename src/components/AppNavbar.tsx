@@ -125,7 +125,7 @@ export const AppNavbar: React.FC = () => {
       </header>
 
       <SellListModal isOpen={sellOpen} onClose={() => setSellOpen(false)} onSubmit={handleList}
-        currentStudent={student || { name: '', email: '', hostel: 'H-12', room: '', wing: '', department: '' }} />
+        currentStudent={student || { name: '', email: '', hostel: 'A Block', room: '', wing: '', department: '' }} />
     </>
   );
 };

@@ -17,7 +17,7 @@ export const SettingsPage: React.FC = () => {
 
   // Profile fields
   const [name, setName] = useState(student?.name || '');
-  const [hostel, setHostel] = useState(student?.hostel || 'H-12');
+  const [hostel, setHostel] = useState(student?.hostel || 'A Block');
   const [room, setRoom] = useState(student?.room || '');
   const [wing, setWing] = useState(student?.wing || '');
   const [dept, setDept] = useState(student?.department || '');
@@ -106,7 +106,7 @@ export const SettingsPage: React.FC = () => {
               <label className="text-[#94a3b8] font-medium">Hostel</label>
               <select value={hostel} onChange={(e) => setHostel(e.target.value)}
                 className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-lg text-white px-3 py-2 focus:outline-none focus:border-[#4d8eff] text-sm">
-                {['H-12','H-13','H-14','H-15','H-16'].map((h) => <option key={h}>{h}</option>)}
+                {['A Block','B Block','C Block','D Block','E Block','F Block'].map((h) => <option key={h}>{h}</option>)}
               </select>
             </div>
 
@@ -204,7 +204,7 @@ export const SettingsPage: React.FC = () => {
           <h2 className="text-sm font-semibold text-white">Privacy & Safety</h2>
           <div className="space-y-3 text-xs text-[#94a3b8]">
             {[
-              ['Campus-only access', 'Only @iitb.ac.in emails can create an account. Your listings are never visible outside the campus network.'],
+              ['Campus-only access', 'Only @srmist.edu.in emails can create an account. Your listings are never visible outside the campus network.'],
               ['No data sold', 'BlockBuddy does not sell or share your data with any third party.'],
               ['Direct P2P payments', 'All payments are via UPI directly between students. BlockBuddy never handles money.'],
               ['Corridor handoffs', 'All trades happen in person on campus. No couriers, no strangers.'],

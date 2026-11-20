@@ -10,8 +10,8 @@ export interface ListingItem {
   priceUnit: string; // e.g., "/ exam", "/ hour", "/ day", ""
   secondaryPrice?: string; // e.g., "or ₹40 / day"
   deposit?: string; // e.g., "Deposit: ₹200 (refundable)"
-  locationTag: string; // e.g., "Hostel 14 · Mech", "H-12 · 3rd Floor"
-  hostel: string; // e.g., "H-12", "H-13", "H-14", "H-15", "H-16"
+  locationTag: string; // e.g., "B Block · ECE", "A Block · Floor 3"
+  hostel: string; // e.g., "A Block", "B Block", "C Block", "D Block", "E Block", "F Block"
   wingOrRoom: string;
   sellerName: string;
   imageUrl: string;

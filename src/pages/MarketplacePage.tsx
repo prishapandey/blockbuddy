@@ -131,7 +131,7 @@ export const MarketplacePage: React.FC = () => {
       )}
 
       <ChatModal item={chatItem} isOpen={Boolean(chatItem)} onClose={() => setChatItem(null)}
-        onSubmit={handleChat} currentStudent={student || { name: '', email: '', hostel: 'H-12', room: '', wing: '', department: '' }} />
+        onSubmit={handleChat} currentStudent={student || { name: '', email: '', hostel: 'A Block', room: '', wing: '', department: '' }} />
       <Toast message={toast} />
     </div>
   );

@@ -118,7 +118,7 @@ export async function fetchAllListings(): Promise<{
       secondaryPrice: d.secondary_price || undefined,
       deposit: d.deposit || undefined,
       locationTag: d.location_tag || 'Campus',
-      hostel: d.hostel || 'H-12',
+      hostel: d.hostel || 'A Block',
       wingOrRoom: d.wing_or_room || '',
       sellerName: d.seller_name || 'Campus Student',
       imageUrl: d.image_url || '',

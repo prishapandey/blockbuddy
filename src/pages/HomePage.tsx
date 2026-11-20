@@ -14,7 +14,7 @@ export const HomePage: React.FC = () => {
   const { student } = useAuth();
   const [items, setItems] = useState<ListingItem[]>(getLocalItems);
   const [search, setSearch] = useState('');
-  const [hostelFilter, setHostelFilter] = useState('H-12 & 14');
+  const [hostelFilter, setHostelFilter] = useState('AB');
   const [quickTag, setQuickTag] = useState('');
   const [rentItem, setRentItem] = useState<ListingItem | null>(null);
   const [chatItem, setChatItem] = useState<ListingItem | null>(null);
@@ -32,7 +32,7 @@ export const HomePage: React.FC = () => {
   const handleRent = async (data: any) => {
     const booking: RentalBooking = {
       id: `booking-${Date.now()}`, itemId: data.item.id, itemTitle: data.item.title,
-      renterName: student?.name || '', renterHostel: student?.hostel || 'H-12', renterRoom: student?.room || '',
+      renterName: student?.name || '', renterHostel: student?.hostel || 'A Block', renterRoom: student?.room || '',
       durationType: data.durationType, durationCount: data.durationCount,
       totalAmount: data.totalAmount, depositAmount: 150,
       pickupTime: data.pickupTime, status: 'confirmed', createdAt: new Date().toISOString(),
@@ -46,7 +46,7 @@ export const HomePage: React.FC = () => {
     const ping: CorridorPing = {
       id: `ping-${Date.now()}`, itemId: data.item.id, itemTitle: data.item.title,
       sellerName: data.item.sellerName, senderName: student?.name || '',
-      senderHostel: student?.hostel || 'H-12', message: data.message,
+      senderHostel: student?.hostel || 'A Block', message: data.message,
       timestamp: new Date().toISOString(), status: 'sent',
     };
     await saveCorridorPing(ping);
@@ -60,7 +60,7 @@ export const HomePage: React.FC = () => {
     showToast(res.savedToSupabase ? 'Listing published to shared database.' : 'Listing saved locally only.');
   };
 
-  const guestStudent = student || { name: '', email: '', hostel: 'H-12', room: '', wing: '', department: '' };
+  const guestStudent = student || { name: '', email: '', hostel: 'A Block', room: '', wing: '', department: '' };
 
   return (
     <div className="space-y-14">

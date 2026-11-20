@@ -6,7 +6,7 @@ import { getLocalItems, saveCorridorPing } from '../lib/supabase';
 import { CorridorPing, ListingItem } from '../types';
 import { useAuth } from '../context/AuthContext';
 
-const HOSTELS = ['All', 'H-12', 'H-13', 'H-14', 'H-15', 'H-16'];
+const HOSTELS = ['All', 'A Block', 'B Block', 'C Block', 'D Block', 'E Block', 'F Block'];
 const TAGS = ['All', 'Midnight Snacks', 'Exam Stationery', 'Cables & Adapters', 'Health & Wellness'];
 
 export const NeedItNowPage: React.FC = () => {
@@ -35,7 +35,7 @@ export const NeedItNowPage: React.FC = () => {
     const ping: CorridorPing = {
       id: `ping-${Date.now()}`, itemId: data.item.id, itemTitle: data.item.title,
       sellerName: data.item.sellerName, senderName: student?.name || 'Guest',
-      senderHostel: student?.hostel || 'H-12', message: data.message,
+      senderHostel: student?.hostel || 'A Block', message: data.message,
       timestamp: new Date().toISOString(), status: 'sent',
     };
     await saveCorridorPing(ping);
@@ -130,7 +130,7 @@ export const NeedItNowPage: React.FC = () => {
       )}
 
       <ChatModal item={chatItem} isOpen={Boolean(chatItem)} onClose={() => setChatItem(null)}
-        onSubmit={handleChat} currentStudent={student || { name: '', email: '', hostel: 'H-12', room: '', wing: '', department: '' }} />
+        onSubmit={handleChat} currentStudent={student || { name: '', email: '', hostel: 'A Block', room: '', wing: '', department: '' }} />
       <Toast message={toast} />
     </div>
   );

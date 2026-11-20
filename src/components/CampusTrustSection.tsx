@@ -11,7 +11,7 @@ export const CampusTrustSection: React.FC = () => {
             <span>Campus Verified</span>
           </div>
           <p className="text-xs text-[#94a3b8] leading-relaxed">
-            Every user is authenticated via university email. Trade strictly with students from your college.
+            Every user is authenticated via university email. Trade strictly with students from SRM Kattankulathur campus.
           </p>
         </div>
 
@@ -21,7 +21,7 @@ export const CampusTrustSection: React.FC = () => {
             <span>Corridor Handoffs</span>
           </div>
           <p className="text-xs text-[#94a3b8] leading-relaxed">
-            Meet at hostel mess lobbies, TV rooms, or wing corridors. Inspect the item or rental before paying.
+            Meet at block mess lobbies, TV rooms, or floor corridors. Inspect the item or rental before paying.
           </p>
         </div>
 

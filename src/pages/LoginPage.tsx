@@ -35,7 +35,7 @@ export const LoginPage: React.FC = () => {
   };
 
   const features = [
-    { icon: Users, text: 'Trade with verified IITB students only' },
+    { icon: Users, text: 'Trade with verified SRM students only' },
     { icon: ShieldCheck, text: '0% commission — direct UPI transfers' },
     { icon: Zap, text: '5–15 min corridor handoffs within your hostel' },
   ];
@@ -55,10 +55,10 @@ export const LoginPage: React.FC = () => {
           <div className="mt-16">
             <h1 className="text-4xl font-bold text-white leading-tight tracking-tight">
               The campus marketplace<br />
-              <span className="text-[#4d8eff]">built for IITB.</span>
+              <span className="text-[#4d8eff]">built for SRM.</span>
             </h1>
             <p className="text-[#94a3b8] text-base mt-4 leading-relaxed max-w-sm">
-              Buy, sell, and rent gear across Hostels 12–16. Zero fees, instant
+              Buy, sell, and rent gear across SRM KTR A–F Blocks. Zero fees, instant
               corridor pickups, verified students only.
             </p>
           </div>
@@ -103,7 +103,7 @@ export const LoginPage: React.FC = () => {
 
           <h2 className="text-2xl font-bold text-white tracking-tight">Sign in</h2>
           <p className="text-sm text-[#64748b] mt-1">
-            Use your <span className="text-[#4d8eff] font-medium">@iitb.ac.in</span> email to continue.
+            Use your <span className="text-[#4d8eff] font-medium">@srmist.edu.in</span> email to continue.
           </p>
 
           <form onSubmit={handleSubmit} className="mt-8 space-y-4">
@@ -125,7 +125,7 @@ export const LoginPage: React.FC = () => {
 
             {/* Email */}
             <div className="space-y-1.5">
-              <label className="text-xs font-medium text-[#94a3b8]">IITB Email</label>
+              <label className="text-xs font-medium text-[#94a3b8]">SRM Email</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748b]" />
                 <input
@@ -133,7 +133,7 @@ export const LoginPage: React.FC = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  placeholder="yourname@iitb.ac.in"
+                  placeholder="yourname@srmist.edu.in"
                   className="w-full bg-[#121316] border border-[#22252b] rounded-lg text-sm text-white placeholder-[#64748b] pl-10 pr-4 py-2.5 focus:outline-none focus:border-[#4d8eff] transition-colors"
                 />
               </div>
@@ -182,7 +182,7 @@ export const LoginPage: React.FC = () => {
                 </span>
               ) : (
                 <>
-                  <span>Sign in with IITB</span>
+                  <span>Sign in with SRM</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
@@ -191,13 +191,13 @@ export const LoginPage: React.FC = () => {
 
           <div className="mt-6 p-3 bg-[#121316] border border-[#22252b] rounded-lg">
             <p className="text-[11px] text-[#64748b] text-center">
-              🔒 &nbsp;Only <span className="text-white">@iitb.ac.in</span> addresses are accepted.
+              🔒 &nbsp;Only <span className="text-white">@srmist.edu.in</span> addresses are accepted.
               Your data stays on campus.
             </p>
           </div>
 
           <p className="text-center text-xs text-[#64748b] mt-4">
-            BlockBuddy · Campus Peer Exchange · Zero fees
+            BlockBuddy · SRM Campus Exchange · Zero fees
           </p>
         </div>
       </div>
