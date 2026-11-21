@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 interface FooterProps {
   onOpenSafetyModal: () => void;
@@ -10,49 +11,41 @@ export const Footer: React.FC<FooterProps> = ({
   onOpenSupabaseModal,
 }) => {
   return (
-    <footer className="border-t border-[#22252b] bg-[#0a0a0c] mt-20">
-      <div className="max-w-6xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#64748b]">
+    <footer className="border-t border-[#434630] bg-[#242519] mt-20 text-[#CDCBD6]">
+      <div className="max-w-7xl mx-auto px-6 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#9fa293]">
         <div className="flex items-center gap-2">
           <span className="text-white font-semibold">BlockBuddy</span>
           <span>•</span>
-          <span>Campus peer exchange &amp; equipment rentals</span>
+          <span>Campus Peer Exchange &amp; Smart Escrow</span>
         </div>
         <div className="flex items-center gap-4 flex-wrap justify-center">
-          <a
-            className="hover:text-white transition-colors"
-            href="#rent-gear"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('rent-gear')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
-            Rent Equipment
-          </a>
-          <a
-            className="hover:text-white transition-colors"
-            href="#marketplace"
-            onClick={(e) => {
-              e.preventDefault();
-              document.getElementById('marketplace')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-          >
+          <Link to="/rentals" className="hover:text-white transition-colors">
+            Rentals Zone
+          </Link>
+          <Link to="/need-it-now" className="hover:text-white transition-colors">
+            Corridor Express
+          </Link>
+          <Link to="/marketplace" className="hover:text-white transition-colors">
             Marketplace
-          </a>
+          </Link>
+          <Link to="/blockchain" className="hover:text-white transition-colors">
+            On-Chain Trust
+          </Link>
           <button
             type="button"
             onClick={onOpenSafetyModal}
             className="hover:text-white transition-colors cursor-pointer"
           >
-            Safety Rules
+            Safety Guidelines
           </button>
           <button
             type="button"
             onClick={onOpenSupabaseModal}
-            className="hover:text-white text-[#3ecf8e] transition-colors cursor-pointer"
+            className="text-[#D96846] hover:underline transition-colors cursor-pointer"
           >
-            Supabase DB
+            Database Status
           </button>
-          <span>© 2025</span>
+          <span>© 2026</span>
         </div>
       </div>
     </footer>

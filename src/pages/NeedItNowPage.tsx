@@ -44,37 +44,31 @@ export const NeedItNowPage: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 text-[#CDCBD6]">
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl bg-amber-500/15 border border-amber-500/20 flex items-center justify-center shrink-0 mt-1">
-          <Zap className="w-5 h-5 text-amber-400" />
+        <div className="w-10 h-10 rounded-xl bg-[#D96846]/20 border border-[#D96846]/40 flex items-center justify-center shrink-0 mt-1">
+          <Zap className="w-5 h-5 text-[#D96846]" />
         </div>
         <div>
-          <span className="text-xs font-semibold text-amber-400 tracking-wide uppercase">Immediate Corridor Handoff</span>
+          <span className="text-xs font-semibold text-[#D96846] tracking-wide uppercase">Immediate Corridor Handoff</span>
           <h1 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-0.5">Need It Now</h1>
-          <p className="text-sm text-[#94a3b8] mt-1">Available right now within your hostel wing. 5–15 min door-to-door pickup.</p>
+          <p className="text-sm text-[#9fa293] mt-1">Available right now within your hostel wing. 5–15 min door-to-door pickup.</p>
         </div>
-      </div>
-
-      {/* Live indicator */}
-      <div className="flex items-center gap-2 text-xs text-[#64748b]">
-        <span className="w-2 h-2 rounded-full bg-[#3ecf8e] animate-pulse" />
-        <span>{filtered.length} items available right now</span>
       </div>
 
       {/* Filters */}
-      <div className="bg-[#121316] border border-[#22252b] rounded-xl p-4 space-y-3">
+      <div className="bg-[#26271a] border border-[#434630] rounded-xl p-4 space-y-3 shadow-md">
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#64748b]" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9fa293]" />
           <input type="text" value={search} onChange={(e) => setSearch(e.target.value)}
             placeholder="Search urgent items..."
-            className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-lg text-sm text-white placeholder-[#64748b] pl-9 pr-3 py-2 focus:outline-none focus:border-[#4d8eff]" />
+            className="w-full bg-[#1e1f14] border border-[#434630] rounded-lg text-sm text-white placeholder-[#9fa293]/60 pl-9 pr-3 py-2 focus:outline-none focus:border-[#D96846]" />
         </div>
 
         <div className="flex gap-1.5 flex-wrap">
           {HOSTELS.map((h) => (
             <button key={h} type="button" onClick={() => setHostel(h)}
-              className={`text-xs px-3 py-1 rounded-full border transition-colors cursor-pointer ${hostel === h ? 'bg-amber-500 border-amber-500 text-white' : 'border-[#22252b] text-[#94a3b8] hover:text-white'}`}>
+              className={`text-xs px-3 py-1 rounded-full border transition-colors cursor-pointer ${hostel === h ? 'bg-[#D96846] border-[#D96846] text-white' : 'border-[#434630] text-[#CDCBD6] hover:text-white hover:bg-[#353826]'}`}>
               {h}
             </button>
           ))}
@@ -83,27 +77,28 @@ export const NeedItNowPage: React.FC = () => {
         <div className="flex gap-1.5 flex-wrap">
           {TAGS.map((t) => (
             <button key={t} type="button" onClick={() => setTag(t)}
-              className={`text-xs px-3 py-1 rounded-full border transition-colors cursor-pointer ${tag === t ? 'bg-amber-500/15 border-amber-500 text-amber-400' : 'border-[#22252b] text-[#64748b] hover:text-white'}`}>
+              className={`text-xs px-3 py-1 rounded-full border transition-colors cursor-pointer ${tag === t ? 'bg-[#D96846]/20 border-[#D96846] text-[#D96846]' : 'border-[#434630] text-[#9fa293] hover:text-white hover:bg-[#353826]'}`}>
               {t}
             </button>
           ))}
         </div>
       </div>
 
+      <p className="text-xs text-[#9fa293]">{filtered.length} item{filtered.length !== 1 ? 's' : ''} available right now</p>
+
       {/* Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {filtered.map((item) => (
           <div key={item.id}
-            className="bg-[#121316] border border-[#22252b] rounded-xl overflow-hidden flex flex-col hover:border-amber-500/30 transition-colors">
-            <div className="aspect-[16/10] bg-[#1a1c22] relative overflow-hidden">
+            className="bg-[#26271a] border border-[#434630] rounded-xl overflow-hidden flex flex-col hover:border-[#D96846] transition-colors shadow-lg">
+            <div className="aspect-[16/10] bg-[#1e1f14] relative overflow-hidden">
               <img src={item.imageUrl} alt={item.title} referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"
                 onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }} />
-              <span className="absolute top-2 left-2 bg-[#0a0a0c]/80 backdrop-blur text-[10px] text-white px-1.5 py-0.5 rounded border border-[#22252b]/60">
+              <span className="absolute top-2 left-2 bg-[#242519]/80 backdrop-blur text-[10px] text-white px-2 py-0.5 rounded border border-[#434630]">
                 {item.locationTag}
               </span>
-              <span className="absolute top-2 right-2 flex items-center gap-1 bg-[#3ecf8e]/90 text-[9px] text-black font-bold px-1.5 py-0.5 rounded">
-                <span className="w-1.5 h-1.5 rounded-full bg-black/40" />
+              <span className="absolute top-2 right-2 bg-[#596235] text-[9px] text-white font-bold px-2 py-0.5 rounded">
                 LIVE
               </span>
             </div>
@@ -112,9 +107,9 @@ export const NeedItNowPage: React.FC = () => {
                 <h3 className="text-sm font-semibold text-white line-clamp-1">{item.title}</h3>
                 <span className="text-sm font-bold text-white whitespace-nowrap">{item.priceDisplay}</span>
               </div>
-              <p className="text-xs text-[#94a3b8] mt-1 line-clamp-2 flex-1">{item.description}</p>
+              <p className="text-xs text-[#CDCBD6]/80 mt-1 line-clamp-2 flex-1">{item.description}</p>
               <button type="button" onClick={() => setChatItem(item)}
-                className="mt-3 w-full bg-[#1a1c22] hover:bg-amber-500/20 hover:text-amber-400 hover:border-amber-500/40 border border-[#22252b] text-white text-xs font-medium py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                className="mt-3 w-full bg-[#2b2d1e] hover:bg-[#D96846] border border-[#434630] text-white text-xs font-semibold py-2 rounded-lg transition-colors flex items-center justify-center gap-1.5 cursor-pointer shadow">
                 <Send className="w-3.5 h-3.5" />
                 Ping for Pickup
               </button>
@@ -124,12 +119,12 @@ export const NeedItNowPage: React.FC = () => {
       </div>
 
       {filtered.length === 0 && (
-        <div className="p-12 text-center bg-[#121316] border border-[#22252b] rounded-xl space-y-3">
-          <p className="text-[#94a3b8]">No urgent items match your current search and filters.</p>
+        <div className="p-12 text-center bg-[#26271a] border border-[#434630] rounded-xl space-y-3">
+          <p className="text-[#CDCBD6]">No urgent items match your current search and filters.</p>
           <button
             type="button"
             onClick={() => { setSearch(''); setHostel('All'); setTag('All'); }}
-            className="text-xs bg-[#1a1c22] hover:bg-[#252830] text-amber-400 border border-amber-500/30 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer"
+            className="text-xs bg-[#2b2d1e] hover:bg-[#363926] text-[#D96846] border border-[#D96846]/40 px-3.5 py-1.5 rounded-lg transition-colors cursor-pointer"
           >
             Clear all filters
           </button>

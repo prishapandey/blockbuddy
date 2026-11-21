@@ -18,7 +18,7 @@ const AppLayout: React.FC = () => {
   if (!isLoggedIn) return <Navigate to="/login" replace />;
 
   return (
-    <div className="min-h-screen flex flex-col antialiased selection:bg-[#4d8eff] selection:text-white bg-[#0a0a0c] text-[#94a3b8]">
+    <div className="min-h-screen flex flex-col antialiased selection:bg-[#D96846] selection:text-white bg-[#2F3020] text-[#CDCBD6]">
       <AppNavbar />
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-8">
         <Outlet />

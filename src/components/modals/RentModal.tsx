@@ -44,7 +44,7 @@ export const RentModal: React.FC<RentModalProps> = ({
     if (durationType === 'exam') rate = item.priceValue;
     else if (durationType === 'hour') rate = item.priceValue;
     else if (durationType === 'day') rate = item.priceValue;
-    else if (durationType === 'week') rate = item.priceValue * 5; // discounted week
+    else if (durationType === 'week') rate = item.priceValue * 5;
     return rate * durationCount;
   };
 
@@ -63,16 +63,16 @@ export const RentModal: React.FC<RentModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0a0a0c]/80 backdrop-blur-sm flex items-center justify-center p-4">
-      <div className="bg-[#121316] border border-[#22252b] w-full max-w-md rounded-lg p-5 space-y-4 shadow-2xl">
-        <div className="flex items-center justify-between border-b border-[#22252b] pb-3">
+    <div className="fixed inset-0 z-50 bg-[#242519]/80 backdrop-blur-sm flex items-center justify-center p-4 text-[#CDCBD6]">
+      <div className="bg-[#26271a] border border-[#434630] w-full max-w-md rounded-2xl p-6 space-y-4 shadow-2xl">
+        <div className="flex items-center justify-between border-b border-[#434630] pb-3">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#4d8eff]"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#D96846]"></span>
             <h3 className="text-sm font-semibold text-white">Rent Campus Equipment</h3>
           </div>
           <button
             onClick={onClose}
-            className="text-[#64748b] hover:text-white transition-colors cursor-pointer"
+            className="text-[#9fa293] hover:text-white transition-colors cursor-pointer"
             type="button"
           >
             <X className="w-4 h-4" />
@@ -80,21 +80,21 @@ export const RentModal: React.FC<RentModalProps> = ({
         </div>
 
         {/* Item Preview Card */}
-        <div className="bg-[#0a0a0c] border border-[#22252b] rounded-lg p-3 space-y-2">
+        <div className="bg-[#1e1f14] border border-[#434630] rounded-xl p-3 space-y-2">
           <div className="flex gap-3">
             <img
               src={item.imageUrl}
               alt={item.title}
-              className="w-16 h-16 object-cover rounded bg-[#1a1c22] border border-[#22252b]"
+              className="w-16 h-16 object-cover rounded-lg bg-[#242519] border border-[#434630]"
             />
             <div className="flex-1 min-w-0">
               <h4 className="text-sm font-semibold text-white truncate">{item.title}</h4>
-              <p className="text-xs text-[#94a3b8] mt-0.5">{item.locationTag}</p>
+              <p className="text-xs text-[#CDCBD6]/80 mt-0.5">{item.locationTag}</p>
               <div className="flex items-center gap-2 mt-1 text-xs">
-                <span className="text-[#4d8eff] font-bold">{item.priceDisplay}</span>
-                <span className="text-[#64748b]">{item.priceUnit}</span>
+                <span className="text-[#D96846] font-bold">{item.priceDisplay}</span>
+                <span className="text-[#9fa293]">{item.priceUnit}</span>
                 {item.deposit && (
-                  <span className="text-[10px] text-[#94a3b8] bg-[#121316] px-1.5 py-0.5 rounded border border-[#22252b]">
+                  <span className="text-[10px] text-[#CDCBD6] bg-[#26271a] px-2 py-0.5 rounded border border-[#434630]">
                     {item.deposit}
                   </span>
                 )}
@@ -106,8 +106,8 @@ export const RentModal: React.FC<RentModalProps> = ({
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Duration Selector */}
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-[#94a3b8] flex items-center gap-1.5">
-              <Clock className="w-3.5 h-3.5 text-[#4d8eff]" />
+            <label className="text-xs font-medium text-[#CDCBD6] flex items-center gap-1.5">
+              <Clock className="w-3.5 h-3.5 text-[#D96846]" />
               <span>Rental Period:</span>
             </label>
             <div className="grid grid-cols-3 gap-2 text-xs">
@@ -115,10 +115,10 @@ export const RentModal: React.FC<RentModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setDurationType('exam')}
-                  className={`py-2 px-2.5 rounded border text-center transition-colors ${
+                  className={`py-2 px-2.5 rounded-lg border text-center transition-colors cursor-pointer ${
                     durationType === 'exam'
-                      ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-white font-medium'
-                      : 'bg-[#0a0a0c] border-[#22252b] text-[#94a3b8] hover:text-white'
+                      ? 'bg-[#D96846] border-[#D96846] text-white font-semibold shadow'
+                      : 'bg-[#1e1f14] border-[#434630] text-[#CDCBD6] hover:text-white'
                   }`}
                 >
                   Exam Period
@@ -128,10 +128,10 @@ export const RentModal: React.FC<RentModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setDurationType('hour')}
-                  className={`py-2 px-2.5 rounded border text-center transition-colors ${
+                  className={`py-2 px-2.5 rounded-lg border text-center transition-colors cursor-pointer ${
                     durationType === 'hour'
-                      ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-white font-medium'
-                      : 'bg-[#0a0a0c] border-[#22252b] text-[#94a3b8] hover:text-white'
+                      ? 'bg-[#D96846] border-[#D96846] text-white font-semibold shadow'
+                      : 'bg-[#1e1f14] border-[#434630] text-[#CDCBD6] hover:text-white'
                   }`}
                 >
                   Hourly
@@ -140,10 +140,10 @@ export const RentModal: React.FC<RentModalProps> = ({
               <button
                 type="button"
                 onClick={() => setDurationType('day')}
-                className={`py-2 px-2.5 rounded border text-center transition-colors ${
+                className={`py-2 px-2.5 rounded-lg border text-center transition-colors cursor-pointer ${
                   durationType === 'day'
-                    ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-white font-medium'
-                    : 'bg-[#0a0a0c] border-[#22252b] text-[#94a3b8] hover:text-white'
+                    ? 'bg-[#D96846] border-[#D96846] text-white font-semibold shadow'
+                    : 'bg-[#1e1f14] border-[#434630] text-[#CDCBD6] hover:text-white'
                 }`}
               >
                 1 Day
@@ -151,10 +151,10 @@ export const RentModal: React.FC<RentModalProps> = ({
               <button
                 type="button"
                 onClick={() => setDurationType('week')}
-                className={`py-2 px-2.5 rounded border text-center transition-colors ${
+                className={`py-2 px-2.5 rounded-lg border text-center transition-colors cursor-pointer ${
                   durationType === 'week'
-                    ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-white font-medium'
-                    : 'bg-[#0a0a0c] border-[#22252b] text-[#94a3b8] hover:text-white'
+                    ? 'bg-[#D96846] border-[#D96846] text-white font-semibold shadow'
+                    : 'bg-[#1e1f14] border-[#434630] text-[#CDCBD6] hover:text-white'
                 }`}
               >
                 1 Week
@@ -164,14 +164,14 @@ export const RentModal: React.FC<RentModalProps> = ({
 
           {/* Pickup Window */}
           <div className="space-y-1.5">
-            <label className="text-xs font-medium text-[#94a3b8] flex items-center gap-1.5">
-              <MapPin className="w-3.5 h-3.5 text-[#4d8eff]" />
+            <label className="text-xs font-medium text-[#CDCBD6] flex items-center gap-1.5">
+              <MapPin className="w-3.5 h-3.5 text-[#D96846]" />
               <span>Corridor Pickup Time:</span>
             </label>
             <select
               value={pickupTime}
               onChange={(e) => setPickupTime(e.target.value)}
-              className="w-full bg-[#0a0a0c] border border-[#22252b] rounded text-xs text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+              className="w-full bg-[#1e1f14] border border-[#434630] rounded-lg text-xs text-white p-2.5 focus:outline-none focus:border-[#D96846]"
             >
               <option value="In 15 minutes">In 15 minutes (Immediate pickup)</option>
               <option value="This evening (8 PM - 10 PM)">This evening (8 PM - 10 PM)</option>
@@ -182,22 +182,22 @@ export const RentModal: React.FC<RentModalProps> = ({
 
           {/* Custom Message to Seller */}
           <div className="space-y-1.5">
-            <label className="text-xs text-[#94a3b8] block">Direct Campus Ping:</label>
+            <label className="text-xs text-[#CDCBD6] block">Direct Campus Ping:</label>
             <textarea
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               rows={2}
-              className="w-full bg-[#0a0a0c] border border-[#22252b] rounded text-xs text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+              className="w-full bg-[#1e1f14] border border-[#434630] rounded-lg text-xs text-white p-2.5 focus:outline-none focus:border-[#D96846]"
             />
           </div>
 
           {/* Calculation summary */}
-          <div className="bg-[#0a0a0c] p-2.5 rounded border border-[#22252b] flex items-center justify-between text-xs">
-            <div className="text-[#94a3b8]">
+          <div className="bg-[#1e1f14] p-3 rounded-xl border border-[#434630] flex items-center justify-between text-xs">
+            <div className="text-[#CDCBD6]">
               Estimated rent: <span className="text-white font-bold">₹{total}</span>
-              <span className="text-[10px] text-[#64748b] block">Direct UPI to seller on corridor handoff</span>
+              <span className="text-[10px] text-[#9fa293] block">Direct UPI to peer on corridor handoff</span>
             </div>
-            <div className="text-right text-[11px] text-[#3ecf8e]">
+            <div className="text-right text-[11px] font-semibold text-[#596235]">
               0% Platform Fee
             </div>
           </div>
@@ -205,14 +205,14 @@ export const RentModal: React.FC<RentModalProps> = ({
           <div className="flex gap-2 pt-1">
             <button
               type="submit"
-              className="flex-1 bg-[#4d8eff] hover:bg-[#3b7cee] text-white text-xs font-semibold py-2.5 rounded transition-colors cursor-pointer shadow-sm active:scale-95"
+              className="flex-1 bg-[#D96846] hover:bg-[#c45735] text-white text-xs font-semibold py-2.5 rounded-lg transition-colors cursor-pointer shadow active:scale-95"
             >
               Send Rent Request
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="bg-[#1a1c22] hover:bg-[#252830] text-[#94a3b8] text-xs font-medium px-4 py-2.5 rounded transition-colors cursor-pointer"
+              className="bg-[#202115] hover:bg-[#2b2d1e] text-[#CDCBD6] text-xs font-medium px-4 py-2.5 rounded-lg border border-[#434630] transition-colors cursor-pointer"
             >
               Cancel
             </button>

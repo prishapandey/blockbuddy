@@ -52,18 +52,38 @@ CREATE TABLE IF NOT EXISTS public.blockbuddy_bookings (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- Student profiles linked to auth.users (for real Supabase signup/login verification)
+CREATE TABLE IF NOT EXISTS public.blockbuddy_profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  hostel TEXT NOT NULL DEFAULT 'A Block',
+  room TEXT NOT NULL DEFAULT '',
+  wing TEXT NOT NULL DEFAULT '',
+  department TEXT NOT NULL DEFAULT '',
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
 ALTER TABLE public.blockbuddy_items ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.blockbuddy_pings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.blockbuddy_bookings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.blockbuddy_profiles ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Allow public read blockbuddy_items" ON public.blockbuddy_items;
 DROP POLICY IF EXISTS "Allow public insert blockbuddy_items" ON public.blockbuddy_items;
 DROP POLICY IF EXISTS "Allow public read blockbuddy_pings" ON public.blockbuddy_pings;
 DROP POLICY IF EXISTS "Allow public insert blockbuddy_pings" ON public.blockbuddy_pings;
 DROP POLICY IF EXISTS "Allow public insert blockbuddy_bookings" ON public.blockbuddy_bookings;
+DROP POLICY IF EXISTS "Allow users read blockbuddy_profiles" ON public.blockbuddy_profiles;
+DROP POLICY IF EXISTS "Allow users insert blockbuddy_profiles" ON public.blockbuddy_profiles;
+DROP POLICY IF EXISTS "Allow users update blockbuddy_profiles" ON public.blockbuddy_profiles;
 
 CREATE POLICY "Allow public read blockbuddy_items" ON public.blockbuddy_items FOR SELECT USING (true);
 CREATE POLICY "Allow public insert blockbuddy_items" ON public.blockbuddy_items FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow public read blockbuddy_pings" ON public.blockbuddy_pings FOR SELECT USING (true);
 CREATE POLICY "Allow public insert blockbuddy_pings" ON public.blockbuddy_pings FOR INSERT WITH CHECK (true);
 CREATE POLICY "Allow public insert blockbuddy_bookings" ON public.blockbuddy_bookings FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow users read blockbuddy_profiles" ON public.blockbuddy_profiles FOR SELECT USING (true);
+CREATE POLICY "Allow users insert blockbuddy_profiles" ON public.blockbuddy_profiles FOR INSERT WITH CHECK (true);
+CREATE POLICY "Allow users update blockbuddy_profiles" ON public.blockbuddy_profiles FOR UPDATE USING (true);

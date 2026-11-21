@@ -1,13 +1,102 @@
 import React, { useState } from 'react';
-import { Camera, Plus, Sparkles, X } from 'lucide-react';
+import {
+  Calendar,
+  Camera,
+  Check,
+  CheckCircle2,
+  Clock,
+  DollarSign,
+  Eye,
+  HelpCircle,
+  Image as ImageIcon,
+  Info,
+  MapPin,
+  Plus,
+  Shield,
+  ShoppingBag,
+  Sparkles,
+  Tag,
+  X,
+  Zap,
+} from 'lucide-react';
 import { ItemCategory, ListingItem, StudentProfile } from '../../types';
 
 interface SellListModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSubmit: (item: ListingItem) => void;
+  onSubmit: (newItem: ListingItem) => void;
   currentStudent: StudentProfile;
 }
+
+interface PresetOption {
+  label: string;
+  category: ItemCategory;
+  title: string;
+  price: string;
+  unit: string;
+  deposit?: string;
+  badge: string;
+  url: string;
+}
+
+const PRESETS: PresetOption[] = [
+  {
+    label: 'Casio 991CW / EX',
+    category: 'rental',
+    title: 'Casio fx-991CW Scientific Calculator',
+    price: '25',
+    unit: '/ exam',
+    deposit: 'Deposit: ₹150 (refundable)',
+    badge: 'Exam Approved · Fresh Battery',
+    url: 'https://images.unsplash.com/photo-1587145820266-a5951ee6f620?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    label: 'Electric Kettle',
+    category: 'rental',
+    title: 'Pigeon 1.5L Electric Kettle',
+    price: '40',
+    unit: '/ day',
+    deposit: 'Deposit: ₹200 (refundable)',
+    badge: 'Clean & Descaled',
+    url: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    label: 'Midnight Snack Pack',
+    category: 'urgent',
+    title: 'Maggi Noodles 4-Pack + Chips',
+    price: '60',
+    unit: '',
+    badge: 'Unopened · Ready in Floor 2',
+    url: 'https://images.unsplash.com/photo-1563245372-f21724e3856d?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    label: '65W Fast Charger',
+    category: 'urgent',
+    title: 'Type-C 65W GaN Laptop Charger',
+    price: '50',
+    unit: '/ day',
+    badge: 'Multi-port · Pickup now',
+    url: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    label: 'Engineering Textbook',
+    category: 'marketplace',
+    title: 'Engineering Mechanics (Beer & Johnston)',
+    price: '350',
+    unit: '',
+    badge: 'No Marks · Like New',
+    url: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    label: 'Mini Room Fan',
+    category: 'marketplace',
+    title: 'Rechargeable 3-Speed Desk Fan',
+    price: '450',
+    unit: '',
+    badge: 'Silent · 8h Battery',
+    url: 'https://images.unsplash.com/photo-1618944847823-1d07c030d922?auto=format&fit=crop&w=600&q=80',
+  },
+];
 
 export const SellListModal: React.FC<SellListModalProps> = ({
   isOpen,
@@ -20,317 +109,485 @@ export const SellListModal: React.FC<SellListModalProps> = ({
   const [category, setCategory] = useState<ItemCategory>('rental');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
-  const [priceValue, setPriceValue] = useState<string>('30');
-  const [rentalUnit, setRentalUnit] = useState<string>('/ day');
-  const [deposit, setDeposit] = useState<string>('Deposit: ₹150 (refundable)');
-  const [hostel, setHostel] = useState<string>(currentStudent.hostel || 'A Block');
-  const [wingOrRoom, setWingOrRoom] = useState<string>(
-    `${currentStudent.wing}, ${currentStudent.room}`
+  const [priceValue, setPriceValue] = useState('');
+  const [rentalUnit, setRentalUnit] = useState('/ day');
+  const [deposit, setDeposit] = useState('');
+  const [badgeNote, setBadgeNote] = useState('');
+  const [hostel, setHostel] = useState(currentStudent.hostel || 'A Block');
+  const [wingOrRoom, setWingOrRoom] = useState(
+    currentStudent.wing && currentStudent.room
+      ? `${currentStudent.wing}, ${currentStudent.room}`
+      : 'Floor 2, Room 204'
   );
-  const [imageUrl, setImageUrl] = useState<string>(
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuDllvskdLkt9jCBso5ZEn27Zu2YH5gwBoMU_ttrC5pOewNorongGSLu4KKZSCVkE8AoP4kOuumKb4DLLLwYFWjbMlPl-ktE4QF2NtLewa9ipDw9c9oGOrqtyaemX8Q3hGNgNImMAKb9jfFdcwiiTVfC3aDhoQ0DjFlk7FS6BRM_cZ3SDFYlYsh8kxbHkeRAMvq4pDD_MCLwQ7cxNbDHeA2ij1K0kua60JHsQGU1oHBbyOP_UdnKOD6gAg'
-  );
-  const [badgeNote, setBadgeNote] = useState<string>('Clean & Working');
+  const [imageUrl, setImageUrl] = useState(PRESETS[0].url);
+  const [submitting, setSubmitting] = useState(false);
 
-  const presetImages = [
-    {
-      label: 'Kettle / Cooking',
-      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDllvskdLkt9jCBso5ZEn27Zu2YH5gwBoMU_ttrC5pOewNorongGSLu4KKZSCVkE8AoP4kOuumKb4DLLLwYFWjbMlPl-ktE4QF2NtLewa9ipDw9c9oGOrqtyaemX8Q3hGNgNImMAKb9jfFdcwiiTVfC3aDhoQ0DjFlk7FS6BRM_cZ3SDFYlYsh8kxbHkeRAMvq4pDD_MCLwQ7cxNbDHeA2ij1K0kua60JHsQGU1oHBbyOP_UdnKOD6gAg',
-    },
-    {
-      label: 'Calculator',
-      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD12UeXydACFaEn82qPO_LLwle0B7ilTqdbbwgvbBEOJy7y46TaZ_69Qf8kajaTHnSEfjvXQTWrzFHRO1DpX91vws_mmAE56GFzqU_fJXxi0ajXc0oOBhyOCEflMK8epxgRvGcA08OWI7AFNF7AcDLu2h2E3wLT-ITIgqsMxL20ssq85RojxR7gSnNRhGW1a0AyLDgTlEBx5R07TqFcFzf0hefhwLZFs1SH_qnkhHmdJ4ek3vquwazI2w',
-    },
-    {
-      label: 'Iron',
-      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCqV-Ikqb--YqUb6xdnlIPD6u9wHIGOvZc2rhsAim5m2GaTK9cqpyoV7qbzfzLrFfgoD0EVDziugV7KgZFWXWMydDcoZ-fXeOf-noN1hYdmp6U4xaRZooEvZ_MddYjkiO_O5z7FhETyOliBIeqVuTx3tp5ScSFcHrM9V_10wTKpmAN0-ygoJw5j4p7mXAndHoKa8Jh1_PS_Oc4TxAQF-3GV0yTI7sF23q9-v-JxUs1EQOJO8mrnsFfWxw',
-    },
-    {
-      label: 'Charger Cable',
-      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDbmpKqdz3p1hyaavhH-Rq9B6TmrlaOPXDOxL3w34kvGpWBtZcPY-1tm8ZkwVYTMYRsqH3ZNHmrbu-yZ4iyD8AZf06hZXuVqbC25mlaC3Az8JN2p18aSIAgYKhTXIzIUSc09WCIXPdNcIq6CUzHUKyvJr2WV6iHm6nwZvoj3xcZKCRFZNsrNsm7wda7uUJi13PwHqYmSKWF2qW-ejgRtcGjG-ghWmz53biGZy9SpkiDgdqiX51wYDYN9Q',
-    },
-    {
-      label: 'Stationery / Pen',
-      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAd7WibILZIrCx2IfZnH5hgQqCfsJecrZ808-fIDZRRA2X6icvBPX5QfqxPDQwF3nLu1DsX6K8sFSIEjfvB7zYXyxxtslJCCkD5TgDfcgBFx3NieRJiSIX-uHBe5NufHD1vtEc84JK0ziG7Stf_FqgYR1k8TKLbIC3ycUuZP4ahZWTQiFurlwMvhihJ-Rt-Bd2o2RaFCH_h7FnX8weZse3-o9zq0jEHH2Wm7bcQZArdqFreePClfZ13_w',
-    },
-    {
-      label: 'Notebook Register',
-      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDZJW7_MFT7N8QbpxpRxSDxodhtpzRXSJnHF8IwlJGGNpAoR9c_ohkDBOoRItNTkR-IiYUc4D6OXroTI1ysKftyGexPCX0ZHh2wO43VkxbJrx-oxCht1CBna_ZXjHV91QzQ38K85L_ELpGrAySgPyy4_rnqB0JKJ-qLeWLNZCR9MngXqcyKzfL-UI1Ta-cc3Pa7h5kSR29hVvRsxXydlmXsFHTuurRzFjEZd-wQtSTphgGpnknfeXSnJg',
-    },
-    {
-      label: 'Noodles / Snacks',
-      url: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBcelmayIJLgyIJqndLfVeE_6nEMUWnbkkKOSqA-9fQ7fQcf9XQ5l6-Q0ztsj89A68V1JRZt8tjzM7Lbp9BPV7CI-aKDXZl5VBe3Lc2DIXgeqs-KFyR3KTFNpyNzzln7ToHIgm7Uaj-1mcABLL0CJDpWt4nHLNBU0qG41lr-g38LRTbrSfXLdrc30WiRjCWHQinv-oe3WdAwrud35akY_8YqUKs0gOPa6dQcB3sZNNUix3G4c4PHV1ZjA',
-    },
-  ];
+  const applyPreset = (preset: PresetOption) => {
+    setCategory(preset.category);
+    setTitle(preset.title);
+    setPriceValue(preset.price);
+    setRentalUnit(preset.unit || '/ day');
+    setDeposit(preset.deposit || '');
+    setBadgeNote(preset.badge);
+    setImageUrl(preset.url);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !priceValue) return;
+    setSubmitting(true);
 
-    const numVal = parseFloat(priceValue) || 0;
-    const priceDisplay = `₹${numVal.toLocaleString()}`;
-    const locationTag = `Hostel ${hostel.replace('H-', '')} · ${wingOrRoom.split(',')[0] || 'Campus'}`;
+    const numPrice = Number(priceValue) || 0;
+    const priceDisplay = `₹${numPrice}`;
+    const id = `listing-${Date.now()}`;
+    const locationTag = `${hostel} • ${wingOrRoom || 'Corridor'}`;
+
+    let quickTag = '';
+    if (category === 'rental') {
+      quickTag = title.toLowerCase().includes('calc')
+        ? 'Scientific Calculators'
+        : title.toLowerCase().includes('kettle')
+        ? 'Electric Kettles'
+        : 'Electronics';
+    } else if (category === 'urgent') {
+      quickTag = 'Midnight Snacks';
+    } else {
+      quickTag = 'Textbooks';
+    }
 
     const newItem: ListingItem = {
-      id: `custom-${Date.now()}`,
-      title: title.trim(),
-      description: description.trim() || 'Available for hostel wing corridor handoff.',
+      id,
+      title: title.trim() || 'Untitled Item',
+      description: description.trim() || 'Available for immediate corridor handoff.',
       category,
       priceDisplay,
-      priceValue: numVal,
+      priceValue: numPrice,
       priceUnit: category === 'rental' ? rentalUnit : '',
-      deposit: category === 'rental' ? deposit : undefined,
+      deposit: category === 'rental' && deposit.trim() ? deposit.trim() : undefined,
+      badgeNote: badgeNote.trim() || undefined,
       locationTag,
       hostel,
       wingOrRoom,
-      sellerName: `${currentStudent.name} (${hostel})`,
-      imageUrl: imageUrl.trim() || presetImages[0].url,
+      sellerName: currentStudent.name || 'Campus Peer',
+      imageUrl,
       status: 'available',
-      badgeNote: badgeNote.trim() || undefined,
+      quickTag,
       createdAt: new Date().toISOString(),
     };
 
-    onSubmit(newItem);
-    onClose();
+    setTimeout(() => {
+      onSubmit(newItem);
+      setSubmitting(false);
+      onClose();
+    }, 400);
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-[#0a0a0c]/85 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-[#121316] border border-[#22252b] w-full max-w-lg rounded-xl p-6 space-y-4 shadow-2xl my-6">
-        <div className="flex items-center justify-between border-b border-[#22252b] pb-3">
-          <div className="flex items-center gap-2">
-            <span className="w-8 h-8 rounded-lg bg-[#4d8eff] flex items-center justify-center text-white font-bold text-xs">
-              <Plus className="w-4 h-4" />
+    <div className="fixed inset-0 z-50 bg-[#242519]/90 backdrop-blur-md flex items-center justify-center p-3 sm:p-5 overflow-y-auto text-[#CDCBD6]">
+      <div className="bg-[#26271a] border border-[#434630] w-full max-w-4xl rounded-3xl shadow-2xl overflow-hidden my-auto animate-in fade-in zoom-in-95 duration-200">
+        {/* Top Header Bar */}
+        <div className="px-6 py-4 border-b border-[#434630] bg-[#202115] flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <span className="w-9 h-9 rounded-xl bg-[#D96846] flex items-center justify-center text-white font-bold text-sm shadow">
+              <Plus className="w-5 h-5" />
             </span>
             <div>
-              <h3 className="text-sm font-semibold text-white">List Campus Item</h3>
-              <p className="text-[11px] text-[#94a3b8]">Direct peer-to-peer exchange with zero fees</p>
+              <h3 className="text-base font-bold text-white tracking-tight">Create Campus Listing</h3>
+              <p className="text-xs text-[#9fa293]">
+                Share, rent, or sell items within your residential hostel with zero fees
+              </p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="text-[#64748b] hover:text-white transition-colors cursor-pointer"
+            className="p-2 text-[#9fa293] hover:text-white hover:bg-[#2b2d1e] rounded-xl transition-colors cursor-pointer"
             type="button"
           >
-            <X className="w-4 h-4" />
+            <X className="w-5 h-5" />
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-          {/* Category Tabs */}
-          <div>
-            <label className="text-[#94a3b8] mb-1.5 block font-medium">Listing Type:</label>
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setCategory('rental');
-                  setRentalUnit('/ day');
-                }}
-                className={`p-2.5 rounded-lg border text-center transition-colors cursor-pointer ${
-                  category === 'rental'
-                    ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-white font-semibold'
-                    : 'bg-[#0a0a0c] border-[#22252b] text-[#94a3b8] hover:text-white'
-                }`}
-              >
-                <span>Rent Gear</span>
-                <span className="block text-[10px] text-[#4d8eff] font-normal">Hourly/Daily</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setCategory('urgent');
-                  setRentalUnit('');
-                }}
-                className={`p-2.5 rounded-lg border text-center transition-colors cursor-pointer ${
-                  category === 'urgent'
-                    ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-white font-semibold'
-                    : 'bg-[#0a0a0c] border-[#22252b] text-[#94a3b8] hover:text-white'
-                }`}
-              >
-                <span>Need It Now</span>
-                <span className="block text-[10px] text-amber-400 font-normal">15m Corridor</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setCategory('marketplace');
-                  setRentalUnit('');
-                }}
-                className={`p-2.5 rounded-lg border text-center transition-colors cursor-pointer ${
-                  category === 'marketplace'
-                    ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-white font-semibold'
-                    : 'bg-[#0a0a0c] border-[#22252b] text-[#94a3b8] hover:text-white'
-                }`}
-              >
-                <span>Marketplace</span>
-                <span className="block text-[10px] text-[#94a3b8] font-normal">Thrift &amp; Gear</span>
-              </button>
+        {/* Content Body */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 max-h-[82vh] overflow-y-auto">
+          {/* Left Column: Form Inputs (7 cols) */}
+          <form onSubmit={handleSubmit} className="lg:col-span-7 p-6 space-y-5 border-r border-[#434630]/60">
+            {/* Quick Inspiration Presets */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-[#CDCBD6] flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#D96846]" />
+                <span>Quick-Fill Templates:</span>
+              </label>
+              <div className="flex gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+                {PRESETS.map((p) => (
+                  <button
+                    key={p.label}
+                    type="button"
+                    onClick={() => applyPreset(p)}
+                    className="shrink-0 text-[11px] px-2.5 py-1 rounded-lg bg-[#202115] hover:bg-[#353826] text-[#CDCBD6] hover:text-white border border-[#434630] transition-colors cursor-pointer"
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
 
-          {/* Title */}
-          <div className="space-y-1">
-            <label className="text-[#94a3b8] block font-medium">Item Title:</label>
-            <input
-              type="text"
-              required
-              placeholder="e.g. Philips 1000W Iron, Casio fx-991EX, Maggi Pack..."
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
-            />
-          </div>
+            {/* Listing Type / Zone Selector */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-[#CDCBD6]">Select Listing Zone:</label>
+              <div className="grid grid-cols-3 gap-2.5">
+                {[
+                  {
+                    id: 'rental',
+                    label: 'Rent Gear',
+                    sub: 'Hourly / Daily',
+                    icon: Calendar,
+                    desc: 'Calculators, kettles, irons',
+                  },
+                  {
+                    id: 'urgent',
+                    label: 'Need It Now',
+                    sub: '15m Corridor',
+                    icon: Zap,
+                    desc: 'Emergency snacks, cords',
+                  },
+                  {
+                    id: 'marketplace',
+                    label: 'Marketplace',
+                    sub: 'Buy & Sell',
+                    icon: ShoppingBag,
+                    desc: 'Textbooks, cycle, dorm gear',
+                  },
+                ].map((cat) => {
+                  const Icon = cat.icon;
+                  const isSelected = category === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      type="button"
+                      onClick={() => {
+                        setCategory(cat.id as ItemCategory);
+                        if (cat.id === 'rental' && !rentalUnit) setRentalUnit('/ day');
+                        if (cat.id !== 'rental') setRentalUnit('');
+                      }}
+                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                        isSelected
+                          ? 'bg-[#D96846] border-[#D96846] text-white shadow-lg scale-[1.02]'
+                          : 'bg-[#202115] border-[#434630] text-[#CDCBD6] hover:border-[#D96846]/50'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <Icon className={`w-4 h-4 ${isSelected ? 'text-white' : 'text-[#D96846]'}`} />
+                        <span className={`text-[9px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+                          isSelected ? 'bg-black/20 text-white' : 'bg-[#26271a] text-[#9fa293]'
+                        }`}>
+                          {cat.sub}
+                        </span>
+                      </div>
+                      <div className="mt-2.5">
+                        <p className="font-bold text-xs">{cat.label}</p>
+                        <p className={`text-[10px] mt-0.5 line-clamp-1 ${isSelected ? 'text-white/80' : 'text-[#9fa293]'}`}>
+                          {cat.desc}
+                        </p>
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
 
-          {/* Price & Unit */}
-          <div className="grid grid-cols-2 gap-3">
+            {/* Title */}
             <div className="space-y-1">
-              <label className="text-[#94a3b8] block font-medium">Price (₹):</label>
+              <label className="text-xs font-semibold text-[#CDCBD6]">Item Title</label>
               <input
-                type="number"
+                type="text"
                 required
-                min="0"
-                value={priceValue}
-                onChange={(e) => setPriceValue(e.target.value)}
-                className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
+                placeholder="e.g. Casio fx-991EX Calculator, Electric Kettle, Maggi 4-Pack..."
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="w-full bg-[#1e1f14] border border-[#434630] rounded-xl text-sm text-white placeholder-[#9fa293]/60 px-3.5 py-2.5 focus:outline-none focus:border-[#D96846] transition-colors"
               />
             </div>
-            {category === 'rental' ? (
+
+            {/* Pricing Row */}
+            <div className="grid grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-[#94a3b8] block font-medium">Rate Period:</label>
-                <select
-                  value={rentalUnit}
-                  onChange={(e) => setRentalUnit(e.target.value)}
-                  className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
-                >
-                  <option value="/ hour">/ hour</option>
-                  <option value="/ day">/ day</option>
-                  <option value="/ exam">/ exam</option>
-                  <option value="/ week">/ week</option>
-                </select>
+                <label className="text-xs font-semibold text-[#CDCBD6]">Price (₹)</label>
+                <div className="relative">
+                  <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm font-bold text-[#D96846]">₹</span>
+                  <input
+                    type="number"
+                    required
+                    min="0"
+                    placeholder="25"
+                    value={priceValue}
+                    onChange={(e) => setPriceValue(e.target.value)}
+                    className="w-full bg-[#1e1f14] border border-[#434630] rounded-xl text-sm font-semibold text-white pl-8 pr-3.5 py-2.5 focus:outline-none focus:border-[#D96846]"
+                  />
+                </div>
               </div>
-            ) : (
-              <div className="space-y-1">
-                <label className="text-[#94a3b8] block font-medium">Condition Note:</label>
-                <input
-                  type="text"
-                  placeholder="e.g. Sealed pack, Mint condition..."
-                  value={badgeNote}
-                  onChange={(e) => setBadgeNote(e.target.value)}
-                  className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
-                />
+
+              {category === 'rental' ? (
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-[#CDCBD6]">Rental Billing Period</label>
+                  <select
+                    value={rentalUnit}
+                    onChange={(e) => setRentalUnit(e.target.value)}
+                    className="w-full bg-[#1e1f14] border border-[#434630] rounded-xl text-xs text-white px-3 py-2.5 focus:outline-none focus:border-[#D96846]"
+                  >
+                    <option value="/ exam">/ exam (Mid-sem / End-sem)</option>
+                    <option value="/ hour">/ hour</option>
+                    <option value="/ day">/ day (24 hours)</option>
+                    <option value="/ week">/ week (Semester projects)</option>
+                  </select>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-[#CDCBD6]">Item Condition Note</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Like New, Unopened, 8/10"
+                    value={badgeNote}
+                    onChange={(e) => setBadgeNote(e.target.value)}
+                    className="w-full bg-[#1e1f14] border border-[#434630] rounded-xl text-xs text-white px-3.5 py-2.5 focus:outline-none focus:border-[#D96846]"
+                  />
+                </div>
+              )}
+            </div>
+
+            {/* Security Deposit (Rental Only) */}
+            {category === 'rental' && (
+              <div className="p-3 bg-[#1e1f14] border border-[#434630] rounded-xl space-y-2">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs font-semibold text-[#CDCBD6] flex items-center gap-1.5">
+                    <Shield className="w-3.5 h-3.5 text-[#596235]" />
+                    <span>Security Deposit (Refundable Escrow):</span>
+                  </label>
+                  <span className="text-[10px] text-[#596235] font-semibold">Protected on-chain</span>
+                </div>
+                <div className="flex gap-2">
+                  {[
+                    'Deposit: ₹100 (refundable)',
+                    'Deposit: ₹150 (refundable)',
+                    'Deposit: ₹200 (refundable)',
+                    'No Deposit Required',
+                  ].map((depOption) => (
+                    <button
+                      key={depOption}
+                      type="button"
+                      onClick={() => setDeposit(depOption === 'No Deposit Required' ? '' : depOption)}
+                      className={`text-[10px] px-2.5 py-1 rounded-lg border transition-colors cursor-pointer ${
+                        deposit === depOption || (depOption === 'No Deposit Required' && !deposit)
+                          ? 'bg-[#596235] border-[#596235] text-white font-semibold'
+                          : 'bg-[#26271a] border-[#434630] text-[#CDCBD6] hover:text-white'
+                      }`}
+                    >
+                      {depOption.replace('Deposit: ', '')}
+                    </button>
+                  ))}
+                </div>
               </div>
             )}
-          </div>
 
-          {/* Deposit for Rental */}
-          {category === 'rental' && (
-            <div className="space-y-1">
-              <label className="text-[#94a3b8] block font-medium">Security Deposit / Note:</label>
-              <input
-                type="text"
-                placeholder="Deposit: ₹150 (refundable) or Ready in Wing B"
-                value={deposit}
-                onChange={(e) => setDeposit(e.target.value)}
-                className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
-              />
-            </div>
-          )}
-
-          {/* Location / Hostel */}
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1">
-              <label className="text-[#94a3b8] block font-medium">Hostel Block:</label>
-              <select
-                value={hostel}
-                onChange={(e) => setHostel(e.target.value)}
-                className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
-              >
-                <option value="A Block">A Block</option>
-                <option value="B Block">B Block</option>
-                <option value="C Block">C Block</option>
-                <option value="D Block">D Block</option>
-                <option value="E Block">E Block</option>
-                <option value="F Block">F Block</option>
-              </select>
-            </div>
-            <div className="space-y-1">
-              <label className="text-[#94a3b8] block font-medium">Wing / Room:</label>
-              <input
-                type="text"
-                placeholder="e.g. Wing B, Room 204"
-                value={wingOrRoom}
-                onChange={(e) => setWingOrRoom(e.target.value)}
-                className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
-              />
-            </div>
-          </div>
-
-          {/* Image Presets & URL */}
-          <div className="space-y-1.5">
-            <label className="text-[#94a3b8] block font-medium flex items-center justify-between">
-              <span className="flex items-center gap-1.5">
-                <Camera className="w-3.5 h-3.5 text-[#4d8eff]" />
-                <span>Product Photo:</span>
-              </span>
-              <span className="text-[10px] text-[#64748b]">Select preset or paste URL</span>
-            </label>
-            <div className="flex gap-2 overflow-x-auto py-1">
-              {presetImages.map((p) => (
-                <button
-                  key={p.label}
-                  type="button"
-                  onClick={() => setImageUrl(p.url)}
-                  className={`flex-shrink-0 flex items-center gap-1.5 px-2.5 py-1.5 rounded border text-[11px] transition-colors cursor-pointer ${
-                    imageUrl === p.url
-                      ? 'border-[#4d8eff] bg-[#4d8eff]/10 text-white'
-                      : 'border-[#22252b] bg-[#0a0a0c] text-[#94a3b8] hover:text-white'
-                  }`}
+            {/* Hostel Location */}
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-[#CDCBD6]">Hostel Block</label>
+                <select
+                  value={hostel}
+                  onChange={(e) => setHostel(e.target.value)}
+                  className="w-full bg-[#1e1f14] border border-[#434630] rounded-xl text-xs text-white p-2.5 focus:outline-none focus:border-[#D96846]"
                 >
-                  <img src={p.url} alt={p.label} className="w-4 h-4 object-cover rounded" />
-                  <span>{p.label}</span>
-                </button>
-              ))}
+                  {['A Block', 'B Block', 'C Block', 'D Block', 'E Block', 'F Block'].map((h) => (
+                    <option key={h} value={h}>
+                      {h}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-[#CDCBD6]">Floor / Wing / Room</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Floor 2, Room 204"
+                  value={wingOrRoom}
+                  onChange={(e) => setWingOrRoom(e.target.value)}
+                  className="w-full bg-[#1e1f14] border border-[#434630] rounded-xl text-xs text-white p-2.5 focus:outline-none focus:border-[#D96846]"
+                />
+              </div>
             </div>
-            <input
-              type="url"
-              placeholder="Or enter custom image URL"
-              value={imageUrl}
-              onChange={(e) => setImageUrl(e.target.value)}
-              className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2 text-xs focus:outline-none focus:border-[#4d8eff]"
-            />
-          </div>
 
-          {/* Description */}
-          <div className="space-y-1">
-            <label className="text-[#94a3b8] block font-medium">Short Description:</label>
-            <textarea
-              rows={2}
-              placeholder="Fresh condition, clean descaled, working batteries..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="w-full bg-[#0a0a0c] border border-[#22252b] rounded-md text-white p-2.5 focus:outline-none focus:border-[#4d8eff]"
-            />
-          </div>
+            {/* Photo Selection */}
+            <div className="space-y-1.5">
+              <label className="text-xs font-semibold text-[#CDCBD6] flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <Camera className="w-3.5 h-3.5 text-[#D96846]" />
+                  <span>Product Image:</span>
+                </span>
+                <span className="text-[10px] text-[#9fa293]">Choose a photo or paste a custom URL</span>
+              </label>
 
-          {/* Action buttons */}
-          <div className="flex gap-2 pt-2 border-t border-[#22252b]">
-            <button
-              type="submit"
-              className="flex-1 bg-[#4d8eff] hover:bg-[#3b7cee] text-white text-xs font-semibold py-2.5 rounded-md transition-colors cursor-pointer flex items-center justify-center gap-1.5 shadow-sm active:scale-95"
-            >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Publish Listing</span>
-            </button>
-            <button
-              type="button"
-              onClick={onClose}
-              className="bg-[#1a1c22] hover:bg-[#252830] text-[#94a3b8] text-xs font-medium px-4 py-2.5 rounded-md transition-colors cursor-pointer"
-            >
-              Cancel
-            </button>
+              <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                {PRESETS.map((p) => (
+                  <button
+                    key={p.label}
+                    type="button"
+                    onClick={() => setImageUrl(p.url)}
+                    className={`relative aspect-square rounded-xl overflow-hidden border transition-all cursor-pointer ${
+                      imageUrl === p.url
+                        ? 'border-[#D96846] ring-2 ring-[#D96846]/40 scale-105'
+                        : 'border-[#434630] opacity-70 hover:opacity-100'
+                    }`}
+                  >
+                    <img src={p.url} alt={p.label} className="w-full h-full object-cover" />
+                    {imageUrl === p.url && (
+                      <div className="absolute inset-0 bg-[#D96846]/30 flex items-center justify-center">
+                        <Check className="w-4 h-4 text-white drop-shadow" />
+                      </div>
+                    )}
+                  </button>
+                ))}
+              </div>
+
+              <input
+                type="url"
+                placeholder="Or paste external image URL (Unsplash, Imgur, Supabase Storage...)"
+                value={imageUrl}
+                onChange={(e) => setImageUrl(e.target.value)}
+                className="w-full bg-[#1e1f14] border border-[#434630] rounded-xl text-xs text-white placeholder-[#9fa293]/60 px-3 py-2 focus:outline-none focus:border-[#D96846]"
+              />
+            </div>
+
+            {/* Description */}
+            <div className="space-y-1">
+              <label className="text-xs font-semibold text-[#CDCBD6]">Short Description</label>
+              <textarea
+                rows={2}
+                placeholder="Mention item condition, battery status, pickup instructions..."
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                className="w-full bg-[#1e1f14] border border-[#434630] rounded-xl text-xs text-white placeholder-[#9fa293]/60 px-3 py-2 focus:outline-none focus:border-[#D96846]"
+              />
+            </div>
+
+            {/* Submit & Cancel Buttons */}
+            <div className="flex gap-2.5 pt-3 border-t border-[#434630]">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="flex-1 bg-[#D96846] hover:bg-[#c45735] disabled:opacity-50 text-white font-semibold text-xs py-3 rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+              >
+                {submitting ? (
+                  <span className="flex items-center gap-2">
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Publishing to Campus...
+                  </span>
+                ) : (
+                  <>
+                    <Sparkles className="w-4 h-4" />
+                    <span>Publish Listing to {hostel}</span>
+                  </>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={onClose}
+                className="bg-[#202115] hover:bg-[#2b2d1e] text-[#CDCBD6] text-xs font-medium px-5 py-3 rounded-xl border border-[#434630] transition-colors cursor-pointer"
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+
+          {/* Right Column: Live Card Preview Studio (5 cols) */}
+          <div className="lg:col-span-5 p-6 bg-[#202115] flex flex-col justify-between space-y-6">
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <span className="text-xs font-bold text-white uppercase tracking-wider flex items-center gap-1.5">
+                  <Eye className="w-4 h-4 text-[#D96846]" />
+                  <span>Live Student Feed Preview</span>
+                </span>
+                <span className="text-[10px] px-2 py-0.5 rounded bg-[#596235]/40 text-[#CDCBD6] border border-[#596235]">
+                  Instant Preview
+                </span>
+              </div>
+              <p className="text-[11px] text-[#9fa293] mb-4">
+                This is exactly how your listing will appear to corridor wingmates.
+              </p>
+
+              {/* Live Preview Card */}
+              <div className="bg-[#26271a] border border-[#434630] rounded-2xl overflow-hidden shadow-2xl transition-all duration-300 group hover:border-[#D96846]">
+                <div className="aspect-[16/10] bg-[#1e1f14] relative overflow-hidden">
+                  <img
+                    src={imageUrl || PRESETS[0].url}
+                    alt={title || 'Preview item'}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = PRESETS[0].url;
+                    }}
+                  />
+                  <span className="absolute top-2.5 left-2.5 bg-[#242519]/90 backdrop-blur text-[10px] font-semibold text-white px-2 py-0.5 rounded-md border border-[#434630]">
+                    {hostel} • {wingOrRoom || 'Corridor'}
+                  </span>
+                  {category === 'urgent' && (
+                    <span className="absolute top-2.5 right-2.5 bg-[#596235] text-[9px] text-white font-bold px-2 py-0.5 rounded shadow">
+                      LIVE
+                    </span>
+                  )}
+                  {badgeNote && (
+                    <span className="absolute top-2.5 right-2.5 bg-[#D96846] text-[9px] text-white font-semibold px-2 py-0.5 rounded shadow truncate max-w-[140px]">
+                      {badgeNote}
+                    </span>
+                  )}
+                </div>
+
+                <div className="p-4 space-y-2">
+                  <div className="flex items-start justify-between gap-2">
+                    <h4 className="text-sm font-bold text-white line-clamp-1">
+                      {title || 'Your Item Title Goes Here'}
+                    </h4>
+                  </div>
+
+                  <p className="text-xs text-[#CDCBD6]/80 line-clamp-2">
+                    {description || 'Item description, specs, and corridor handoff instructions will be displayed here.'}
+                  </p>
+
+                  <div className="pt-2 border-t border-[#434630] flex items-baseline justify-between">
+                    <div>
+                      <span className="text-base font-extrabold text-[#D96846]">
+                        ₹{priceValue || '0'}
+                      </span>
+                      {category === 'rental' && (
+                        <span className="text-xs text-[#9fa293]"> {rentalUnit}</span>
+                      )}
+                    </div>
+                    {category === 'rental' && deposit && (
+                      <span className="text-[10px] text-[#9fa293] bg-[#202115] px-2 py-0.5 rounded border border-[#434630]">
+                        {deposit}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Simulated Action Button */}
+                  <div className="pt-1">
+                    <div className="w-full py-2 rounded-lg bg-[#2b2d1e] text-center text-xs font-semibold text-[#CDCBD6] border border-[#434630]/80">
+                      {category === 'rental' ? 'Rent Now (Preview)' : category === 'urgent' ? 'Ping for Pickup' : 'Chat with Seller'}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Safety & Protocol Tip */}
+            <div className="p-3.5 bg-[#1e1f14] border border-[#434630] rounded-xl text-[11px] space-y-1">
+              <div className="flex items-center gap-1.5 text-[#596235] font-semibold">
+                <CheckCircle2 className="w-3.5 h-3.5 text-[#596235]" />
+                <span>Zero Platform Fees Guarantee</span>
+              </div>
+              <p className="text-[#9fa293] leading-relaxed">
+                You retain 100% of the rent or purchase price. Buyers and renters transfer funds directly to your UPI ID upon inspecting the item in person.
+              </p>
+            </div>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );

@@ -41,10 +41,10 @@ function StatusDot({ status }: { status: BlockchainTransaction['status'] }) {
 function TinyBar({ value, max }: { value: number; max: number }) {
   const pct = max > 0 ? Math.round((value / max) * 100) : 0;
   return (
-    <div className="w-full h-1 rounded-full bg-[#1a1c22]">
+    <div className="w-full h-1.5 rounded-full bg-[#202115]">
       <div
-        className="h-1 rounded-full transition-all"
-        style={{ width: `${pct}%`, backgroundColor: '#4d8eff' }}
+        className="h-1.5 rounded-full transition-all"
+        style={{ width: `${pct}%`, backgroundColor: '#D96846' }}
       />
     </div>
   );
@@ -66,7 +66,7 @@ function Sparkline({ data, width = 120, height = 32 }: { data: number[]; width?:
       <polyline
         points={points}
         fill="none"
-        stroke="#4d8eff"
+        stroke="#D96846"
         strokeWidth="1.5"
         strokeLinejoin="round"
         strokeLinecap="round"
@@ -79,8 +79,8 @@ function Sparkline({ data, width = 120, height = 32 }: { data: number[]; width?:
       />
       <defs>
         <linearGradient id="spark-fill" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#4d8eff" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="#4d8eff" stopOpacity="0" />
+          <stop offset="0%" stopColor="#D96846" stopOpacity="0.25" />
+          <stop offset="100%" stopColor="#D96846" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>
@@ -103,7 +103,7 @@ function ActivityChart({ data }: { data: ChainActivity[] }) {
             className="flex-1 rounded-t-sm transition-all"
             style={{
               height: `${pct}%`,
-              backgroundColor: isLast ? '#4d8eff' : '#1e3a6e',
+              backgroundColor: isLast ? '#D96846' : '#596235',
               opacity: isLast ? 1 : 0.6 + (i / slice.length) * 0.4,
             }}
           />
@@ -196,44 +196,44 @@ export const BlockchainSection: React.FC = () => {
   ];
 
   return (
-    <section id="blockchain" className="space-y-5 border-t border-[#22252b] pt-10">
+    <section id="blockchain" className="space-y-6 text-[#CDCBD6]">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3">
         <div>
-          <span className="text-xs font-semibold text-[#4d8eff] tracking-wide uppercase">On-chain layer</span>
+          <span className="text-xs font-semibold text-[#D96846] tracking-wide uppercase">On-chain layer</span>
           <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mt-1">
             Blockchain Activity
           </h2>
-          <p className="text-sm text-[#94a3b8] mt-1 max-w-xl">
+          <p className="text-sm text-[#9fa293] mt-1 max-w-xl">
             Real-time transaction tracking, smart contract monitoring, and wallet analytics for every campus trade.
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           {simFeedback && (
-            <span className="text-xs font-semibold text-[#3ecf8e] bg-[#3ecf8e]/10 border border-[#3ecf8e]/30 px-2.5 py-1 rounded-md animate-fade-in">
+            <span className="text-xs font-semibold text-white bg-[#596235] border border-[#596235] px-2.5 py-1 rounded-md shadow">
               {simFeedback}
             </span>
           )}
           <button
             type="button"
             onClick={() => handleSimulateAction('escrow_lock')}
-            className="flex items-center gap-1.5 text-xs bg-[#1a1c22] hover:bg-[#252830] text-[#4d8eff] border border-[#4d8eff]/30 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs bg-[#26271a] hover:bg-[#353826] text-[#D96846] border border-[#D96846]/40 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
             title="Simulate locking a new security deposit in RentalEscrow"
           >
-            <Zap className="w-3.5 h-3.5 text-[#4d8eff]" />
+            <Zap className="w-3.5 h-3.5 text-[#D96846]" />
             Simulate Deposit Lock
           </button>
           <button
             type="button"
             onClick={() => handleSimulateAction('escrow_release')}
-            className="flex items-center gap-1.5 text-xs bg-[#1a1c22] hover:bg-[#252830] text-[#3ecf8e] border border-[#3ecf8e]/30 px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs bg-[#26271a] hover:bg-[#353826] text-[#CDCBD6] border border-[#596235] px-3 py-1.5 rounded-lg transition-colors cursor-pointer"
             title="Simulate releasing escrow deposit upon successful return"
           >
-            <CheckCircle2 className="w-3.5 h-3.5 text-[#3ecf8e]" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-[#596235]" />
             Simulate Release
           </button>
-          <span className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full bg-[#3ecf8e]/10 text-[#3ecf8e] border border-[#3ecf8e]/20">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#3ecf8e] animate-pulse" />
+          <span className="flex items-center gap-1.5 text-[11px] font-medium px-2.5 py-1 rounded-full bg-[#596235]/30 text-[#CDCBD6] border border-[#596235]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#D96846] animate-pulse" />
             Live · Block #{(18_501_000 + ticking).toLocaleString()}
           </span>
         </div>
@@ -242,16 +242,16 @@ export const BlockchainSection: React.FC = () => {
       {/* KPI Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
         {[
-          { label: 'Total Volume', value: `₹${totalVolume.toLocaleString()}`, icon: TrendingUp, color: '#4d8eff' },
-          { label: 'Confirmed Txs', value: confirmedCount, icon: CheckCircle2, color: '#3ecf8e' },
-          { label: 'Pending', value: pendingCount, icon: Clock, color: '#f59e0b' },
-          { label: 'Gas Used (est.)', value: `₹${totalGas.toFixed(1)}`, icon: Zap, color: '#a78bfa' },
+          { label: 'Total Volume', value: `₹${totalVolume.toLocaleString()}`, icon: TrendingUp, color: '#D96846' },
+          { label: 'Confirmed Txs', value: confirmedCount, icon: CheckCircle2, color: '#596235' },
+          { label: 'Pending', value: pendingCount, icon: Clock, color: '#D96846' },
+          { label: 'Gas Used (est.)', value: `₹${totalGas.toFixed(1)}`, icon: Zap, color: '#CDCBD6' },
         ].map((kpi) => {
           const Icon = kpi.icon;
           return (
-            <div key={kpi.label} className="bg-[#121316] border border-[#22252b] rounded-xl p-4 space-y-2">
+            <div key={kpi.label} className="bg-[#26271a] border border-[#434630] rounded-xl p-4 space-y-2 shadow-md">
               <div className="flex items-center justify-between">
-                <span className="text-[11px] text-[#64748b] font-medium">{kpi.label}</span>
+                <span className="text-[11px] text-[#9fa293] font-medium">{kpi.label}</span>
                 <Icon className="w-4 h-4" style={{ color: kpi.color }} />
               </div>
               <p className="text-xl font-bold text-white">{kpi.value}</p>
@@ -262,16 +262,16 @@ export const BlockchainSection: React.FC = () => {
       </div>
 
       {/* Sub-tabs */}
-      <div className="flex gap-1 p-1 bg-[#0f1013] border border-[#22252b] rounded-lg w-full overflow-x-auto">
+      <div className="flex gap-1 p-1 bg-[#202115] border border-[#434630] rounded-lg w-full overflow-x-auto">
         {tabs.map(({ key, label, icon: Icon }) => (
           <button
             key={key}
             type="button"
             onClick={() => setActiveTab(key)}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded text-xs font-semibold whitespace-nowrap transition-colors cursor-pointer ${
               activeTab === key
-                ? 'bg-[#1a1c22] text-white border border-[#22252b]'
-                : 'text-[#94a3b8] hover:text-white'
+                ? 'bg-[#D96846] text-white shadow'
+                : 'text-[#CDCBD6] hover:text-white hover:bg-[#2b2d1e]'
             }`}
           >
             <Icon className="w-3.5 h-3.5" />
@@ -285,7 +285,7 @@ export const BlockchainSection: React.FC = () => {
         <div className="space-y-3">
           {/* Filter pills */}
           <div className="flex flex-wrap gap-2 items-center">
-            <span className="text-[11px] text-[#64748b]">Filter:</span>
+            <span className="text-[11px] text-[#9fa293]">Filter:</span>
             {(['all', 'confirmed', 'pending', 'failed'] as const).map((s) => (
               <button
                 key={s}
@@ -293,60 +293,60 @@ export const BlockchainSection: React.FC = () => {
                 onClick={() => setTxFilter(s)}
                 className={`text-[11px] px-2.5 py-0.5 rounded-full border transition-colors cursor-pointer capitalize ${
                   txFilter === s
-                    ? 'bg-[#4d8eff]/15 border-[#4d8eff] text-[#4d8eff]'
-                    : 'border-[#22252b] text-[#64748b] hover:text-white'
+                    ? 'bg-[#D96846]/20 border-[#D96846] text-[#D96846]'
+                    : 'border-[#434630] text-[#9fa293] hover:text-white'
                 }`}
               >
                 {s}
               </button>
             ))}
-            <span className="ml-auto text-[11px] text-[#64748b]">{filteredTxs.length} records</span>
+            <span className="ml-auto text-[11px] text-[#9fa293]">{filteredTxs.length} records</span>
           </div>
 
           {/* Transaction rows */}
           <div className="space-y-1.5 max-h-96 overflow-y-auto">
             {filteredTxs.map((tx) => (
-              <div key={tx.hash} className="bg-[#121316] border border-[#22252b] rounded-lg overflow-hidden">
+              <div key={tx.hash} className="bg-[#26271a] border border-[#434630] rounded-lg overflow-hidden shadow">
                 <button
                   type="button"
                   onClick={() => setExpandedTx(expandedTx === tx.hash ? null : tx.hash)}
-                  className="w-full flex items-center gap-3 p-3 text-left hover:bg-[#1a1c22] transition-colors cursor-pointer"
+                  className="w-full flex items-center gap-3 p-3 text-left hover:bg-[#2b2d1e] transition-colors cursor-pointer"
                 >
                   <StatusDot status={tx.status} />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-medium text-white truncate">{tx.itemTitle}</span>
-                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#1a1c22] border border-[#22252b] text-[#94a3b8] whitespace-nowrap">
+                      <span className="text-xs font-medium text-white truncate">{tx.type}</span>
+                      <span className="text-[10px] px-1.5 py-0.5 rounded bg-[#202115] border border-[#434630] text-[#CDCBD6] whitespace-nowrap">
                         {TX_TYPE_LABELS[tx.type]}
                       </span>
                     </div>
-                    <span className="text-[10px] text-[#64748b] font-mono">{tx.hash}</span>
+                    <span className="text-[10px] text-[#9fa293] font-mono">{tx.hash}</span>
                   </div>
                   <div className="text-right shrink-0">
                     <p className="text-xs font-semibold text-white">₹{tx.amountInr}</p>
-                    <p className="text-[10px] text-[#64748b]">
+                    <p className="text-[10px] text-[#9fa293]">
                       {new Date(tx.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
                   <ChevronRight
-                    className={`w-3.5 h-3.5 text-[#64748b] shrink-0 transition-transform ${
+                    className={`w-3.5 h-3.5 text-[#9fa293] shrink-0 transition-transform ${
                       expandedTx === tx.hash ? 'rotate-90' : ''
                     }`}
                   />
                 </button>
 
                 {expandedTx === tx.hash && (
-                  <div className="border-t border-[#22252b] p-3 grid grid-cols-2 md:grid-cols-3 gap-2 text-[11px]">
+                  <div className="border-t border-[#434630] p-3 grid grid-cols-2 md:grid-cols-3 gap-2 text-[11px] bg-[#202115]">
                     {[
                       ['Block', tx.blockNumber.toLocaleString()],
                       ['Confirmations', tx.confirmations],
                       ['Gas Fee', `₹${tx.gasFeeInr}`],
-                      ['From', tx.from],
-                      ['To', tx.to],
+                      ['From', tx.fromAddress],
+                      ['To', tx.toAddress],
                       ['Status', tx.status.toUpperCase()],
                     ].map(([k, v]) => (
                       <div key={String(k)}>
-                        <p className="text-[#64748b] mb-0.5">{k}</p>
+                        <p className="text-[#9fa293] mb-0.5">{k}</p>
                         <p
                           className="font-mono text-white truncate"
                           style={k === 'Status' ? { color: TX_STATUS_COLORS[tx.status] } : {}}
@@ -365,73 +365,71 @@ export const BlockchainSection: React.FC = () => {
 
       {/* ---- TAB: SMART CONTRACTS ---- */}
       {activeTab === 'contracts' && (
-        <div className="space-y-3">
-          {/* Contract cards */}
+        <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
             {[
               {
                 name: 'RentalEscrow',
-                address: '0xABCD...1234',
-                desc: 'Locks deposits for rental bookings. Releases on mutual confirmation.',
+                address: '0x7F2e...b491',
+                desc: 'Locks security deposits for campus rental gear. Settles on mutual sign-off.',
                 events: events.filter((e) => e.contractName === 'RentalEscrow').length,
-                color: '#4d8eff',
+                color: '#D96846',
               },
               {
                 name: 'MarketplaceTrade',
                 address: '0x5678...EFGH',
-                desc: 'Atomically swaps buyer funds and seller delivery confirmation.',
+                desc: 'Atomically swaps buyer funds and seller handoff delivery confirmation.',
                 events: events.filter((e) => e.contractName === 'MarketplaceTrade').length,
-                color: '#3ecf8e',
+                color: '#596235',
               },
               {
                 name: 'DepositVault',
                 address: '0xABC9...0012',
-                desc: 'Multi-sig vault holding refundable security deposits.',
+                desc: 'Multi-sig vault holding refundable collateral during active rentals.',
                 events: events.filter((e) => e.contractName === 'DepositVault').length,
-                color: '#a78bfa',
+                color: '#CDCBD6',
               },
             ].map((c) => (
-              <div key={c.name} className="bg-[#121316] border border-[#22252b] rounded-xl p-4 space-y-2">
+              <div key={c.name} className="bg-[#26271a] border border-[#434630] rounded-xl p-4 space-y-2 shadow">
                 <div className="flex items-center gap-2">
                   <Shield className="w-4 h-4 shrink-0" style={{ color: c.color }} />
                   <span className="text-sm font-semibold text-white">{c.name}</span>
                 </div>
-                <p className="text-[11px] text-[#94a3b8] leading-relaxed">{c.desc}</p>
-                <div className="flex items-center justify-between text-[10px] pt-1 border-t border-[#22252b]">
-                  <span className="font-mono text-[#64748b]">{c.address}</span>
-                  <span className="text-[#4d8eff]">{c.events} events</span>
+                <p className="text-[11px] text-[#CDCBD6]/80 leading-relaxed">{c.desc}</p>
+                <div className="flex items-center justify-between text-[10px] pt-1 border-t border-[#434630]">
+                  <span className="font-mono text-[#9fa293]">{c.address}</span>
+                  <span className="text-[#D96846] font-semibold">{c.events} events</span>
                 </div>
               </div>
             ))}
           </div>
 
-          {/* Event log */}
           <h3 className="text-xs font-semibold text-white pt-1">Recent Contract Events</h3>
           <div className="space-y-1.5">
             {events.map((ev) => {
               const icon =
                 ev.severity === 'success' ? (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#3ecf8e] shrink-0" />
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#596235] shrink-0" />
                 ) : ev.severity === 'warning' ? (
-                  <AlertTriangle className="w-3.5 h-3.5 text-[#f59e0b] shrink-0" />
+                  <AlertTriangle className="w-3.5 h-3.5 text-[#D96846] shrink-0" />
                 ) : (
-                  <Activity className="w-3.5 h-3.5 text-[#4d8eff] shrink-0" />
+                  <Activity className="w-3.5 h-3.5 text-[#D96846] shrink-0" />
                 );
               return (
                 <div
                   key={ev.id}
-                  className="flex items-start gap-3 bg-[#121316] border border-[#22252b] rounded-lg p-3 text-xs"
+                  className="flex items-start gap-3 bg-[#26271a] border border-[#434630] rounded-lg p-3 text-xs"
                 >
                   {icon}
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 flex-wrap">
                       <span className="font-medium text-white">{ev.eventName}</span>
-                      <span className="text-[10px] text-[#64748b]">{ev.contractName}</span>
-                      <span className="text-[10px] font-mono text-[#64748b]">#{ev.blockNumber}</span>
+                      <span className="text-[10px] text-[#9fa293]">{ev.contractName}</span>
+                      <span className="text-[10px] font-mono text-[#9fa293]">#{ev.blockNumber}</span>
                     </div>
-                    <p className="text-[#94a3b8] text-[11px] mt-0.5">{ev.details}</p>
+                    <p className="text-[#CDCBD6]/80 text-[11px] mt-0.5">{ev.summary}</p>
                   </div>
-                  <span className="text-[10px] text-[#64748b] whitespace-nowrap shrink-0">
+                  <span className="text-[10px] text-[#9fa293] whitespace-nowrap shrink-0">
                     {new Date(ev.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
@@ -444,63 +442,61 @@ export const BlockchainSection: React.FC = () => {
       {/* ---- TAB: WALLET ANALYTICS ---- */}
       {activeTab === 'wallet' && (
         <div className="space-y-4">
-          <div className="bg-[#121316] border border-[#22252b] rounded-xl p-5 space-y-4">
+          <div className="bg-[#26271a] border border-[#434630] rounded-xl p-5 space-y-4 shadow">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-[#4d8eff]/15 border border-[#4d8eff]/30 flex items-center justify-center">
-                <Wallet className="w-5 h-5 text-[#4d8eff]" />
+              <div className="w-10 h-10 rounded-lg bg-[#D96846]/20 border border-[#D96846]/40 flex items-center justify-center">
+                <Wallet className="w-5 h-5 text-[#D96846]" />
               </div>
               <div>
-                <p className="text-xs text-[#64748b]">Wallet Address</p>
+                <p className="text-xs text-[#9fa293]">Wallet Address</p>
                 <p className="text-sm font-mono text-white">{wallet.address}</p>
               </div>
               <div className="ml-auto text-right">
-                <p className="text-[11px] text-[#64748b]">Trust Score</p>
-                <p className="text-2xl font-bold text-[#3ecf8e]">{wallet.trustScore}</p>
+                <p className="text-[11px] text-[#9fa293]">Trust Score</p>
+                <p className="text-2xl font-bold text-[#596235]">{wallet.trustScore}</p>
               </div>
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3 text-xs">
               {[
-                { label: 'Total Sent', value: `₹${wallet.totalSent.toLocaleString()}`, color: '#ef4444' },
-                { label: 'Total Received', value: `₹${wallet.totalReceived.toLocaleString()}`, color: '#3ecf8e' },
-                { label: 'Active Deposits', value: wallet.activeLocks, color: '#f59e0b' },
-                { label: 'Transactions', value: wallet.txCount, color: '#4d8eff' },
+                { label: 'Total Sent', value: `₹${wallet.totalSent.toLocaleString()}`, color: '#D96846' },
+                { label: 'Total Received', value: `₹${wallet.totalReceived.toLocaleString()}`, color: '#596235' },
+                { label: 'Active Deposits', value: wallet.activeLocks, color: '#D96846' },
+                { label: 'Transactions', value: wallet.txCount, color: '#CDCBD6' },
               ].map((s) => (
-                <div key={s.label} className="bg-[#0f1013] border border-[#22252b] rounded-lg p-3 space-y-1">
-                  <p className="text-[10px] text-[#64748b]">{s.label}</p>
+                <div key={s.label} className="bg-[#202115] border border-[#434630] rounded-lg p-3 space-y-1">
+                  <p className="text-[10px] text-[#9fa293]">{s.label}</p>
                   <p className="text-base font-bold" style={{ color: s.color }}>{s.value}</p>
                 </div>
               ))}
             </div>
 
-            {/* Trust score bar */}
             <div className="space-y-1.5">
               <div className="flex justify-between text-[11px]">
-                <span className="text-[#64748b]">Trust Score Progress</span>
-                <span className="text-[#3ecf8e] font-medium">{wallet.trustScore}/100</span>
+                <span className="text-[#9fa293]">Trust Score Progress</span>
+                <span className="text-[#596235] font-semibold">{wallet.trustScore}/100</span>
               </div>
-              <div className="h-2 bg-[#1a1c22] rounded-full">
+              <div className="h-2 bg-[#202115] rounded-full">
                 <div
                   className="h-2 rounded-full"
                   style={{
                     width: `${wallet.trustScore}%`,
-                    backgroundColor: '#3ecf8e',
+                    backgroundColor: '#596235',
                   }}
                 />
               </div>
-              <p className="text-[10px] text-[#64748b]">Active since {new Date(wallet.activeSince).toLocaleDateString()}</p>
+              <p className="text-[10px] text-[#9fa293]">Active campus trader since {new Date(wallet.activeSince).toLocaleDateString()}</p>
             </div>
 
-            {/* TX breakdown */}
-            <div className="space-y-2 pt-2 border-t border-[#22252b]">
+            <div className="space-y-2 pt-2 border-t border-[#434630]">
               <p className="text-[11px] font-medium text-white">Transaction Breakdown</p>
               {Object.entries(TX_TYPE_LABELS).map(([type, label]) => {
                 const count = transactions.filter((t) => t.type === type).length;
                 return (
                   <div key={type} className="space-y-0.5">
-                    <div className="flex justify-between text-[10px] text-[#94a3b8]">
+                    <div className="flex justify-between text-[10px] text-[#CDCBD6]">
                       <span>{label}</span>
-                      <span>{count} txs</span>
+                      <span>{count} tx</span>
                     </div>
                     <TinyBar value={count} max={transactions.length} />
                   </div>
@@ -513,43 +509,27 @@ export const BlockchainSection: React.FC = () => {
 
       {/* ---- TAB: LIVE ACTIVITY ---- */}
       {activeTab === 'activity' && (
-        <div className="space-y-4">
-          <div className="bg-[#121316] border border-[#22252b] rounded-xl p-4 space-y-3">
-            <div className="flex items-center justify-between">
-              <p className="text-xs font-medium text-white">Volume (last 24 mins)</p>
-              <span className="flex items-center gap-1 text-[10px] text-[#4d8eff]">
-                <RefreshCw className="w-3 h-3 animate-spin" style={{ animationDuration: '3s' }} />
-                Updating every 8 s
-              </span>
+        <div className="bg-[#26271a] border border-[#434630] rounded-xl p-5 space-y-4 shadow">
+          <div className="flex justify-between items-center">
+            <div>
+              <p className="text-xs font-semibold text-white">Live Activity Volume (Last 24 min)</p>
+              <p className="text-[11px] text-[#9fa293]">Visualizes INR throughput across hostel corridors</p>
             </div>
-            <ActivityChart data={activityRaw} />
-            <div className="flex justify-between text-[10px] text-[#64748b]">
-              <span>{activityRaw[0]?.minute}</span>
-              <span>Now</span>
-            </div>
+            <span className="text-[10px] px-2 py-0.5 rounded bg-[#596235]/30 border border-[#596235] text-[#CDCBD6]">
+              Auto-refreshes every 8s
+            </span>
           </div>
 
-          {/* Feed */}
-          <div className="space-y-2">
-            <p className="text-xs font-medium text-white">Live Feed</p>
-            {activityRaw
-              .slice()
-              .reverse()
-              .slice(0, 10)
-              .map((a, i) => (
-                <div
-                  key={a.minute + i}
-                  className="flex items-center gap-3 text-[11px] text-[#94a3b8] bg-[#121316] border border-[#22252b] rounded-lg px-3 py-2"
-                >
-                  <span className="font-mono text-[#64748b] w-10 shrink-0">{a.minute}</span>
-                  <span className="flex-1">
-                    {a.txCount} transaction{a.txCount !== 1 ? 's' : ''} — ₹{a.volumeInr} volume
-                  </span>
-                  <div className="w-16">
-                    <TinyBar value={a.volumeInr} max={500} />
-                  </div>
-                </div>
-              ))}
+          <ActivityChart data={activityRaw} />
+
+          <div className="space-y-1 max-h-48 overflow-y-auto pt-2 border-t border-[#434630]">
+            {activityRaw.slice(-8).reverse().map((a) => (
+              <div key={a.minute} className="flex justify-between text-xs py-1 border-b border-[#434630]/40">
+                <span className="font-mono text-[#9fa293]">{a.minute}</span>
+                <span className="text-[#D96846] font-semibold">₹{a.volumeInr.toLocaleString()}</span>
+                <span className="text-[#CDCBD6]">{a.txCount} tx</span>
+              </div>
+            ))}
           </div>
         </div>
       )}
